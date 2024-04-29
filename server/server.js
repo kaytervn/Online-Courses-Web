@@ -1,7 +1,48 @@
 import express from "express";
+
+import { usersRoutes } from "./routes/usersRoutes.js";
+import { authsRoutes } from "./routes/authsRoutes.js";
+
 import mongoose from "mongoose";
+import passport from "./passport.js";
+import cors from "cors";
+import cookieSession from "cookie-session";
 
 const app = express();
-app.use(express.json({ limit: "200mb" }));
 
-app.listen(4000, () => console.log("Listening at 4000"));
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["key1"],
+    maxAge: 24 * 60 * 60 * 1000,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    method: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+
+app.use("/api/users", usersRoutes);
+app.use("/auth", authsRoutes);
+
+// Connect to the MongoDB database
+mongoose
+  .connect("mongodb://localhost:27017/", { dbName: "demo_db" })
+  .then(() => {
+    console.log("Connected to the database");
+    app.listen(5000, "localhost", () => {
+      console.log("Listening on port 5000");
+    });
+  })
+  .catch((error) => {
+    console.log("Error connecting to the database: ", error);
+  });
