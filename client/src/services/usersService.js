@@ -67,4 +67,4 @@ const resetPasswordUser = async (id, token, password) => {
   // }
 };
 
-export { loginUser, loginGoogleUser, checkEmailUser, resetPasswordUser };
+export { loginUser, checkEmailUser, resetPasswordUser };

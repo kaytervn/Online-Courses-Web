@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { CDBBtn, CDBIcon } from 'cdbreact';
-import { loginUser, loginGoogleUser } from '../../services/usersService';
+import { loginUser } from '../../services/usersService';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
