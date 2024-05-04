@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    code : {
+    code: {
       type: String,
       required: true,
     },
@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema(
     description: {
       type: String,
       default: "",
-    }
+    },
   },
 
   {
