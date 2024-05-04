@@ -1,9 +1,7 @@
-
-
-
 const Role = Object.freeze({
-    ADMIN: 'ADMIN',
-    USER: 'USER',
+  UNKNOWN: "UNKNOWN",
+  ADMIN: "ADMIN",
+  USER: "USER",
 });
 
 export default Role;
