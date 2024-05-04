@@ -25,8 +25,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     role: {
-      type: Number,
-      default: 0,
+      type: Role,
+      default: Role.USER,
     },
     status: {
       type: Boolean,
