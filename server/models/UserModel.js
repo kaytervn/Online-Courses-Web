@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    code : {
+    code: {
       type: String,
       required: true,
     },
@@ -25,8 +25,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     role: {
-      type: Role,
-      default: Role.USER,
+      type: Number,
+      default: 0,
     },
     status: {
       type: Boolean,
@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema(
     description: {
       type: String,
       default: "",
-    }
+    },
   },
 
   {
