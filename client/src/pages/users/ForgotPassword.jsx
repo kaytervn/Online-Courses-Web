@@ -6,6 +6,7 @@ import React from "react";
 import { CDBBtn, CDBIcon } from "cdbreact";
 import { checkEmailUser } from "../../services/usersService";
 import { useNavigate } from "react-router-dom";
+import Container from "react-bootstrap/esm/Container";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -30,26 +31,29 @@ const ForgotPassword = () => {
     }
   };
   return (
-    <section className="card shadow-lg p-5 mb-5 bg-body-tertiary rounded-4">
-      <h3 className="title fw-medium mb-5"> Forgot Password</h3>
-      <form onSubmit={handleForgotPassword}>
-        <div className="mb-5 row">
-          <input
-            type="email"
-            placeholder="Email"
-            className="input p-1"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoFocus
-          />
-        </div>
+    <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+      <section className="card shadow-lg p-5 mb-5 bg-body-tertiary rounded-4" style={{ maxWidth: '400px' }}>
+        <h3 className="title fw-medium mb-5 text-center"> Forgot Password</h3>
+        <form onSubmit={handleForgotPassword} className="d-flex flex-column align-items-center">
+          <div className="mb-5">
+            <input
+              type="email"
+              placeholder="Email"
+              className="input p-1"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoFocus
+            />
+          </div>
 
-        <button className="btn btn-info mb-4">Send</button>
-      </form>
+          <button type="submit" className="btn btn-info mb-4">Send</button>
+        </form>
 
-      {error && <Alert msg={error} type="error" />}
-      {success && <Alert msg={success} type="success" />}
-    </section>
+        {error && <Alert msg={error} type="error" />}
+        {success && <Alert msg={success} type="success" />}
+      </section>
+    </Container>
+
   );
 };
 

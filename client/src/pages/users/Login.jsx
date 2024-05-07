@@ -8,6 +8,7 @@ import { CDBBtn, CDBIcon } from "cdbreact";
 import { loginUser } from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import Container from "react-bootstrap/esm/Container";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
@@ -51,68 +52,70 @@ const Login = () => {
     }
   };
   return (
-    <section className="card shadow-lg p-5 mb-5 bg-body-tertiary rounded-4">
-      <h3 className="title fw-medium mb-5"> Log in</h3>
-      <form onSubmit={handleLogin}>
-        <div className="mb-5 row">
-          <input
-            type="email"
-            placeholder="Email"
-            className="input p-1"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoFocus
-          />
-        </div>
-        <div className="mb-5 row ">
-          <input
-            type="password"
-            placeholder="Password"
-            className="input p-1"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoFocus
-          />
-        </div>
-
-        <button className="btn btn-success mb-4"> Login</button>
-
-        <div className="other-login">
-          <p className="text-center"> or sign up with</p>
-          <div className="flex-row mb-3 d-flex justify-content-center">
-            <CDBBtn
-              color="white"
-              className="m-0"
-              style={{ boxShadow: "none" }}
-              onClick={handleFacebookLogin}
-            >
-              <CDBIcon fab icon="facebook-f" />
-            </CDBBtn>
-            <CDBBtn
-              color="white"
-              className="m-0"
-              style={{ boxShadow: "none" }}
-              onClick={handleGithubLogin}
-            >
-              <CDBIcon fab icon="github" />
-            </CDBBtn>
-            <CDBBtn
-              color="white"
-              className="m-0"
-              style={{ boxShadow: "none" }}
-              onClick={handleGoogleLogin}
-            >
-              <CDBIcon fab icon="google-plus-g" />
-            </CDBBtn>
+    <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+      <section className="card shadow-lg p-5 bg-body-tertiary rounded-4" style={{ width: '400px' }}>
+        <h3 className="title fw-medium mb-5 d-flex justify-content-center"> Log in</h3>
+        <form onSubmit={handleLogin} >
+          <div className="mb-5 row">
+            <input
+              type="email"
+              placeholder="Email"
+              className="input p-1"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoFocus
+            />
           </div>
-        </div>
-        <Link to="/forgot-password" className="fs-6 fw-lighter">
-          Forgot password
-        </Link>
-      </form>
+          <div className="mb-5 row ">
+            <input
+              type="password"
+              placeholder="Password"
+              className="input p-1"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-      {error && <Alert msg={error} type="error" />}
-    </section>
+          <button className="btn btn-success mb-4 d-flex justify-content-center" style={{ marginLeft: '38%' }}> Login</button>
+
+          <div className="other-login">
+            <p className="text-center"> or sign up with</p>
+            <div className="flex-row mb-3 d-flex justify-content-center">
+              <CDBBtn
+                color="white"
+                className="m-0"
+                style={{ boxShadow: "none" }}
+                onClick={handleFacebookLogin}
+              >
+                <CDBIcon fab icon="facebook-f" />
+              </CDBBtn>
+              <CDBBtn
+                color="white"
+                className="m-0"
+                style={{ boxShadow: "none" }}
+                onClick={handleGithubLogin}
+              >
+                <CDBIcon fab icon="github" />
+              </CDBBtn>
+              <CDBBtn
+                color="white"
+                className="m-0"
+                style={{ boxShadow: "none" }}
+                onClick={handleGoogleLogin}
+              >
+                <CDBIcon fab icon="google-plus-g" />
+              </CDBBtn>
+            </div>
+          </div>
+          <Link to="/forgot-password" className="fs-6 fst-italic fw-lighter d-flex justify-content-center" style={{ textDecoration: 'none' }}>
+            Forgot password
+          </Link>
+        </form>
+
+        {error && <Alert msg={error} type="error" />}
+      </section>
+    </Container>
+
   );
 };
 

@@ -23,6 +23,7 @@ const App = () => {
           <Route element={<GuestRoutes />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route
               path="/reset-password/:id/:token"
               element={<ResetPassword />}
