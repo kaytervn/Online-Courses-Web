@@ -6,6 +6,7 @@ import passport from "./passport.js";
 import cors from "cors";
 import cookieSession from "cookie-session";
 import { coursesRoutes } from "./routes/coursesRoutes.js";
+import { cartsRoutes } from "./routes/cartsRouter.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(express.json({ limit: "200mb" }));
 
 app.use("/api/users", usersRoutes);
 app.use("/api/courses", coursesRoutes);
+app.use("/api/carts",cartsRoutes);
 app.use("/auth", authsRoutes);
 
 // Connect to the MongoDB database

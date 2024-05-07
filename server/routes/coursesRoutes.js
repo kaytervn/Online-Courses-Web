@@ -1,11 +1,14 @@
 import express from "express";
 import multer from "multer";
 import auth from "../middlewares/auth.js";
+
 import {
   createCourse,
   disableCourse,
   enableCourse,
   getAllCourses,
+  getBestSellerCourse,
+  getNewestCourse,
 } from "../controllers/coursesController.js";
 
 const storage = multer.memoryStorage();
@@ -22,5 +25,9 @@ router.post("/disable/:id", disableCourse);
 
 //enable Course
 router.post("/enable/:id", enableCourse);
+
+router.get("/getNewestCourse", getNewestCourse);
+
+router.get("/getBestSellerCourse", getBestSellerCourse);
 
 export { router as coursesRoutes };
