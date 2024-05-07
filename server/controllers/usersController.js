@@ -154,3 +154,5 @@ const resetPassword = async (req, res) => {
 };
 
 export { registerUser, loginUser, forgotPassword, resetPassword, getUser };
+
+//***********************************************GET ALL USERS ROLE.************************** */
