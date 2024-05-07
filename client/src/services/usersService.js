@@ -1,3 +1,33 @@
+//***********************************************REGISTER USER************************** */
+
+const registerUser = async (name, email, password, confirmPassword) => {
+  if (!name || !email || !password || !confirmPassword) {
+    throw Error("Please fill all the fields");
+  }
+
+  if (password !== confirmPassword) {
+    throw Error("Passwords do not match!");
+  }
+
+  const res = await fetch("/api/users/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, email, password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+
+  localStorage.setItem("token", data.token);
+
+  return data;
+};
+
 //***********************************************LOGIN USER************************** */
 
 const loginUser = async (email, password) => {
@@ -82,4 +112,4 @@ const getUser = async (token) => {
   return data;
 };
 
-export { loginUser, checkEmailUser, resetPasswordUser, getUser };
+export { registerUser, loginUser, checkEmailUser, resetPasswordUser, getUser };
