@@ -104,7 +104,7 @@ const forgotPassword = async (req, res) => {
         from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
         to: `${email}`,
         subject: "Reset Your Password",
-        text: `http://localhost:5173/reset-password/${user._id}/${token}`,
+        text: `http://localhost:3000/reset-password/${user._id}/${token}`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
