@@ -1,15 +1,14 @@
 // App.jsx
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import './App.css'
-import Layout from './pages/Layout'
-import Login from './pages/users/Login'
+import "./App.css";
+import Layout from "./pages/Layout";
+import Login from "./pages/users/Login";
 
-import ForgotPassword from './pages/users/ForgotPassword'
-import HomePage from './pages/users/HomePage'
-import ResetPassword from './pages/users/ResetPassword'
-import userAuthentication from './Components/customhook/userAuthentication'
+import ForgotPassword from "./pages/users/ForgotPassword";
+import HomePage from "./pages/users/HomePage";
+import ResetPassword from "./pages/users/ResetPassword";
+import userAuthentication from "./Components/customhook/userAuthentication";
 
 function App() {
   const user = userAuthentication();
@@ -29,28 +28,24 @@ function App() {
             <Route path="reset-password/:id/:token" element={<ResetPassword />} />
           </Routes>
         </div>
-      </BrowserRouter >
-    )
-  }
-  else {
+      </BrowserRouter>
+    );
+  } else {
     return (
       <BrowserRouter>
         <div>
           <Routes>
             <Route path="/" element={<Layout />} />
-            <Route
-              path="/login" element={<Login />}
-            />
+            <Route path="/login" element={<Login />} />
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password/:id/:token" element={<ResetPassword />} />
 
           </Routes>
         </div>
-      </BrowserRouter >
-    )
-
+      </BrowserRouter>
+    );
   }
 }
 
-export default App
+export default App;

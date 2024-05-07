@@ -7,7 +7,7 @@ import nodemailer from "nodemailer";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
-  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "1d" });
+  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "10d" });
 };
 
 //***********************************************REGISTER USER************************** */
@@ -55,7 +55,7 @@ const loginUser = async (req, res) => {
     return res.status(400).json({ error: "Incorrect email!" });
   }
 
-  // const token = createToken(user._id);
+  const token = createToken(user._id);
   //encrypt hash password
   // check password
   const match = await bcrypt.compare(password, user.password);
