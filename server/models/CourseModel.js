@@ -1,49 +1,47 @@
 import mongoose from "mongoose";
-import Role from "./RoleEnum.js";
 
-const UserSchema = new mongoose.Schema(
+const CourseSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     cloudinary: {
       type: String,
       default: "",
     },
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    email: {
+    picture: {
       type: String,
       required: true,
       unique: true,
     },
-    code: {
+    description: {
       type: String,
       required: true,
     },
-    password: {
-      type: String,
+    price: {
+      type: Number,
       required: true,
     },
-    role: {
-      type: String,
-      enum: Object.values(Role),
-      default: Role.USER,
+    visibility: {
+      type: Boolean,
+      default: true,
     },
     status: {
       type: Boolean,
       default: true,
     },
-    description: {
-      type: String,
-      default: "",
-    },
   },
-
   {
     timestamps: true,
   }
 );
 
-const User = mongoose.model("User", UserSchema);
+const Course = mongoose.model("Course", CourseSchema);
 
-export default User;
+export default Course;
