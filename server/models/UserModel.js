@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Role from "./RoleEnum";
+import Role from "./RoleEnum.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -25,7 +25,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     role: {
-      type: Role,
+      type: String,
+      enum: Object.values(Role),
       default: Role.USER,
     },
     status: {
