@@ -4,12 +4,14 @@ import {
   loginUser,
   forgotPassword,
   resetPassword,
+  getUser,
 } from "../controllers/usersController.js";
+import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
 // register user
-router.post("/", registerUser);
+router.post("/register", registerUser);
 
 //login user
 router.post("/login", loginUser);
@@ -19,5 +21,8 @@ router.post("/forgot-password", forgotPassword);
 
 //reset password
 router.post("/reset-password/:id/:token", resetPassword);
+
+//get user
+router.get("/", auth, getUser);
 
 export { router as usersRoutes };

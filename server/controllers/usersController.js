@@ -7,15 +7,24 @@ import nodemailer from "nodemailer";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
-  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "1d" });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
+};
+
+const getUser = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 };
 
 //***********************************************REGISTER USER************************** */
 const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
   //check params user enter
-  if (!email || !password) {
+  if (!email || !password || !name) {
     res.status(400).json({ error: "All fields are required!" });
   }
 
@@ -30,7 +39,7 @@ const registerUser = async (req, res) => {
       const salt = await bcrypt.genSalt(); //default is 10 times
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
-      const user = await User.create({ email, password: hashed });
+      const user = await User.create({ email, password: hashed, name });
       const token = createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
@@ -55,7 +64,7 @@ const loginUser = async (req, res) => {
     return res.status(400).json({ error: "Incorrect email!" });
   }
 
-  // const token = createToken(user._id);
+  const token = createToken(user._id);
   //encrypt hash password
   // check password
   const match = await bcrypt.compare(password, user.password);
@@ -66,7 +75,7 @@ const loginUser = async (req, res) => {
   }
 
   try {
-    return res.status(200).json({ email });
+    return res.status(200).json({ email, token });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -104,7 +113,7 @@ const forgotPassword = async (req, res) => {
         from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
         to: `${email}`,
         subject: "Reset Your Password",
-        text: `http://localhost:5173/reset-password/${user._id}/${token}`,
+        text: `http://localhost:3000/reset-password/${user._id}/${token}`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -144,4 +153,4 @@ const resetPassword = async (req, res) => {
   });
 };
 
-export { registerUser, loginUser, forgotPassword, resetPassword };
+export { registerUser, loginUser, forgotPassword, resetPassword, getUser };
