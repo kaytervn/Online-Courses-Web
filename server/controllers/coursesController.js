@@ -41,17 +41,36 @@ const createCourse = async (req, res) => {
   }
 };
 
-export { createCourse };
-
-
 //***********************************************GET ALL COURSE************************** */
-const getAllCourse = async (req, res) => {
-  
-  const users = await User.find({ role });
-
+const getAllCourses = async (req, res) => {
+  const courses = await Course.find();
   try {
-    return res.status(200).json({ users });
+    return res.status(200).json({ courses });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
+
+//***********************************************DISABLE COURSE************************* */
+const disableCourse = async (req, res) => {
+  const { id } = req.params;
+  await Course.findByIdAndUpdate({ _id: id }, { status: false });
+  try {
+    return res.status(200).json({ success: "Course is disabled!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//***********************************************Enable COURSE************************* */
+const enableCourse = async (req, res) => {
+  const { id } = req.params;
+  await Course.findByIdAndUpdate({ _id: id }, { status: true });
+  try {
+    return res.status(200).json({ success: "Course is enable!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export { createCourse, getAllCourses, disableCourse, enableCourse };
