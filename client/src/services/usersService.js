@@ -14,16 +14,13 @@ const loginUser = async (email, password) => {
   });
 
   const data = await res.json();
-  console.log(data);
 
   if (!res.ok) {
     throw Error(data.error);
   }
 
   localStorage.setItem("token", data.token);
-  localStorage.setItem("email", data.email);
 
-  console.log(data);
   return data;
 };
 
@@ -72,4 +69,17 @@ const resetPasswordUser = async (id, token, password) => {
   // }
 };
 
-export { loginUser, checkEmailUser, resetPasswordUser };
+//***********************************************GET USER************************** */
+const getUser = async (token) => {
+  const res = await fetch("/api/users/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${token}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+
+export { loginUser, checkEmailUser, resetPasswordUser, getUser };

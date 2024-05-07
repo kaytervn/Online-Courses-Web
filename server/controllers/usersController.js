@@ -7,7 +7,16 @@ import nodemailer from "nodemailer";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
-  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "10d" });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
+};
+
+const getUser = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 };
 
 //***********************************************REGISTER USER************************** */
@@ -66,7 +75,7 @@ const loginUser = async (req, res) => {
   }
 
   try {
-    return res.status(200).json({ email });
+    return res.status(200).json({ email, token });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -144,4 +153,4 @@ const resetPassword = async (req, res) => {
   });
 };
 
-export { registerUser, loginUser, forgotPassword, resetPassword };
+export { registerUser, loginUser, forgotPassword, resetPassword, getUser };
