@@ -153,4 +153,56 @@ const resetPassword = async (req, res) => {
   });
 };
 
-export { registerUser, loginUser, forgotPassword, resetPassword, getUser };
+//***********************************************GET ALL USER BY ROLE************************** */
+const getUserListByRole = async (req, res) => {
+  const role = req.params.role;
+
+  const users = await User.find({ role });
+
+  try {
+    return res.status(200).json({ users });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//***********************************************DISABLE USER************************* */
+const disableUser = async (req, res) => {
+  const { id } = req.params;
+  await User.findByIdAndUpdate({ _id: id }, { status: false });
+  try {
+    return res.status(200).json({ success: "User is disabled!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+//***********************************************Enable USER************************* */
+const enableUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findByIdAndUpdate({ _id: id }, { status: true });
+  try {
+    return res.status(200).json({ success: "User is enable!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  getUser,
+  getUserListByRole,
+  disableUser,
+  enableUser,
+};
+
+// const getUser = async (req, res) => {
+//   const user = await User.findById(req.user._id);
+//   try {
+//     return res.status(200).json({ user });
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
