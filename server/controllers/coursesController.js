@@ -87,5 +87,5 @@ const getNewestCourse = async(req, res) =>{
 const getBestSellerCourse = async(req, res)=>{
 
 }
-export { createCourse , getNewestCourse, getBestSellerCourse getAllCourses, disableCourse, enableCourse};
+export { createCourse , getNewestCourse, getBestSellerCourse, getAllCourses, disableCourse, enableCourse};
 
