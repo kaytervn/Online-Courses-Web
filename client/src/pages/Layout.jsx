@@ -23,6 +23,7 @@ const Layout = () => {
           email: data.user.email,
           name: data.user.name,
           picture: data.user.picture,
+          role: data.user.role,
         });
       }
     }, 0);
@@ -30,7 +31,7 @@ const Layout = () => {
 
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {
-      setUser({ email: null, name: null, picture: null });
+      setUser({ email: null, name: null, picture: null, role: null });
       localStorage.removeItem("token");
       navigate("/");
     }
