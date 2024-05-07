@@ -25,7 +25,8 @@ router.post("/reset-password/:id/:token", resetPassword);
 
 //get user
 router.get("/", auth, getUser);
+
 //get all users by role
-router.get("/all", getUserListByRole);
+router.get("/:role", getUserListByRole);
 
 export { router as usersRoutes };

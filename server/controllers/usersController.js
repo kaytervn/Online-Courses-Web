@@ -153,8 +153,10 @@ const resetPassword = async (req, res) => {
   });
 };
 
-//***********************************************GET ALL USERS BY ROLE************************** */
+//***********************************************GET ALL USER BY ROLE************************** */
 const getUserListByRole = async (req, res) => {
+  const role = req.params.role;
+
   const users = await User.find({ role });
 
   try {
