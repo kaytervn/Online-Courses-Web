@@ -7,15 +7,15 @@ import nodemailer from "nodemailer";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
-  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "1d" });
+  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "10d" });
 };
 
 //***********************************************REGISTER USER************************** */
 const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
   //check params user enter
-  if (!email || !password) {
+  if (!email || !password || !name) {
     res.status(400).json({ error: "All fields are required!" });
   }
 
@@ -30,7 +30,7 @@ const registerUser = async (req, res) => {
       const salt = await bcrypt.genSalt(); //default is 10 times
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
-      const user = await User.create({ email, password: hashed });
+      const user = await User.create({ email, password: hashed, name });
       const token = createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
@@ -55,7 +55,7 @@ const loginUser = async (req, res) => {
     return res.status(400).json({ error: "Incorrect email!" });
   }
 
-  // const token = createToken(user._id);
+  const token = createToken(user._id);
   //encrypt hash password
   // check password
   const match = await bcrypt.compare(password, user.password);
@@ -91,19 +91,20 @@ const forgotPassword = async (req, res) => {
       const token = jwt.sign({ _id: user._id }, `${process.env.SECRET}`, {
         expiresIn: "1d",
       });
-      var transporter = nodemailer.createTransport({
+
+      const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "", // email that send
-          pass: "", // password that send
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
         },
       });
 
       var mailOptions = {
-        from: " ", // email that send
+        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
         to: `${email}`,
         subject: "Reset Your Password",
-        text: `http://localhost:5173/reset-password/${user._id}/${token}`,
+        text: `http://localhost:3000/reset-password/${user._id}/${token}`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {

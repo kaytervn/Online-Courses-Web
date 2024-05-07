@@ -24,6 +24,7 @@ const loginUser = async (email, password) => {
   localStorage.setItem("email", data.email);
 
   console.log(data);
+  return data;
 };
 
 //***********************************************FORGOT PASSWORD USER************************** */
@@ -48,9 +49,13 @@ const checkEmailUser = async (email) => {
 
 //***********************************************FORGOT PASSWORD USER************************** */
 const resetPasswordUser = async (id, token, password) => {
-  if (!password) {
-    throw Error("Please fill all the fields");
-  }
+  // if (!password || !confirmPassword) {
+  //   throw Error("Please fill all the fields");
+  // }
+
+  // if (password !== confirmPassword) {
+  //   throw Error("Passwords do not match!");
+  // }
 
   const res = await fetch(`/api/users/reset-password/${id}/${token}`, {
     method: "POST",
@@ -60,10 +65,10 @@ const resetPasswordUser = async (id, token, password) => {
     body: JSON.stringify({ password }),
   });
 
+  // Xử lý response ở đây nếu cần
   // const data = await res.json()
   // if(!res.ok) {
   //     throw Error(data.error)
-  //     console.log(data.error)
   // }
 };
 
