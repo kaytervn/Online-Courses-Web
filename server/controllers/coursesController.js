@@ -42,3 +42,16 @@ const createCourse = async (req, res) => {
 };
 
 export { createCourse };
+
+
+//***********************************************GET ALL COURSE************************** */
+const getAllCourse = async (req, res) => {
+  
+  const users = await User.find({ role });
+
+  try {
+    return res.status(200).json({ users });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
