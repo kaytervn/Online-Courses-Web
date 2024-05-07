@@ -29,14 +29,14 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "200mb" }));
 
 app.use("/api/users", usersRoutes);
 app.use("/auth", authsRoutes);
 
 // Connect to the MongoDB database
 mongoose
-  .connect("mongodb://localhost:27017/", { dbName: "demo_db" })
+  .connect(process.env.MONGODB_URI, { dbName: "cookiedu_db" })
   .then(() => {
     console.log("Connected to the database");
     app.listen(5000, "localhost", () => {
