@@ -5,6 +5,7 @@ import {
   forgotPassword,
   resetPassword,
   getUser,
+  getUserListByRole,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -24,5 +25,7 @@ router.post("/reset-password/:id/:token", resetPassword);
 
 //get user
 router.get("/", auth, getUser);
+//get all users by role
+router.get("/all", getUserListByRole);
 
 export { router as usersRoutes };
