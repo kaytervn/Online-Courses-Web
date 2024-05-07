@@ -153,6 +153,31 @@ const resetPassword = async (req, res) => {
   });
 };
 
-export { registerUser, loginUser, forgotPassword, resetPassword, getUser };
+//***********************************************GET ALL USERS BY ROLE************************** */
+const getUserListByRole = async (req, res) => {
+  const users = await User.find({ role });
 
-//***********************************************GET ALL USERS ROLE.************************** */
+  try {
+    return res.status(200).json({ users });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  getUser,
+  getUserListByRole,
+};
+
+// const getUser = async (req, res) => {
+//   const user = await User.findById(req.user._id);
+//   try {
+//     return res.status(200).json({ user });
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
