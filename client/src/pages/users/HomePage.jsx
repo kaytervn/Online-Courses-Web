@@ -8,7 +8,12 @@ const HomePage = () => {
     window.open("http://localhost:5000/auth/logout", "_self");
   };
   return (
-    <>HomePage</>
+    <div>
+      <h1 className="d-flex text-danger justify-content-center text-align-center" style={{ marginTop: '20%' }}>
+        HomePage của sự lười biếng hehe ^-^
+
+      </h1>
+    </div>
     // <div className="navbar">
     //   <span className="logo">
     //     <Link className="link" to="/homepage">

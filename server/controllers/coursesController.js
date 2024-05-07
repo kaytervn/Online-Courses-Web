@@ -41,4 +41,51 @@ const createCourse = async (req, res) => {
   }
 };
 
-export { createCourse };
+
+//***********************************************GET ALL COURSE************************** */
+const getAllCourses = async (req, res) => {
+  const courses = await Course.find();
+  try {
+    return res.status(200).json({ courses });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//***********************************************DISABLE COURSE************************* */
+const disableCourse = async (req, res) => {
+  const { id } = req.params;
+  await Course.findByIdAndUpdate({ _id: id }, { status: false });
+  try {
+    return res.status(200).json({ success: "Course is disabled!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//***********************************************Enable COURSE************************* */
+const enableCourse = async (req, res) => {
+  const { id } = req.params;
+  await Course.findByIdAndUpdate({ _id: id }, { status: true });
+  try {
+    return res.status(200).json({ success: "Course is enable!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
+const getNewestCourse = async(req, res) =>{
+  try {
+      const courses = await Course.find().sort({createdAt: -1}).limit(5);
+      res.status(200).json({courses})
+  } catch (error) {
+    res.status(500).json({error: error.message})
+  }
+}
+
+const getBestSellerCourse = async(req, res)=>{
+
+}
+export { createCourse , getNewestCourse, getBestSellerCourse getAllCourses, disableCourse, enableCourse};
+
