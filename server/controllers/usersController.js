@@ -91,16 +91,17 @@ const forgotPassword = async (req, res) => {
       const token = jwt.sign({ _id: user._id }, `${process.env.SECRET}`, {
         expiresIn: "1d",
       });
-      var transporter = nodemailer.createTransport({
+
+      const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "", // email that send
-          pass: "", // password that send
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
         },
       });
 
       var mailOptions = {
-        from: " ", // email that send
+        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
         to: `${email}`,
         subject: "Reset Your Password",
         text: `http://localhost:5173/reset-password/${user._id}/${token}`,
