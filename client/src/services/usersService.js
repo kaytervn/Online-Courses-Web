@@ -24,6 +24,7 @@ const loginUser = async (email, password) => {
   localStorage.setItem("email", data.email);
 
   console.log(data);
+  return data;
 };
 
 //***********************************************FORGOT PASSWORD USER************************** */
