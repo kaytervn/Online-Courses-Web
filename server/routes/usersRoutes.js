@@ -5,6 +5,9 @@ import {
   forgotPassword,
   resetPassword,
   getUser,
+  getUserListByRole,
+  disableUser,
+  enableUser,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -24,5 +27,14 @@ router.post("/reset-password/:id/:token", resetPassword);
 
 //get user
 router.get("/", auth, getUser);
+
+//get all users by role
+router.get("/:role", getUserListByRole);
+
+//disable user
+router.post("/disable/:id", disableUser);
+
+//enable user
+router.post("/enable/:id", enableUser);
 
 export { router as usersRoutes };
