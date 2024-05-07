@@ -10,6 +10,15 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
 };
 
+const getUser = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 //***********************************************REGISTER USER************************** */
 const registerUser = async (req, res) => {
   const { email, password, name } = req.body;
@@ -144,4 +153,4 @@ const resetPassword = async (req, res) => {
   });
 };
 
-export { registerUser, loginUser, forgotPassword, resetPassword };
+export { registerUser, loginUser, forgotPassword, resetPassword, getUser };
