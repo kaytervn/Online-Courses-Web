@@ -8,7 +8,7 @@ import userAuthentication from "./Components/customhook/userAuthentication";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
 import AuthRoutes from "../Routes/AuthRoutes";
-
+import Register from "./pages/users/Register";
 const App = () => {
   return (
     <BrowserRouter>
@@ -22,7 +22,7 @@ const App = () => {
           </Route>
           <Route element={<GuestRoutes />}>
             <Route path="/login" element={<Login />} />
-            {/* <Route path="/register" element={<Register />} /> */}
+            <Route path="/register" element={<Register />} />
             <Route
               path="/reset-password/:id/:token"
               element={<ResetPassword />}
