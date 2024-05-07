@@ -7,7 +7,7 @@ import nodemailer from "nodemailer";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
-  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "10d" });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
 };
 
 //***********************************************REGISTER USER************************** */
