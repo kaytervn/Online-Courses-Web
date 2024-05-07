@@ -25,7 +25,8 @@ function App() {
               path="/login"
               element={user ? <Navigate to="/homepage" /> : <Login />}
             />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/forgot-password/" element={<ForgotPassword />} />
+            <Route path="reset-password/:id/:token" element={<ResetPassword />} />
           </Routes>
         </div>
       </BrowserRouter >
@@ -42,6 +43,8 @@ function App() {
             />
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password/:id/:token" element={<ResetPassword />} />
+
           </Routes>
         </div>
       </BrowserRouter >
