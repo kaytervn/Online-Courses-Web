@@ -21,7 +21,7 @@ const getUser = async (req, res) => {
 
 //***********************************************REGISTER USER************************** */
 const registerUser = async (req, res) => {
-  const { email, password, name } = req.body;
+  const { name, email, password } = req.body;
 
   //check params user enter
   if (!email || !password || !name) {
