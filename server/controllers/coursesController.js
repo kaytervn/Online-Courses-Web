@@ -1,3 +1,5 @@
+import Course from "../models/CourseModel.js";
+
 const createCourse = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
@@ -8,16 +10,11 @@ const createCourse = async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
 
-  const user = await User.findById(req.user._id);
-  if (!post.user.equals(user._id)) {
-    return res.status(401).json({ error: "Not authorized" });
-  }
-
   try {
     const uploadResponse = await new Promise((resolve, reject) => {
       const bufferData = req.file.buffer;
       cloudinary.uploader
-        .upload_stream({ resource_type: "image" }, (error, result) => {
+        .upload_stream({ resource_type: "picture" }, (error, result) => {
           if (error) {
             reject(error);
           } else {
@@ -26,15 +23,19 @@ const createCourse = async (req, res) => {
         })
         .end(bufferData);
     });
-    const food = await Food.create({
+    const user = await User.findById(req.user._id);
+    const course = await Course.create({
+      userId: user._id,
       cloudinary: uploadResponse.public_id,
-      image: uploadResponse.secure_url,
+      picture: uploadResponse.secure_url,
       title,
       price,
       description,
     });
-    return res.status(200).json({ food });
+    return res.status(200).json({ course });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export { createCourse };
