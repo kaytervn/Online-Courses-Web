@@ -42,7 +42,7 @@ const Login = () => {
             window.open(`http://localhost:5000/auth/facebook`, "_self");
         } catch (err) {
             console.error("Error logging in with Facebook:", err);
-            // Handle Facebook login error here
+
         }
     };
 
@@ -52,7 +52,6 @@ const Login = () => {
             window.open(`http://localhost:5000/auth/github`, "_self");
         } catch (err) {
             console.error("Error logging in with Github:", err);
-            // Handle Facebook login error here
         }
     };
     return (
@@ -93,7 +92,6 @@ const Login = () => {
                             <CDBIcon fab icon="github" />
                         </CDBBtn>
                         <CDBBtn color="white" className="m-0" style={{ boxShadow: 'none' }} onClick={handleGoogleLogin}>
-                            {/* <CDBBtn color="white" className="m-0" style={{ boxShadow: 'none' }}> */}
                             <CDBIcon fab icon="google-plus-g" />
                         </CDBBtn>
                     </div>
