@@ -176,6 +176,7 @@ const disableUser = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
 //***********************************************Enable USER************************* */
 const enableUser = async (req, res) => {
   const { id } = req.params;
@@ -187,6 +188,18 @@ const enableUser = async (req, res) => {
   }
 };
 
+//***********************************************Get USER by Another one************************* */
+const getUserByOther = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  try {
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
+
 export {
   registerUser,
   loginUser,
@@ -196,6 +209,7 @@ export {
   getUserListByRole,
   disableUser,
   enableUser,
+  getUserByOther,
 };
 
 // const getUser = async (req, res) => {
