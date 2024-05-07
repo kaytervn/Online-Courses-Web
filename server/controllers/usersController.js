@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 import nodemailer from "nodemailer";
+import {createCartForUser} from "./cartsController.js"; 
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
@@ -40,6 +41,7 @@ const registerUser = async (req, res) => {
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
       const user = await User.create({ email, password: hashed, name });
+      const cart = await createCartForUser(user._id);
       const token = createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
