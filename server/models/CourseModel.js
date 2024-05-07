@@ -30,7 +30,7 @@ const CourseSchema = new mongoose.Schema(
     },
     visibility: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     status: {
       type: Boolean,
