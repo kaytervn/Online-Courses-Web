@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
 
   try {
     // Decode and extract the user id from token
-    const { _id } = jwt.verify(token, `${process.env.SECRET}`);
+    const { _id } = jwt.verify(token, process.env.SECRET);
 
     //save the user in the req object
     req.user = await User.findById(_id).select("_id");

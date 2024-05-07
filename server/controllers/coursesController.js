@@ -1,4 +1,7 @@
 import Course from "../models/CourseModel.js";
+import { mongoose } from "mongoose";
+import cloudinary from "../utils/cloudinary.js";
+import User from "../models/UserModel.js";
 
 const createCourse = async (req, res) => {
   if (!req.file) {
@@ -14,7 +17,7 @@ const createCourse = async (req, res) => {
     const uploadResponse = await new Promise((resolve, reject) => {
       const bufferData = req.file.buffer;
       cloudinary.uploader
-        .upload_stream({ resource_type: "picture" }, (error, result) => {
+        .upload_stream({ resource_type: "image" }, (error, result) => {
           if (error) {
             reject(error);
           } else {
