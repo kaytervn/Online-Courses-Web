@@ -1,8 +1,4 @@
 const createCourse = async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ error: "Incorrect ID" });
-  }
-
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
