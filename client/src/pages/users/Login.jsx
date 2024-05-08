@@ -5,13 +5,13 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { CDBBtn, CDBIcon } from "cdbreact";
-import { loginUser } from "../../services/usersService";
+import { getUser, loginUser } from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import Container from "react-bootstrap/esm/Container";
 
 const Login = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   //error State
   const [error, setError] = useState(null);
@@ -25,12 +25,26 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = await loginUser(email, password);
-      setUser({ token: data.token });
+      
+      const token = data.token;
+
+      const user = await getUser(token);
+      setUser({
+        token,
+        email:user.email,
+        name: user.name,
+        picture: user.picture,
+        role: user.role,
+      });
+      
       navigate("/");
     } catch (err) {
       setError(err.message);
     }
   };
+
+
+
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:5000/auth/google", "_self");
