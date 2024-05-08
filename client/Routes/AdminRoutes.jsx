@@ -6,7 +6,7 @@ import Role from "../../server/models/RoleEnum";
 const AdminRoutes = () => {
   const { user } = useContext(UserContext);
 
-  return user.role == Role.ADMIN ? <Outlet /> : <Navigate to="/" />;
+  return user.role == Role.ADMIN ? <Outlet /> : <Navigate to="/admin" />;
 };
 
 export default AdminRoutes;
