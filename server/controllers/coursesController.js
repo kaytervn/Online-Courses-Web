@@ -45,7 +45,10 @@ const getUserCourses = async (req, res) => {
   const user = await User.findById(req.user._id);
 
   try {
-    const courses = await Course.find({ userId: user._id }).sort({
+    const courses = await Course.find({
+      userId: user._id,
+      status: true,
+    }).sort({
       createdAt: "desc",
     });
 
@@ -62,12 +65,13 @@ const searchUserCourses = async (req, res) => {
     const { keyword } = req.body;
     let courses;
     if (!keyword || keyword.trim() == "") {
-      courses = await Course.find({ userId: user._id }).sort({
+      courses = await Course.find({ userId: user._id, status: true }).sort({
         createdAt: "desc",
       });
     } else {
       courses = await Course.find({
         userId: user._id,
+        status: true,
         $or: [
           { title: { $regex: keyword, $options: "i" } },
           { description: { $regex: keyword, $options: "i" } },
@@ -167,6 +171,49 @@ const updateCourseIntro = async (req, res) => {
   }
 };
 
+const deleteCourse = async (req, res) => {
+  // if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+  //   return res.status(400).json({ error: "Incorrect ID" });
+  // }
+  // const course = await Course.findById(req.params.id);
+  // if (!course) {
+  //   return res.status(404).json({ error: "Course not found" });
+  // }
+  // const user = await User.findById(req.user._id);
+  // if (!(course.userId.equals(user._id) && user.role == Role.INSTRUCTOR)) {
+  //   return res.status(401).json({ error: "Not authorized" });
+  // }
+  // try {
+  //   if (req.file && course.cloudinary) {
+  //     await cloudinary.uploader.destroy(course.cloudinary);
+  //     const uploadResponse = await new Promise((resolve, reject) => {
+  //       const bufferData = req.file.buffer;
+  //       cloudinary.uploader
+  //         .upload_stream({ resource_type: "image" }, (error, result) => {
+  //           if (error) {
+  //             reject(error);
+  //           } else {
+  //             resolve(result);
+  //           }
+  //         })
+  //         .end(bufferData);
+  //     });
+  //     await course.updateOne({
+  //       picture: uploadResponse.secure_url,
+  //       cloudinary: uploadResponse.public_id,
+  //     });
+  //   }
+  //   await course.updateOne({
+  //     title,
+  //     price,
+  //     description,
+  //   });
+  //   return res.status(200).json({ success: "Course updated" });
+  // } catch (error) {
+  //   return res.status(500).json({ error: error.message });
+  // }
+};
+
 //***********************************************GET ALL COURSE************************** */
 const getAllCourses = async (req, res) => {
   const courses = await Course.find();
@@ -188,12 +235,10 @@ const getNewestCourse = async (req, res) => {
 
 const getBestSellerCourse = async (req, res) => {};
 
-const findCourse = async(req, res) =>{
-  
-  const  nameCourse  = req.params.str; 
+const findCourse = async (req, res) => {
+  const nameCourse = req.params.str;
 
   try {
- 
     const course = await Course.find({
       title: { $regex: nameCourse, $options: "i" },
     });
@@ -206,8 +251,7 @@ const findCourse = async(req, res) =>{
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
-
+};
 
 export {
   createCourse,
