@@ -4,18 +4,28 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 import nodemailer from "nodemailer";
+import {createCartForUser} from "./cartsController.js"; 
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
-  return jwt.sign({ _id }, `${process.env.SECRET}`, { expiresIn: "1d" });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
+};
+
+const getUser = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 };
 
 //***********************************************REGISTER USER************************** */
 const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
   //check params user enter
-  if (!email || !password) {
+  if (!email || !password || !name) {
     res.status(400).json({ error: "All fields are required!" });
   }
 
@@ -30,7 +40,8 @@ const registerUser = async (req, res) => {
       const salt = await bcrypt.genSalt(); //default is 10 times
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
-      const user = await User.create({ email, password: hashed });
+      const user = await User.create({ email, password: hashed, name });
+      const cart = await createCartForUser(user._id);
       const token = createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
@@ -55,7 +66,7 @@ const loginUser = async (req, res) => {
     return res.status(400).json({ error: "Incorrect email!" });
   }
 
-  // const token = createToken(user._id);
+  const token = createToken(user._id);
   //encrypt hash password
   // check password
   const match = await bcrypt.compare(password, user.password);
@@ -66,7 +77,7 @@ const loginUser = async (req, res) => {
   }
 
   try {
-    return res.status(200).json({ email });
+    return res.status(200).json({ email, token });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -104,7 +115,7 @@ const forgotPassword = async (req, res) => {
         from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
         to: `${email}`,
         subject: "Reset Your Password",
-        text: `http://localhost:5173/reset-password/${user._id}/${token}`,
+        text: `http://localhost:3000/reset-password/${user._id}/${token}`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -144,4 +155,70 @@ const resetPassword = async (req, res) => {
   });
 };
 
-export { registerUser, loginUser, forgotPassword, resetPassword };
+//***********************************************GET ALL USER BY ROLE************************** */
+const getUserListByRole = async (req, res) => {
+  const role = req.params.role;
+
+  const users = await User.find({ role });
+
+  try {
+    return res.status(200).json({ users });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//***********************************************DISABLE USER************************* */
+const disableUser = async (req, res) => {
+  const { id } = req.params;
+  await User.findByIdAndUpdate({ _id: id }, { status: false });
+  try {
+    return res.status(200).json({ success: "User is disabled!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//***********************************************Enable USER************************* */
+const enableUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findByIdAndUpdate({ _id: id }, { status: true });
+  try {
+    return res.status(200).json({ success: "User is enable!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//***********************************************Get USER by Another one************************* */
+const getUserByOther = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  try {
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+export {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  getUser,
+  getUserListByRole,
+  disableUser,
+  enableUser,
+  getUserByOther,
+};
+
+// const getUser = async (req, res) => {
+//   const user = await User.findById(req.user._id);
+//   try {
+//     return res.status(200).json({ user });
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };

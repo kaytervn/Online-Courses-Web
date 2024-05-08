@@ -7,6 +7,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    picture: {
+      type: String,
+      default: false,
+    },
     name: {
       type: String,
       required: true,
@@ -16,10 +20,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    code: {
-      type: String,
-      required: true,
-    },
     password: {
       type: String,
       required: true,
@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: Object.values(Role),
-      default: Role.USER,
+      default: Role.STUDENT,
     },
     status: {
       type: Boolean,
