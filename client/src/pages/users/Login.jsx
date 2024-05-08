@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "../../Components/Alert";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { CDBBtn, CDBIcon } from "cdbreact";
@@ -27,25 +27,22 @@ const Login = () => {
     try {
       const data = await loginUser(email, password);
       const token = data.token;
-      const user = await getUser(token);
+      const dataUser = await getUser(token);
       setUser({
         token,
-        email: user.email,
-        name: user.name,
-        picture: user.picture,
-        role: user.role,
+        email: dataUser.user.email,
+        name: dataUser.user.name,
+        picture: dataUser.user.picture,
+        role: dataUser.user.role,
       });
 
-
-      console.log("Inlogin ", user.role);
-      if (user.role === Role.ADMIN) {
+      if (dataUser.user.role === Role.ADMIN) {
         navigate("/admin");
-      } else if (user.role === Role.INSTRUCTOR) {
+      } else if (dataUser.user === Role.INSTRUCTOR) {
         navigate("/instructor");
       } else {
         navigate("/");
       }
-      
     } catch (err) {
       setError(err.message);
     }
