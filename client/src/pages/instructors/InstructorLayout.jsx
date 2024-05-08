@@ -15,21 +15,7 @@ const InstructorLayout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setTimeout(async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const data = await getUser(token);
-        setUser({
-          token,
-          email: data.user.email,
-          name: data.user.name,
-          picture: data.user.picture,
-          role: data.user.role,
-        });
-      }
-    }, 0);
-  }, []);
+
 
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {

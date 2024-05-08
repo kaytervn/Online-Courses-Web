@@ -8,8 +8,8 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import userImage from "../../../images/user.png";
 import { useContext, useEffect } from "react";
 
-import { getUser } from "../../services/usersService";
 import { UserContext } from "../../contexts/UserContext";
+import { getUser } from "../../services/usersService";
 
 const AdminLayout = () => {
   const { user, setUser } = useContext(UserContext);
