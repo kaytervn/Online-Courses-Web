@@ -12,6 +12,7 @@ import {
   getNewestCourse,
   getUserCourses,
   searchUserCourses,
+  findCourse
 } from "../controllers/coursesController.js";
 
 const storage = multer.memoryStorage();
@@ -42,5 +43,7 @@ router.post("/enable/:id", enableCourse);
 router.get("/getNewestCourse", getNewestCourse);
 
 router.get("/getBestSellerCourse", getBestSellerCourse);
+
+router.get("/find/:str", findCourse)
 
 export { router as coursesRoutes };
