@@ -9,17 +9,24 @@ import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
 import AuthRoutes from "../Routes/AuthRoutes";
 import Register from "./pages/users/Register";
+import AdminRoutes from "../Routes/AdminRoutes";
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
+          <Route element={<AdminRoutes />}>
+
+
+            
+          </Route>
           <Route element={<AuthRoutes />}>
             {/* <Route path="/create" element={<Create />} />
             <Route path="/update" element={<Update />} />
             <Route path="/dashboard" element={<Dashboard />} /> */}
           </Route>
+
           <Route element={<GuestRoutes />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
