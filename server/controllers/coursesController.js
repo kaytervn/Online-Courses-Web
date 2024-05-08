@@ -5,9 +5,6 @@ import User from "../models/UserModel.js";
 import Role from "../models/RoleEnum.js";
 
 const createCourse = async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ error: "Incorrect ID" });
-  }
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
@@ -123,7 +120,7 @@ const updateCourseIntro = async (req, res) => {
     return res.status(400).json({ error: "Incorrect ID" });
   }
 
-  const course = await User.findById(req.params.id);
+  const course = await Course.findById(req.params.id);
   if (!course) {
     return res.status(404).json({ error: "Course not found" });
   }
@@ -131,6 +128,11 @@ const updateCourseIntro = async (req, res) => {
   const { title, price, description } = req.body;
   if (!title || !price || !description) {
     return res.status(400).json({ error: "All fields are required" });
+  }
+
+  const user = await User.findById(req.user._id);
+  if (!(course.userId.equals(user._id) && user.role == Role.INSTRUCTOR)) {
+    return res.status(401).json({ error: "Not authorized" });
   }
 
   try {

@@ -18,12 +18,12 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 // instructor create course
-router.post("/create-course", auth, upload.single("image"), createCourse);
+router.post("/create-course", auth, upload.single("picture"), createCourse);
 
 router.put(
   "/update-course-intro/:id",
   auth,
-  upload.single("image"),
+  upload.single("picture"),
   updateCourseIntro
 );
 
