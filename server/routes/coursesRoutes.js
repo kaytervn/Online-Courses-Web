@@ -10,6 +10,7 @@ import {
   getNewestCourse,
   getUserCourses,
   searchUserCourses,
+  findCourse,
   updateCourseIntro,
 } from "../controllers/coursesController.js";
 
@@ -42,5 +43,7 @@ router.get("/all", getAllCourses);
 router.get("/getNewestCourse", getNewestCourse);
 
 router.get("/getBestSellerCourse", getBestSellerCourse);
+
+router.get("/find/:str", findCourse);
 
 export { router as coursesRoutes };
