@@ -188,6 +188,27 @@ const getNewestCourse = async (req, res) => {
 
 const getBestSellerCourse = async (req, res) => {};
 
+const findCourse = async(req, res) =>{
+  
+  const  nameCourse  = req.params.str; 
+
+  try {
+ 
+    const course = await Course.find({
+      title: { $regex: nameCourse, $options: "i" },
+    });
+
+    if (!course) {
+      return res.status(404).json({ message: "Không tìm thấy khóa học" });
+    }
+
+    res.status(200).json({ course });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
 export {
   createCourse,
   getNewestCourse,
@@ -196,5 +217,6 @@ export {
   getUserCourses,
   searchUserCourses,
   changeCourseVisibility,
+  findCourse,
   updateCourseIntro,
 };
