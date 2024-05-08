@@ -29,7 +29,7 @@ router.post("/reset-password/:id/:token", resetPassword);
 router.get("/", auth, getUser);
 
 //get all users by role
-router.get("/role/:role", getUserListByRole);
+router.get("/get-list-users/:role", auth, getUserListByRole);
 
 //get user by other
 router.get("/:id", getUserByOther);
