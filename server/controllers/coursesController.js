@@ -4,6 +4,10 @@ import cloudinary from "../utils/cloudinary.js";
 import User from "../models/UserModel.js";
 
 const createCourse = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
+
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
@@ -13,6 +17,11 @@ const createCourse = async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
 
+
+  const user = await User.findById(req.user._id);
+  if (!post.user.equals(user._id)) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
   try {
     const uploadResponse = await new Promise((resolve, reject) => {
       const bufferData = req.file.buffer;
