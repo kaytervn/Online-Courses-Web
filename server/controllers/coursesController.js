@@ -41,7 +41,6 @@ const createCourse = async (req, res) => {
   }
 };
 
-
 //***********************************************GET ALL COURSE************************** */
 const getAllCourses = async (req, res) => {
   const courses = await Course.find();
@@ -74,18 +73,21 @@ const enableCourse = async (req, res) => {
   }
 };
 
-
-const getNewestCourse = async(req, res) =>{
+const getNewestCourse = async (req, res) => {
   try {
-      const courses = await Course.find().sort({createdAt: -1}).limit(5);
-      res.status(200).json({courses})
+    const courses = await Course.find().sort({ createdAt: -1 }).limit(5);
+    res.status(200).json({ courses });
   } catch (error) {
-    res.status(500).json({error: error.message})
+    res.status(500).json({ error: error.message });
   }
-}
+};
 
-const getBestSellerCourse = async(req, res)=>{
-
-}
-export { createCourse , getNewestCourse, getBestSellerCourse, getAllCourses, disableCourse, enableCourse};
-
+const getBestSellerCourse = async (req, res) => {};
+export {
+  createCourse,
+  getNewestCourse,
+  getBestSellerCourse,
+  getAllCourses,
+  disableCourse,
+  enableCourse,
+};
