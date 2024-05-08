@@ -8,28 +8,12 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import userImage from "../../../images/user.png";
 import { useContext, useEffect } from "react";
 
-import { getUser } from "../../services/usersService";
+
 import { UserContext } from "../../contexts/UserContext";
 
 const AdminLayout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setTimeout(async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const data = await getUser(token);
-        setUser({
-          token,
-          email: data.user.email,
-          name: data.user.name,
-          picture: data.user.picture,
-          role: data.user.role,
-        });
-      }
-    }, 0);
-  }, []);
 
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {

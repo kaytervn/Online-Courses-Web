@@ -12,15 +12,27 @@ import Register from "./pages/users/Register";
 import AdminRoutes from "../Routes/AdminRoutes";
 import AdminLayout from "./pages/admin/AdminLayout";
 import UserManager from "./pages/admin/UserManager";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "./contexts/UserContext";
 import Role from "../../server/models/RoleEnum";
-import InstructorLayout from "./pages/instructors/InstructorLayout";
-import InstructorRoutes from "../Routes/InstructorRoutes";
-import CreatedCourses from "./pages/instructors/CreatedCoursesLayout";
+import { getUser } from "./services/usersService";
 const App = () => {
   const { user, setUser } = useContext(UserContext);
-
+  // useEffect(() => {
+  //   setTimeout(async () => {
+  //     const token = localStorage.getItem("token");
+  //     if (token) {
+  //       const data = await getUser(token);
+  //       setUser({
+  //         token,
+  //         email: data.user.email,
+  //         name: data.user.name,
+  //         picture: data.user.picture,
+  //         role: data.user.role,
+  //       });
+  //     }
+  //   }, 0);
+  // }, []);
   return (
     <BrowserRouter>
       <Routes>
@@ -33,13 +45,13 @@ const App = () => {
         )}
 
         {user.role === Role.INSTRUCTOR && (
-          <Route element={<InstructorLayout />}>
-            <Route element={<InstructorRoutes />}>
-              <Route index element={<CreatedCourses />} />
+          <Route element={<AdminLayout />}>
+            <Route element={<AdminRoutes />}>
+              <Route index element={<UserManager />} />
             </Route>
           </Route>
         )}
-        
+
         {/* GUEST, STUDENT */}
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />

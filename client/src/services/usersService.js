@@ -50,7 +50,6 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
-
   return data;
 };
 
