@@ -122,27 +122,6 @@ const getAllCourses = async (req, res) => {
   }
 };
 
-//***********************************************DISABLE COURSE************************* */
-const disableCourse = async (req, res) => {
-  const { id } = req.params;
-  await Course.findByIdAndUpdate({ _id: id }, { status: false });
-  try {
-    return res.status(200).json({ success: "Course is disabled!" });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-//***********************************************Enable COURSE************************* */
-const enableCourse = async (req, res) => {
-  const { id } = req.params;
-  await Course.findByIdAndUpdate({ _id: id }, { status: true });
-  try {
-    return res.status(200).json({ success: "Course is enable!" });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
 
 const getNewestCourse = async (req, res) => {
   try {
@@ -160,8 +139,6 @@ export {
   getNewestCourse,
   getBestSellerCourse,
   getAllCourses,
-  disableCourse,
-  enableCourse,
   getUserCourses,
   searchUserCourses,
   changeCourseVisibility,
