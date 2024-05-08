@@ -160,7 +160,10 @@ const getUserListByRole = async (req, res) => {
   const role = req.params.role;
 
   const users = await User.find({ role });
-
+  const userAuth = await User.findById(req.user._id);
+  if (!(userAuth.role == "ADMIN") || role == "ADMIN") {
+    return res.status(401).json({ error: "Not authorized" });
+  }
   try {
     return res.status(200).json({ users });
   } catch (error) {
@@ -180,7 +183,7 @@ const changeUserStatus = async (req, res) => {
   }
 
   const userAuth = await User.findById(req.user._id);
-  if (!(userAuth.role == "ADMIN") ||  user.role == "ADMIN") {
+  if (!(userAuth.role == "ADMIN") || user.role == "ADMIN") {
     return res.status(401).json({ error: "Not authorized" });
   }
 
