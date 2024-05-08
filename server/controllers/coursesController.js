@@ -177,7 +177,6 @@ const getAllCourses = async (req, res) => {
   }
 };
 
-
 const getNewestCourse = async (req, res) => {
   try {
     const courses = await Course.find().sort({ createdAt: -1 }).limit(5);
