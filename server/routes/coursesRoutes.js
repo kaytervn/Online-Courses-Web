@@ -5,8 +5,6 @@ import auth from "../middlewares/auth.js";
 import {
   changeCourseVisibility,
   createCourse,
-  disableCourse,
-  enableCourse,
   getAllCourses,
   getBestSellerCourse,
   getNewestCourse,
@@ -40,12 +38,6 @@ router.put("/change-course-visibility/:id", auth, changeCourseVisibility);
 
 //get all Courses
 router.get("/all", getAllCourses);
-
-//disable Course
-router.post("/disable/:id", disableCourse);
-
-//enable Course
-router.post("/enable/:id", enableCourse);
 
 router.get("/getNewestCourse", getNewestCourse);
 
