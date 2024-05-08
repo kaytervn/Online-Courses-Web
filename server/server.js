@@ -7,6 +7,9 @@ import cors from "cors";
 import cookieSession from "cookie-session";
 import { coursesRoutes } from "./routes/coursesRoutes.js";
 import { cartsRoutes } from "./routes/cartsRouter.js";
+import { lessonsRoutes } from "./routes/lessonsRoutes.js";
+import { documentsRoutes } from "./routes/documentsRoutes.js";
+import { commentsRoutes } from "./routes/commentsRoutes.js";
 
 const app = express();
 
@@ -33,7 +36,10 @@ app.use(express.json({ limit: "200mb" }));
 
 app.use("/api/users", usersRoutes);
 app.use("/api/courses", coursesRoutes);
-app.use("/api/carts",cartsRoutes);
+app.use("/api/carts", cartsRoutes);
+app.use("/api/lessons", lessonsRoutes);
+app.use("/api/documents", documentsRoutes);
+app.use("/api/comments", commentsRoutes);
 app.use("/auth", authsRoutes);
 
 // Connect to the MongoDB database
@@ -41,7 +47,7 @@ mongoose
   .connect(process.env.MONGODB_URI, { dbName: "cookiedu_db" })
   .then(() => {
     console.log("Connected to the database");
-    app.listen(5000, "localhost", () => {
+    app.listen(process.env.PORT, "localhost", () => {
       console.log("Listening on port 5000");
     });
   })
