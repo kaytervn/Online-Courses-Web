@@ -118,51 +118,52 @@ const changeCourseVisibility = async (req, res) => {
   }
 };
 
-// const updateCourseIntro = async (req, res) => {
-//   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-//     return res.status(400).json({ error: "Incorrect ID" });
-//   }
+const updateCourseIntro = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
 
-//   const course = await User.findById(req.params.id);
-//   if (!course) {
-//     return res.status(404).json({ error: "Course not found" });
-//   }
+  const course = await User.findById(req.params.id);
+  if (!course) {
+    return res.status(404).json({ error: "Course not found" });
+  }
 
-//   const { title, price, description } = req.body;
-//   if (!title || !price || !description) {
-//     return res.status(400).json({ error: "All fields are required" });
-//   }
+  const { title, price, description } = req.body;
+  if (!title || !price || !description) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
 
-//   try {
-//     if (req.file && course.cloudinary) {
-//       await cloudinary.uploader.destroy(course.cloudinary);
-//       const uploadResponse = await new Promise((resolve, reject) => {
-//         const bufferData = req.file.buffer;
-//         cloudinary.uploader
-//           .upload_stream({ resource_type: "image" }, (error, result) => {
-//             if (error) {
-//               reject(error);
-//             } else {
-//               resolve(result);
-//             }
-//           })
-//           .end(bufferData);
-//       });
-//       await course.updateOne({
-//         picture: uploadResponse.secure_url,
-//         cloudinary: uploadResponse.public_id,
-//       });
-//     }
-//     await course.updateOne({
-//       picture: uploadResponse.secure_url,
-//       cloudinary: uploadResponse.public_id,
-//     });
+  try {
+    if (req.file && course.cloudinary) {
+      await cloudinary.uploader.destroy(course.cloudinary);
+      const uploadResponse = await new Promise((resolve, reject) => {
+        const bufferData = req.file.buffer;
+        cloudinary.uploader
+          .upload_stream({ resource_type: "image" }, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          })
+          .end(bufferData);
+      });
+      await course.updateOne({
+        picture: uploadResponse.secure_url,
+        cloudinary: uploadResponse.public_id,
+      });
+    }
+    await course.updateOne({
+      title,
+      price,
+      description,
+    });
 
-//     return res.status(200).json({ success: "Course updated" });
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
+    return res.status(200).json({ success: "Course updated" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
 
 //***********************************************GET ALL COURSE************************** */
 const getAllCourses = async (req, res) => {
@@ -194,4 +195,5 @@ export {
   getUserCourses,
   searchUserCourses,
   changeCourseVisibility,
+  updateCourseIntro,
 };
