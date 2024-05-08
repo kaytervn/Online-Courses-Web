@@ -12,6 +12,7 @@ import {
   getNewestCourse,
   getUserCourses,
   searchUserCourses,
+  updateCourseIntro,
 } from "../controllers/coursesController.js";
 
 const storage = multer.memoryStorage();
@@ -20,6 +21,13 @@ const router = express.Router();
 
 // instructor create course
 router.post("/create-course", auth, upload.single("image"), createCourse);
+
+router.put(
+  "/update-course-intro/:id",
+  auth,
+  upload.single("image"),
+  updateCourseIntro
+);
 
 // get user (instructor created) courses
 router.get("/user-courses", auth, getUserCourses);
