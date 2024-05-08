@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 import nodemailer from "nodemailer";
-import {createCartForUser} from "./cartsController.js"; 
+import { createCartForUser } from "./cartsController.js";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
@@ -168,23 +168,32 @@ const getUserListByRole = async (req, res) => {
   }
 };
 
-//***********************************************DISABLE USER************************* */
-const disableUser = async (req, res) => {
-  const { id } = req.params;
-  await User.findByIdAndUpdate({ _id: id }, { status: false });
-  try {
-    return res.status(200).json({ success: "User is disabled!" });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+//***********************************************Change status USER************************* */
+const changeUserStatus = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
   }
-};
 
-//***********************************************Enable USER************************* */
-const enableUser = async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findByIdAndUpdate({ _id: id }, { status: true });
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(400).json({ error: "User Not Found" });
+  }
+
+  const userAuth = await User.findById(req.user._id);
+  if (!(userAuth.role == "ADMIN") ||  user.role == "ADMIN") {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
   try {
-    return res.status(200).json({ success: "User is enable!" });
+    if (user.status == true) {
+      await user.updateOne({ status: false });
+    } else {
+      await user.updateOne({ status: true });
+    }
+    return res.status(200).json({
+      success: "User status Was Updated",
+      status: user.status,
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -200,8 +209,6 @@ const getUserByOther = async (req, res) => {
   }
 };
 
-
-
 export {
   registerUser,
   loginUser,
@@ -209,8 +216,7 @@ export {
   resetPassword,
   getUser,
   getUserListByRole,
-  disableUser,
-  enableUser,
+  changeUserStatus,
   getUserByOther,
 };
 

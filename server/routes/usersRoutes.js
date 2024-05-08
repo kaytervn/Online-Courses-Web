@@ -7,6 +7,7 @@ import {
   getUser,
   getUserListByRole,
   getUserByOther,
+  changeUserStatus,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -32,5 +33,8 @@ router.get("/role/:role", getUserListByRole);
 
 //get user by other
 router.get("/:id", getUserByOther);
+
+// change user status
+router.put("/change-user-status/:id", auth, changeUserStatus);
 
 export { router as usersRoutes };
