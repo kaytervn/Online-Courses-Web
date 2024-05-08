@@ -16,7 +16,6 @@ const createCourse = async (req, res) => {
   if (!title || !price || !description) {
     return res.status(400).json({ error: "All fields are required" });
   }
-
   const user = await User.findById(req.user._id);
   if (!course.userId.equals(user._id)) {
     return res.status(401).json({ error: "Not authorized" });
