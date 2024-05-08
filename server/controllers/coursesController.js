@@ -41,6 +41,76 @@ const createCourse = async (req, res) => {
   }
 };
 
+// Instructor's courses
+const getUserCourses = async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  try {
+    const courses = await Course.find({ userId: user._id }).sort({
+      createdAt: "desc",
+    });
+
+    res.status(200).json({ courses, email: user.email });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+// Instructor's courses
+const searchUserCourses = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    const { keyword } = req.body;
+    let courses;
+    if (!keyword || keyword.trim() == "") {
+      courses = await Course.find({ userId: user._id }).sort({
+        createdAt: "desc",
+      });
+    } else {
+      courses = await Course.find({
+        userId: user._id,
+        $or: [
+          { title: { $regex: keyword, $options: "i" } },
+          { description: { $regex: keyword, $options: "i" } },
+        ],
+      }).sort({ createdAt: "desc" });
+    }
+    return res.status(200).json({ courses });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const changeCourseVisibility = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
+
+  const course = await Course.findById(req.params.id);
+  if (!course) {
+    return res.status(400).json({ error: "Course Not Found" });
+  }
+
+  const user = await User.findById(req.user._id);
+  if (!course.userId.equals(user._id)) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  try {
+    if (course.visibility == true) {
+      await course.updateOne({ visibility: false });
+    } else {
+      await course.updateOne({ visibility: true });
+    }
+    return res.status(200).json({
+      success: "Course Visibility Was Updated",
+      visibility: course.visibility,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 //***********************************************GET ALL COURSE************************** */
 const getAllCourses = async (req, res) => {
   const courses = await Course.find();
@@ -83,6 +153,7 @@ const getNewestCourse = async (req, res) => {
 };
 
 const getBestSellerCourse = async (req, res) => {};
+
 export {
   createCourse,
   getNewestCourse,
@@ -90,4 +161,7 @@ export {
   getAllCourses,
   disableCourse,
   enableCourse,
+  getUserCourses,
+  searchUserCourses,
+  changeCourseVisibility,
 };
