@@ -108,8 +108,8 @@ const getUser = async (token) => {
       Authorization: `Bear ${token}`,
     },
   });
-  const data = await res.json();
-  return data;
+  const {user} = await res.json();
+  return user;
 };
 
 export { registerUser, loginUser, checkEmailUser, resetPasswordUser, getUser };
