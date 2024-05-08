@@ -7,19 +7,14 @@ const createCourse = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ error: "Incorrect ID" });
   }
-
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
-
   const { title, price, description } = req.body;
   if (!title || !price || !description) {
     return res.status(400).json({ error: "All fields are required" });
   }
   const user = await User.findById(req.user._id);
-  if (!course.userId.equals(user._id)) {
-    return res.status(401).json({ error: "Not authorized" });
-  }
   try {
     const uploadResponse = await new Promise((resolve, reject) => {
       const bufferData = req.file.buffer;
@@ -33,7 +28,6 @@ const createCourse = async (req, res) => {
         })
         .end(bufferData);
     });
-    const user = await User.findById(req.user._id);
     const course = await Course.create({
       userId: user._id,
       cloudinary: uploadResponse.public_id,
