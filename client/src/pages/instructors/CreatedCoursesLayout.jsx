@@ -9,19 +9,18 @@ const CreatedCourses = () => {
   };
   return (
     <>
-      <section class="bg-primary text-light p-5">
-        <div class="container">
-          <div class="d-md-flex justify-content-between align-items-center">
-            <div class="input-group news-input">
-              <span class="input-group-text">
-                <i class="fa fa-search" aria-hidden="true"></i>
+      <section className="bg-primary text-light p-5">
+        <div className="container">
+          <div className="d-md-flex justify-content-between align-items-center">
+            <div className="input-group news-input">
+              <span className="input-group-text">
+                <i className="fa fa-search" aria-hidden="true"></i>
               </span>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="searchInput"
                 placeholder="Search..."
-                oninput="executeFilter()"
               />
             </div>
           </div>

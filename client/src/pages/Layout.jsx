@@ -43,7 +43,7 @@ const Layout = () => {
           ) : (
             <Navbar.Brand href="/">
               <Image width="40" src="/images/cookiedu_logo.png" />
-              <span class="text-warning">COOKI</span>EDU
+              <span className="text-warning">COOKI</span>EDU
             </Navbar.Brand>
           )}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -92,11 +92,11 @@ const Layout = () => {
                   </Nav.Item>
                   <Nav.Item>
                     <Nav.Link href="/login" className="text-warning">
-                      <i class="bi bi-door-open"></i> Sign in
+                      <i className="bi bi-door-open"></i> Sign in
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Button class="btn-primary" href="/register">
+                    <Button className="btn-primary" href="/register">
                       Register
                     </Button>
                   </Nav.Item>
