@@ -150,6 +150,18 @@ const getUserListByRole = async (role) => {
   return data.users;
 };
 
+const changeUserStatus = async (id) => {
+  const res = await fetch(`/api/users/change-user-status/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+}
+
 export {
   registerUser,
   loginUser,
@@ -158,4 +170,5 @@ export {
   resetPasswordUser,
   getUser,
   getUserListByRole,
+  changeUserStatus,
 };
