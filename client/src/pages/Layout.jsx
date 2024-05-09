@@ -11,6 +11,7 @@ import Role from "../../../server/models/RoleEnum.js";
 import InstructorLayout from "../Components/InstructorLayout";
 import AdminLayout from "../Components/AdminLayout.jsx";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Button from "react-bootstrap/Button";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -27,14 +28,23 @@ const Layout = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary mb-3">
+      <Navbar expand="lg" className="bg-dark navbar-dark">
         <Container>
           {user.role == Role.ADMIN ? (
-            <Navbar.Brand href="/">Users Management</Navbar.Brand>
+            <Navbar.Brand href="/">
+              <Image width="40" src="/images/cookiedu_logo.png" />
+              Users Management
+            </Navbar.Brand>
           ) : user.role == Role.INSTRUCTOR ? (
-            <Navbar.Brand href="/">My Created Courses</Navbar.Brand>
+            <Navbar.Brand href="/">
+              <Image width="40" src="/images/cookiedu_logo.png" />
+              My Created Courses
+            </Navbar.Brand>
           ) : (
-            <Navbar.Brand href="/">Home</Navbar.Brand>
+            <Navbar.Brand href="/">
+              <Image width="40" src="/images/cookiedu_logo.png" />
+              <span className="text-warning">COOKI</span>EDU
+            </Navbar.Brand>
           )}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -67,8 +77,29 @@ const Layout = () => {
                 </>
               ) : (
                 <>
-                  <Nav.Link href="/login">Login</Nav.Link>
-                  <Nav.Link href="/register">Register</Nav.Link>
+                  <Nav.Item>
+                    <Button className="btn-light" href="/cart">
+                      <i
+                        className="fa fa-shopping-cart me-1"
+                        aria-hidden="true"
+                      ></i>
+                      Cart
+                      <span className="badge bg-danger ms-1">0</span>
+                    </Button>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="#action">Teach on COOKIEDU</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/login" className="text-warning">
+                      <i className="bi bi-door-open"></i> Sign in
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Button className="btn-primary" href="/register">
+                      Register
+                    </Button>
+                  </Nav.Item>
                 </>
               )}
             </Nav>

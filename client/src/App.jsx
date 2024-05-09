@@ -5,21 +5,19 @@ import ForgotPassword from "./pages/users/ForgotPassword";
 import HomePage from "./pages/users/HomePage";
 import MyProfilePage from "./pages/users/MyProfilePage/MyProfilePage";
 import ResetPassword from "./pages/users/ResetPassword";
-
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
-import AuthRoutes from "../Routes/AuthRoutes";
 import Register from "./pages/users/Register";
-import AdminRoutes from "../Routes/AdminRoutes";
 import UserManager from "./pages/admin/UserManager";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
 import Role from "../../server/models/RoleEnum";
 import { getUser } from "./services/usersService";
 import CreatedCourses from "./pages/instructors/CreatedCoursesLayout";
-import InstructorRoutes from "../Routes/InstructorRoutes";
 import Loading from "./pages/Loading";
-import StudentRoutes from "../Routes/StudentRoutes";
+import CreateCourse from "./pages/instructors/CreateCourse";
+import CartPage from "./pages/students/CartPage";
+import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -81,6 +79,8 @@ const App = () => {
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="/create-course" element={<Loading />}></Route>
+        <Route path="/personal-revenue" element={<Loading />}></Route>
       </Routes>
     </BrowserRouter>
   );
