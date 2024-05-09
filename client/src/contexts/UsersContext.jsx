@@ -5,6 +5,7 @@ export const UsersContext = createContext();
 const UsersProvider = ({ children }) => {
   const [users, setUsers] = useState({
     students: [],
+    instructors: [],
   });
 
   return (
