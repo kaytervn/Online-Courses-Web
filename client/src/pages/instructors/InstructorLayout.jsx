@@ -4,14 +4,32 @@ import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { getUser } from "../services/usersService";
-import userImage from "../../images/user.png";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../contexts/UserContext";
 
-const Layout = () => {
+import userImage from "../../../images/user.png";
+import { useContext, useEffect } from "react";
+
+import { getUser } from "../../services/usersService";
+import { UserContext } from "../../contexts/UserContext";
+
+const InstructorLayout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const data = await getUser(token);
+        setUser({
+          token,
+          email: data.user.email,
+          name: data.user.name,
+          picture: data.user.picture,
+          role: data.user.role,
+        });
+      }
+    }, 0);
+  }, []);
 
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {
@@ -54,4 +72,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default InstructorLayout;
