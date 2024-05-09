@@ -72,4 +72,33 @@ const createDocument = async (req, res) => {
   }
 };
 
-export { getLessonDocuments, createDocument };
+const deleteDocument = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
+
+  const document = await Document.findById(req.params.id);
+  if (!document) {
+    return res.status(404).json({ error: "Document not found" });
+  }
+
+  const lesson = await Lesson.findById(document.lessonId);
+  const course = await Course.findById(lesson.courseId);
+  const user = await User.findById(req.user._id);
+  if (!(course.userId.equals(user._id) && user.role == Role.INSTRUCTOR)) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  if (document.cloudinary) {
+    await cloudinary.uploader.destroy(document.cloudinary);
+  }
+
+  try {
+    await document.deleteOne();
+    return res.status(200).json({ success: "Document deleted" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export { getLessonDocuments, createDocument, deleteDocument };
