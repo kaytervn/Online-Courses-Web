@@ -18,6 +18,7 @@ import Loading from "./pages/Loading";
 import CreateCourse from "./pages/instructors/CreateCourse";
 import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
+import CoursePage from "./pages/students/CoursePage";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -66,6 +67,7 @@ const App = () => {
             <>
               <Route index element={<HomePage />} />
               <Route path="/cart" element={<CartPage />}></Route>
+              <Route path="/list-course" element={<CoursePage />}></Route>
             </>
           )}
           {user.token && (
