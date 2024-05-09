@@ -5,9 +5,9 @@ import InvoiceItem from "../models/InvoiceItemModel.js";
 import Cart from "../models/CartModel.js";
 import CartItem from "../models/CartItemModel.js";
 import auth from "../middlewares/auth.js";
-import PaymentMethod from "../models/PaymentMethodEnum.js"; 
+import PaymentMethod from "../models/PaymentMethodEnum.js";
 import Course from "../models/CourseModel.js";
-import Topic from "../models/TopicModel.js";
+import Topic from "../models/TopicEnum.js";
 
 const router = express.Router();
 
@@ -94,18 +94,18 @@ const checkout = async (req, res) => {
 //         .json({ error:error.message });
 //     }
 // };
-const myInvoice = async(req, res)=>{
+const myInvoice = async (req, res) => {
   const userId = req.user._id;
-  try{
-    const invoices = await Invoice.find({userId: userId});
-    if (invoices.length === 0){
-      return res.status(404).json({message:"Không có hóa đơn"});
+  try {
+    const invoices = await Invoice.find({ userId: userId });
+    if (invoices.length === 0) {
+      return res.status(404).json({ message: "Không có hóa đơn" });
     }
-    res.status(200).json({invoices});
-  }catch(error){
-    res.status(500).json({error:error.message})
+    res.status(200).json({ invoices });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-}
+};
 const getMyCourses = async (req, res) => {
   const userId = req.user._id;
   try {
@@ -135,8 +135,8 @@ const getMyCourses = async (req, res) => {
 };
 
 const searchByName = async (req, res) => {
-  const  name  = req.params.str;
-  const userId = req.user._id; 
+  const name = req.params.str;
+  const userId = req.user._id;
 
   try {
     // Tìm tất cả hóa đơn của người dùng
@@ -167,22 +167,19 @@ const searchByName = async (req, res) => {
   }
 };
 
-
 const searchByTopic = async (req, res) => {
   const userId = req.user._id;
-  const topicName = req.params.str; 
+  const topicName = req.params.str;
 
   try {
-    // Tìm topic bằng tên
-    const topic = await Topic.findOne({ title: topicName });
-    if (!topic) {
+    if (!(topicName in Topic)) {
       return res.status(404).json({ message: "Chủ đề không tồn tại." });
     }
 
     // Tìm các khóa học theo userId và topicId
     const courses = await Course.find({
       userId: userId,
-      topicId: topic._id,
+      topic: topicName,
     }).sort({ createdAt: -1 });
 
     if (courses.length === 0) {
