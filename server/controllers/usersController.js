@@ -59,9 +59,9 @@ const loginUserSocial = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "successfull",
-      user: req.user,
+      user: user,
       token,
-      role: req.user.role,
+      role: user.role,
       //   cookies: req.cookies
     });
   }
