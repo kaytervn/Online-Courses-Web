@@ -50,7 +50,6 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
-  localStorage.setItem("role", data.role);
 
   return data;
 };
@@ -109,8 +108,8 @@ const getUser = async (token) => {
       Authorization: `Bear ${token}`,
     },
   });
-  const data = await res.json();
-  return data;
+  const { user } = await res.json();
+  return user;
 };
 
 export { registerUser, loginUser, checkEmailUser, resetPasswordUser, getUser };
