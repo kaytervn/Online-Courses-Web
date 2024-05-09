@@ -27,25 +27,19 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu hay chưa
         let user = await User.findOne({ email: profile.id });
 
-        // Nếu người dùng chưa tồn tại, tạo người dùng mới
         if (!user) {
-          // Tạo mật khẩu ngẫu nhiên
           const randomPassword = Math.random().toString(36).slice(-8);
-
-          // Mã hóa mật khẩu
           const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
           user = new User({
             name: profile.displayName,
             email: profile.id,
-            password: hashedPassword, // Lưu mật khẩu đã mã hóa vào cơ sở dữ liệu
-            picture: profile.photos[0].value, // Ảnh đại diện từ Google
-            // Các trường khác có thể thêm vào tại đây
+            password: hashedPassword,
+            picture: profile.photos[0].value,
           });
-          await user.save(); // Lưu người dùng mới vào cơ sở dữ liệu
+          await user.save();
         }
 
         // Trả về thông tin người dùng
@@ -66,25 +60,19 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu hay chưa
         let user = await User.findOne({ email: profile.id });
 
-        // Nếu người dùng chưa tồn tại, tạo người dùng mới
         if (!user) {
-          // Tạo mật khẩu ngẫu nhiên
           const randomPassword = Math.random().toString(36).slice(-8);
-
-          // Mã hóa mật khẩu
           const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
           user = new User({
             name: profile.displayName,
             email: profile.id,
-            password: hashedPassword, // Lưu mật khẩu đã mã hóa vào cơ sở dữ liệu
-            picture: profile.photos[0].value, // Ảnh đại diện từ Google
-            // Các trường khác có thể thêm vào tại đây
+            password: hashedPassword,
+            picture: profile.photos[0].value,
           });
-          await user.save(); // Lưu người dùng mới vào cơ sở dữ liệu
+          await user.save();
         }
 
         // Trả về thông tin người dùng
@@ -103,8 +91,28 @@ passport.use(
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       callbackURL: "/auth/facebook/callback",
     },
-    function (accessToken, refreshToken, profile, done) {
-      done(null, profile);
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await User.findOne({ email: profile.id });
+
+        if (!user) {
+          const randomPassword = Math.random().toString(36).slice(-8);
+          const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+          user = new User({
+            name: profile.displayName,
+            email: profile.id,
+            password: hashedPassword,
+            picture: profile.photos[0].value,
+          });
+          await user.save();
+        }
+
+        // Trả về thông tin người dùng
+        done(null, user);
+      } catch (error) {
+        done(error);
+      }
     }
   )
 );

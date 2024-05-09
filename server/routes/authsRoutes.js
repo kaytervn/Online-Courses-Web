@@ -42,7 +42,6 @@ router.get(
   })
 );
 
-// Process the response from social media
 router.get("/login/success", loginUserSocial);
 
 router.get("/login/failed", (req, res) => {
