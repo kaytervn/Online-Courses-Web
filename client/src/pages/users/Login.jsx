@@ -49,10 +49,7 @@ const Login = () => {
     }
   };
 
-  // const handleGoogleLogin = () => {
-  //   window.open("http://localhost:5000/auth/google", "_self");
 
-  // };
 
   const handleGoogleLogin = async (e) => {
     window.open("http://localhost:5000/auth/google", "_self");
