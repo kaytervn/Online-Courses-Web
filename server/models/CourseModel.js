@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Topic from "./TopicEnum.js";
 
 const CourseSchema = new mongoose.Schema(
   {
@@ -15,10 +16,10 @@ const CourseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    topicId:{
-      type: mongoose.Schema.Types.ObjectId,
-      require: false,
-      ref: "Topic",
+    topic: {
+      type: String,
+      enum: Object.values(Topic),
+      required: true,
     },
     picture: {
       type: String,

@@ -3,13 +3,14 @@ import { mongoose } from "mongoose";
 import cloudinary from "../utils/cloudinary.js";
 import User from "../models/UserModel.js";
 import Role from "../models/RoleEnum.js";
+import Topic from "../models/TopicEnum.js";
 
 const createCourse = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
-  const { title, price, description } = req.body;
-  if (!title || !price || !description) {
+  const { title, price, description, topic } = req.body;
+  if (!title || !price || !description || !(topic in Topic)) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -37,6 +38,7 @@ const createCourse = async (req, res) => {
       picture: uploadResponse.secure_url,
       title,
       price,
+      topic,
       description,
     });
     return res.status(200).json({ course });
