@@ -196,6 +196,7 @@ const changeUserStatus = async (req, res) => {
     return res.status(200).json({
       success: "User status Was Updated",
       status: user.status,
+      user,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
