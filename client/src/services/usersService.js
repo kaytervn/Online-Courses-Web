@@ -112,4 +112,29 @@ const getUser = async (token) => {
   return user;
 };
 
-export { registerUser, loginUser, checkEmailUser, resetPasswordUser, getUser };
+const getUserListByRole = async (role) => {
+  const res = await fetch(`/get-list-users/${role}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(`HTTP error ${res.status}: ${data.error}`);
+  }
+
+  const data = await res.json();
+  return data.users;
+};
+
+export {
+  registerUser,
+  loginUser,
+  checkEmailUser,
+  resetPasswordUser,
+  getUser,
+  getUserListByRole,
+};
