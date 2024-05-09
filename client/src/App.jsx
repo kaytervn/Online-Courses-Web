@@ -42,7 +42,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {loading && !user.role && <Route index element={<Loading />} />}
+        {!user.token ||
+          (loading && !user.role && <Route index element={<Loading />} />)}
         <Route element={<Layout />}>
           {user.role === Role.ADMIN && (
             <Route index element={<UserManager />} />
