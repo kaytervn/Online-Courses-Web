@@ -8,14 +8,25 @@ const CreatedCourses = () => {
     window.open("http://localhost:5000/auth/logout", "_self");
   };
   return (
-    <div>
-      <h1
-        className="d-flex text-danger justify-content-center text-align-center"
-        style={{ marginTop: "20%" }}
-      >
-        Created Courses Here
-      </h1>
-    </div>
+    <>
+      <section className="bg-primary text-light p-5">
+        <div className="container">
+          <div className="d-md-flex justify-content-between align-items-center">
+            <div className="input-group news-input">
+              <span className="input-group-text">
+                <i className="fa fa-search" aria-hidden="true"></i>
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                id="searchInput"
+                placeholder="Search..."
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

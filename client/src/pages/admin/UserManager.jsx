@@ -7,11 +7,13 @@ import {
 import Role from "../../../../server/models/RoleEnum";
 import Container from "react-bootstrap/Container";
 import Alert from "../../Components/Alert";
+
 import DataTable, {
   createTheme,
   defaultThemes,
 } from "react-data-table-component";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
+
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
