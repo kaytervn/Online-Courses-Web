@@ -5,10 +5,12 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { CDBBtn, CDBIcon } from "cdbreact";
-import { getUser, loginUser } from "../../services/usersService";
+import { getUser, loginUser, loginUserSocial } from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import Container from "react-bootstrap/esm/Container";
+
+import Role from "../../../../server/models/RoleEnum";
 
 const Login = () => {
   const { setUser } = useContext(UserContext);
@@ -35,30 +37,107 @@ const Login = () => {
         role: dataUser.role,
       });
 
-      navigate("/");
-
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
-  };
+  // const handleGoogleLogin = () => {
+  //   window.open("http://localhost:5000/auth/google", "_self");
 
-  const handleFacebookLogin = async () => {
+  // };
+
+  const handleGoogleLogin = async (e) => {
+    window.open("http://localhost:5000/auth/google", "_self");
+    e.preventDefault();
     try {
-      window.open(`http://localhost:5000/auth/facebook`, "_self");
+      const data = await loginUserSocial();
+      const token = data.token;
+      const dataUser = await getUser(token);
+      setUser({
+        token,
+        email: dataUser.user.email,
+        name: dataUser.user.name,
+        picture: dataUser.user.picture,
+        role: dataUser.user.role,
+      });
+
+
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
-      console.error("Error logging in with Facebook:", err);
+      setError(err.message);
     }
   };
 
-  const handleGithubLogin = async () => {
+
+
+  const handleFacebookLogin = async (e) => {
+    window.open(`http://localhost:5000/auth/facebook`, "_self");
+
+    e.preventDefault();
     try {
-      window.open(`http://localhost:5000/auth/github`, "_self");
+      const data = await loginUserSocial();
+      const token = data.token;
+      const dataUser = await getUser(token);
+      setUser({
+        token,
+        email: dataUser.user.email,
+        name: dataUser.user.name,
+        picture: dataUser.user.picture,
+        role: dataUser.user.role,
+      });
+
+
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
-      console.error("Error logging in with Github:", err);
+      setError(err.message);
+    }
+  };
+
+  const handleGithubLogin = async (e) => {
+    window.open(`http://localhost:5000/auth/github`, "_self");
+    e.preventDefault();
+    try {
+      const data = await loginUserSocial();
+      const token = data.token;
+      const dataUser = await getUser(token);
+      setUser({
+        token,
+        email: dataUser.user.email,
+        name: dataUser.user.name,
+        picture: dataUser.user.picture,
+        role: dataUser.user.role,
+      });
+
+
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
   return (
