@@ -113,18 +113,13 @@ const getUser = async (token) => {
 };
 
 const getUserListByRole = async (role) => {
-  const res = await fetch(`/get-list-users/${role}`, {
+  const res = await fetch(`/api/users/get-list-users/${role}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bear ${localStorage.getItem("token")}`,
     },
   });
-
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(`HTTP error ${res.status}: ${data.error}`);
-  }
 
   const data = await res.json();
   return data.users;
