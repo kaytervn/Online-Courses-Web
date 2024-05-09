@@ -34,7 +34,9 @@ const Login = () => {
         picture: dataUser.picture,
         role: dataUser.role,
       });
+
       navigate("/");
+
     } catch (err) {
       setError(err.message);
     }
