@@ -9,10 +9,12 @@ import Container from "react-bootstrap/Container";
 import Alert from "../../Components/Alert";
 
 import DataTable, {
+  Alignment,
   createTheme,
   defaultThemes,
 } from "react-data-table-component";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
+import Image from "react-bootstrap/esm/Image";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
@@ -39,7 +41,11 @@ const UserManager = () => {
     },
     {
       name: "Picture",
-      selector: (row) => row.picture,
+      selector: (row) => (
+        <div className="text-center">
+          <Image roundedCircle width="40" src={row.picture} />
+        </div>
+      ),
     },
     {
       name: "Status",
@@ -89,6 +95,7 @@ const UserManager = () => {
     header: {
       style: {
         minHeight: "56px",
+        Alignment: Alignment.Center,
       },
     },
     headRow: {
@@ -100,6 +107,9 @@ const UserManager = () => {
     },
     headCells: {
       style: {
+        fontSize: "14px",
+        fontWeight: "bold",
+
         "&:not(:last-of-type)": {
           borderRightStyle: "solid",
           borderRightWidth: "1px",
