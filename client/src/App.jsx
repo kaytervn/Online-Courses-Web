@@ -78,6 +78,8 @@ const App = () => {
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="/create-course" element={<Loading />}></Route>
+        <Route path="/personal-revenue" element={<Loading />}></Route>
       </Routes>
     </BrowserRouter>
   );
