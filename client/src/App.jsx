@@ -74,8 +74,8 @@ const App = () => {
               element={<ResetPassword />}
             />
           </Route>
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
