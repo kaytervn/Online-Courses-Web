@@ -78,6 +78,16 @@ const Layout = () => {
               ) : (
                 <>
                   <Nav.Item>
+                    <Button className="btn-light" href="/cart">
+                      <i
+                        className="fa fa-shopping-cart me-1"
+                        aria-hidden="true"
+                      ></i>
+                      Cart
+                      <span className="badge bg-danger ms-1">0</span>
+                    </Button>
+                  </Nav.Item>
+                  <Nav.Item>
                     <Nav.Link href="#action">Teach on COOKIEDU</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
