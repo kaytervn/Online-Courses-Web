@@ -6,7 +6,6 @@ import HomePage from "./pages/users/HomePage";
 import ResetPassword from "./pages/users/ResetPassword";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
-import AuthRoutes from "../Routes/AuthRoutes";
 import Register from "./pages/users/Register";
 import UserManager from "./pages/admin/UserManager";
 import { useContext, useEffect, useState } from "react";
