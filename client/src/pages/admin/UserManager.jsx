@@ -9,7 +9,6 @@ import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 import Alert from "../../Components/Alert";
-import { set } from "mongoose";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
