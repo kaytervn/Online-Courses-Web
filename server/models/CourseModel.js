@@ -15,6 +15,11 @@ const CourseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    topicId:{
+      type: mongoose.Schema.Types.ObjectId,
+      require: false,
+      ref: "Topic",
+    },
     picture: {
       type: String,
       required: true,

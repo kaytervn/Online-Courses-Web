@@ -208,6 +208,23 @@ const findCourse = async(req, res) =>{
   }
 }
 
+const getCourse = async (req, res) => {
+  const courseId = req.params.id; // Lấy ID của khóa học từ params
+
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    return res.status(400).json({ error: "Invalid course ID" });
+  }
+
+  try {
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Khóa học không tồn tại." });
+    }
+    res.status(200).json({ course });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export {
   createCourse,
@@ -219,4 +236,5 @@ export {
   changeCourseVisibility,
   findCourse,
   updateCourseIntro,
+  getCourse,
 };
