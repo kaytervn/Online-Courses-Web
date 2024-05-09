@@ -23,21 +23,17 @@ const UserManager = () => {
           <th>Role</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Password</th>
         </tr>
       </thead>
       <tbody>
         {users.students.map((user) => (
-          <div key={user._id}>
-            <tr>
-              <td>{user.picture}</td>
-              <td>{user.status}</td>
-              <td>{user.role}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.password}</td>
-            </tr>
-          </div>
+          <tr key={user._id}>
+            <td>{user.picture}</td>
+            <td>{user.status}</td>
+            <td>{user.role}</td>
+            <td>{user.name}</td>
+            <td>{user.email}</td>
+          </tr>
         ))}
       </tbody>
     </Table>
