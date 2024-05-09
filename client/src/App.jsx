@@ -21,19 +21,18 @@ import InstructorRoutes from "../Routes/InstructorRoutes";
 import Loading from "./pages/Loading";
 const App = () => {
   const { user, setUser } = useContext(UserContext);
-  console.log(user.role);
 
   useEffect(() => {
     setTimeout(async () => {
       const token = localStorage.getItem("token");
       if (token) {
-        const data = await getUser(token);
+        const dataUser = await getUser(token);
         setUser({
           token,
-          email: data.user.email,
-          name: data.user.name,
-          picture: data.user.picture,
-          role: data.user.role,
+          email: dataUser.email,
+          name: dataUser.name,
+          picture: dataUser.picture,
+          role: dataUser.role,
         });
       }
     }, 0);
@@ -42,48 +41,27 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* {user.role === Role.ADMIN && (
-          <Route element={<AdminLayout />}>
-            <Route path="/admin" element={<AdminRoutes />}>
-              <Route index element={<UserManager />} />
-            </Route>
-          </Route>
-        )}
-
-        {user.role === Role.INSTRUCTOR && (
-          <Route element={<AdminLayout />}>
-            <Route element={<AdminRoutes />}>
-              <Route path="/instructor" element={<CreatedCourses />} />
-            </Route>
-          </Route>
-        )} */}
-
-        {/* GUEST, STUDENT */}
         <Route element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route element={<AuthRoutes />}></Route>
-          {user.role === Role.ADMIN ? (
-            <Route path="/admin" element={<AdminRoutes />}>
-              <Route index element={<UserManager />} />
-            </Route>
-          ) : user.role === Role.INSTRUCTOR ? (
-            <Route path="/instructor" element={<InstructorRoutes />}>
-              <Route index element={<CreatedCourses />} />
-            </Route>
-          ) : (
-            <Route element={<GuestRoutes />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route
-                path="/reset-password/:id/:token"
-                element={<ResetPassword />}
-              />
-            </Route>
+          {user.role === Role.ADMIN && (
+            <Route index element={<UserManager />} />
           )}
+          {user.role === Role.INSTRUCTOR && (
+            <Route index element={<CreatedCourses />} />
+          )}
+          {user.role !== Role.ADMIN && user.role !== Role.INSTRUCTOR && (
+            <Route index element={<HomePage />} />
+          )}
+          <Route element={<AuthRoutes />}></Route>
+          <Route element={<GuestRoutes />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route
+              path="/reset-password/:id/:token"
+              element={<ResetPassword />}
+            />
+          </Route>
         </Route>
-        <Route path="/admin" element={<Loading />} />
-        <Route path="/instructor" element={<Loading />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

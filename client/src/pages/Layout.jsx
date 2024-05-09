@@ -8,7 +8,6 @@ import { getUser } from "../services/usersService";
 import userImage from "../../images/user.png";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import Role from "../../../server/models/RoleEnum";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -24,88 +23,32 @@ const Layout = () => {
 
   return (
     <>
-      {user.role == Role.ADMIN ? (
-        <Navbar expand="lg" className="bg-body-tertiary mb-3">
-          <Container>
-            <Navbar.Brand href="/">HomeAdmin</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="ms-auto">
-                {user.token ? (
-                  <>
-                    <Image
-                      src={userImage || user.image}
-                      style={{ width: "40px", height: "40px" }}
-                      className="me-2"
-                    ></Image>
-                    <Navbar.Text>{user.name}</Navbar.Text>
-                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                  </>
-                ) : (
-                  <>
-                    <Nav.Link href="/login">Login</Nav.Link>
-                    <Nav.Link href="/register">Register</Nav.Link>
-                  </>
-                )}
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      ) : user.role == Role.INSTRUCTOR ? (
-        <Navbar expand="lg" className="bg-body-tertiary mb-3">
-          <Container>
-            <Navbar.Brand href="/">Home</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="ms-auto">
-                {user.token ? (
-                  <>
-                    <Image
-                      src={userImage || user.image}
-                      style={{ width: "40px", height: "40px" }}
-                      className="me-2"
-                    ></Image>
-                    <Navbar.Text>{user.name}</Navbar.Text>
-                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                  </>
-                ) : (
-                  <>
-                    <Nav.Link href="/login">Login</Nav.Link>
-                    <Nav.Link href="/register">Register</Nav.Link>
-                  </>
-                )}
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      ) : (
-        <Navbar expand="lg" className="bg-body-tertiary mb-3">
-          <Container>
-            <Navbar.Brand href="/">Home</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="ms-auto">
-                {user.token ? (
-                  <>
-                    <Image
-                      src={userImage || user.image}
-                      style={{ width: "40px", height: "40px" }}
-                      className="me-2"
-                    ></Image>
-                    <Navbar.Text>{user.name}</Navbar.Text>
-                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                  </>
-                ) : (
-                  <>
-                    <Nav.Link href="/login">Login</Nav.Link>
-                    <Nav.Link href="/register">Register</Nav.Link>
-                  </>
-                )}
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      )}
+      <Navbar expand="lg" className="bg-body-tertiary mb-3">
+        <Container>
+          <Navbar.Brand href="/">Home</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              {user.token ? (
+                <>
+                  <Image
+                    src={userImage || user.image}
+                    style={{ width: "40px", height: "40px" }}
+                    className="me-2"
+                  ></Image>
+                  <Navbar.Text>{user.name}</Navbar.Text>
+                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link href="/login">Login</Nav.Link>
+                  <Nav.Link href="/register">Register</Nav.Link>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <Outlet />
     </>
   );
