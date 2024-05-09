@@ -12,7 +12,7 @@ import InstructorLayout from "../Components/InstructorLayout";
 import AdminLayout from "../Components/AdminLayout.jsx";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
-
+import logo from "../../images/cookiedu_logo.png";
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -29,20 +29,20 @@ const Layout = () => {
   return (
     <>
       <Navbar expand="lg" className="bg-dark navbar-dark">
-        <Container>
+        <Container className="py-2">
           {user.role == Role.ADMIN ? (
             <Navbar.Brand href="/">
-              <Image width="40" src="/images/cookiedu_logo.png" />
+              <Image width="40" src={logo} />
               Users Management
             </Navbar.Brand>
           ) : user.role == Role.INSTRUCTOR ? (
             <Navbar.Brand href="/">
-              <Image width="40" src="/images/cookiedu_logo.png" />
+              <Image width="40" src={logo} />
               My Created Courses
             </Navbar.Brand>
           ) : (
             <Navbar.Brand href="/">
-              <Image width="40" src="/images/cookiedu_logo.png" />
+              <Image width="40" src={logo} />
               <span className="text-warning">COOKI</span>EDU
             </Navbar.Brand>
           )}
