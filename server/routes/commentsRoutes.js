@@ -1,10 +1,14 @@
 import express from "express";
-import multer from "multer";
 import auth from "../middlewares/auth.js";
-import {} from "../controllers/lessonsController.js";
+import {
+  createComment,
+  getLessonComments,
+} from "../controllers/commentsController.js";
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 const router = express.Router();
+
+router.get("/get-lesson-comments", getLessonComments);
+
+router.delete("/create-comment", auth, createComment);
 
 export { router as commentsRoutes };
