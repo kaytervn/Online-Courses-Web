@@ -10,14 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "cdbreact": "^1.5.19",
+    "mdb-react-ui-kit": "^8.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-data-table-component": "^7.6.2",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-router-dom": "^6.22.3",
     "styled-components": "^6.1.10"
+
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

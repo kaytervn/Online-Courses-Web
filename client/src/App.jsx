@@ -3,6 +3,7 @@ import Layout from "./pages/Layout";
 import Login from "./pages/users/Login";
 import ForgotPassword from "./pages/users/ForgotPassword";
 import HomePage from "./pages/users/HomePage";
+import MyProfilePage from "./pages/users/MyProfilePage/MyProfilePage";
 import ResetPassword from "./pages/users/ResetPassword";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
@@ -64,6 +65,7 @@ const App = () => {
           {user.role !== Role.ADMIN && user.role !== Role.INSTRUCTOR && (
             <>
               <Route index element={<HomePage />} />
+              <Route path="/my-profile" element={<MyProfilePage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
             </>
           )}

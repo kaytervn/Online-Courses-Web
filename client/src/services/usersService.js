@@ -50,6 +50,7 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
+  localStorage.setItem("role", data.role);
 
   return data;
 };
@@ -160,7 +161,7 @@ const changeUserStatus = async (id) => {
   });
   const data = await res.json();
   return data;
-}
+};
 
 export {
   registerUser,
