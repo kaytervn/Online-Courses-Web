@@ -3,13 +3,14 @@ import { mongoose } from "mongoose";
 import cloudinary from "../utils/cloudinary.js";
 import User from "../models/UserModel.js";
 import Role from "../models/RoleEnum.js";
+import Topic from "../models/TopicEnum.js";
 
 const createCourse = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
-  const { title, price, description } = req.body;
-  if (!title || !price || !description) {
+  const { title, price, description, topic } = req.body;
+  if (!title || !price || !description || !(topic in Topic)) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -37,6 +38,7 @@ const createCourse = async (req, res) => {
       picture: uploadResponse.secure_url,
       title,
       price,
+      topic,
       description,
     });
     return res.status(200).json({ course });
@@ -240,6 +242,24 @@ const findCourse = async (req, res) => {
   }
 };
 
+const getCourse = async (req, res) => {
+  const courseId = req.params.id; // Lấy ID của khóa học từ params
+
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    return res.status(400).json({ error: "Invalid course ID" });
+  }
+
+  try {
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Khóa học không tồn tại." });
+    }
+    res.status(200).json({ course });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export {
   createCourse,
   getNewestCourse,
@@ -251,4 +271,5 @@ export {
   findCourse,
   updateCourseIntro,
   deleteCourse,
+  getCourse,
 };

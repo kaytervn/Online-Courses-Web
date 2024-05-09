@@ -4,7 +4,7 @@ import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/addToCart", addToCart);
+router.post("/addToCart", auth, addToCart);
 
 router.delete("/removeFromCart/:cartId/:courseId", removeFromCart);
 

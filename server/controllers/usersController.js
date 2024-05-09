@@ -50,6 +50,23 @@ const registerUser = async (req, res) => {
   }
 };
 
+//***********************************************LOGIN USER SOCIAL************************** */
+
+const loginUserSocial = async (req, res) => {
+  if (req.user) {
+    const user = await User.findById(req.user._id);
+    const token = createToken(user._id);
+    res.status(200).json({
+      success: true,
+      message: "successfull",
+      user: user,
+      token,
+      role: user.role,
+      //   cookies: req.cookies
+    });
+  }
+};
+
 //***********************************************LOGIN USER************************** */
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -157,17 +174,29 @@ const resetPassword = async (req, res) => {
 
 //***********************************************GET ALL USER BY ROLE************************** */
 const getUserListByRole = async (req, res) => {
-  const role = req.params.role;
+  if (req.user) {
+    try {
+      // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
+      let user = await User.findOne({ email: req.user.email });
 
-  const users = await User.find({ role });
-  const userAuth = await User.findById(req.user._id);
-  if (!(userAuth.role == "ADMIN") || role == "ADMIN") {
-    return res.status(401).json({ error: "Not authorized" });
-  }
-  try {
-    return res.status(200).json({ users });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+      if (!user) {
+        // Nếu người dùng chưa tồn tại, lưu thông tin người dùng vào cơ sở dữ liệu
+        user = await User.create({
+          email: req.user.email,
+          name: req.user.name,
+          // Các trường thông tin khác nếu cần
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Successfull",
+        user: user,
+        // Thêm token vào phản hồi nếu cần
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   }
 };
 
@@ -215,6 +244,7 @@ const getUserByOther = async (req, res) => {
 
 export {
   registerUser,
+  loginUserSocial,
   loginUser,
   forgotPassword,
   resetPassword,

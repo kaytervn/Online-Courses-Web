@@ -2,6 +2,8 @@ import Cart from "../models/CartModel.js";
 import mongoose from "mongoose";
 import CartItem from "../models/CartItemModel.js";
 import Course from "../models/CourseModel.js";
+import InvoiceItem from "../models/InvoiceItemModel.js";
+import Invoice from "../models/InvoiceModel.js";
 
 const createCartForUser = async (userId) => {
   try {
@@ -13,20 +15,37 @@ const createCartForUser = async (userId) => {
 };
 const addToCart = async (req, res) => {
   const { cartId, courseId } = req.body;
+  const userId = req.user._id; // Lấy từ middleware xác thực
+
   if (!cartId || !courseId) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
   try {
     const cartExists = await Cart.findById(cartId);
-    console.log("Cart exists:", cartExists);
-
     const courseExists = await Course.findById(courseId);
 
     if (!cartExists || !courseExists) {
       return res.status(404).json({ error: "Cart or Course not found" });
     }
 
+    // Kiểm tra xem người dùng đã mua khóa học này chưa
+    const userInvoices = await Invoice.find({ userId: userId });
+    const purchasedCourseIds = new Set();
+    for (const invoice of userInvoices) {
+      const invoiceItems = await InvoiceItem.find({ invoiceId: invoice._id });
+      invoiceItems.forEach((item) =>
+        purchasedCourseIds.add(item.courseId.toString())
+      );
+    }
+
+    if (purchasedCourseIds.has(courseId.toString())) {
+      return res
+        .status(400)
+        .json({ error: "You have already purchased this course." });
+    }
+
+    // Thêm vào giỏ hàng nếu khóa học chưa được mua
     const cartItem = await CartItem.create({
       cartId: cartId,
       courseId: courseId,
@@ -38,6 +57,7 @@ const addToCart = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const removeFromCart = async (req, res) => {
   const { cartId, courseId } = req.params;
