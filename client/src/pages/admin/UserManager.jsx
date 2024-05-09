@@ -3,6 +3,7 @@ import { UsersContext } from "../../contexts/UsersContext";
 import { getUserListByRole } from "../../services/usersService";
 import Role from "../../../../server/models/RoleEnum";
 import Table from "react-bootstrap/Table";
+import Container from "react-bootstrap/Container";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
@@ -15,28 +16,30 @@ const UserManager = () => {
   }, []);
 
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Picture</th>
-          <th>Status</th>
-          <th>Role</th>
-          <th>Name</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.students.map((user) => (
-          <tr key={user._id}>
-            <td>{user.picture}</td>
-            <td>{user.status}</td>
-            <td>{user.role}</td>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
+    <Container>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Picture</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Name</th>
+            <th>Email</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {users.students.map((user) => (
+            <tr key={user._id}>
+              <td>{user.picture}</td>
+              <td>{user.status}</td>
+              <td>{user.role}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </Container>
   );
 };
 
