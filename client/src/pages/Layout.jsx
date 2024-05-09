@@ -10,6 +10,7 @@ import { UserContext } from "../contexts/UserContext";
 import Role from "../../../server/models/RoleEnum.js";
 import InstructorLayout from "../Components/InstructorLayout";
 import AdminLayout from "../Components/AdminLayout.jsx";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -29,9 +30,9 @@ const Layout = () => {
       <Navbar expand="lg" className="bg-body-tertiary mb-3">
         <Container>
           {user.role == Role.ADMIN ? (
-            <Navbar.Brand href="/">User Management</Navbar.Brand>
+            <Navbar.Brand href="/">Users Management</Navbar.Brand>
           ) : user.role == Role.INSTRUCTOR ? (
-            <Navbar.Brand href="/">My Courses</Navbar.Brand>
+            <Navbar.Brand href="/">My Created Courses</Navbar.Brand>
           ) : (
             <Navbar.Brand href="/">Home</Navbar.Brand>
           )}
@@ -45,15 +46,24 @@ const Layout = () => {
                   ) : user.role == Role.INSTRUCTOR ? (
                     <InstructorLayout />
                   ) : (
-                    <Navbar.Text>USER</Navbar.Text>
+                    <Nav.Link href="#action">My Courses</Nav.Link>
                   )}
-                  <Image
-                    src={userImage || user.image}
-                    style={{ width: "40px", height: "40px" }}
-                    className="me-2"
-                  ></Image>
-                  <Navbar.Text>{user.name}</Navbar.Text>
-                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                  <div className="d-flex align-items-center">
+                    <Image
+                      src={userImage || user.image}
+                      style={{ width: "30px", height: "30px" }}
+                      className="ms-2"
+                    ></Image>
+                  </div>
+                  <NavDropdown title={user.name}>
+                    <NavDropdown.Item href="#action">
+                      My Profile
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={handleLogout}>
+                      Log out
+                    </NavDropdown.Item>
+                  </NavDropdown>
                 </>
               ) : (
                 <>

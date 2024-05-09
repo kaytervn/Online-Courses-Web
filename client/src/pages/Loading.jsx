@@ -8,7 +8,7 @@ const Loading = () => {
       <Image
         src={loading}
         className="img-fluid"
-        style={{ maxWidth: "200px", maxHeight: "200px" }}
+        style={{ maxWidth: "100px", maxHeight: "100px" }}
       />
     </Container>
   );
