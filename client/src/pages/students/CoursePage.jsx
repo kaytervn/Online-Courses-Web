@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import React from 'react'
-import Button from "react-bootstrap/esm/Button";
+import React, { useState, useEffect } from "react";
+import CourseCart2 from "../../Components/CourseCart2";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const CartPage = () => {
-  const [cartItem, setCaetItem] = useState([]);
+const CoursePage = () => {
+  const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const getItemCart = async () => {
+    const getAllCourses = async () => {
       try {
         const res = await fetch("/api/courses/all", {
           method: "GET",
@@ -25,36 +25,29 @@ const CartPage = () => {
       }
     };
 
-    getCart();
+    getAllCourses();
   }, []); // Empty dependency array ensures this effect runs once when the component mounts
 
   return (
     <div className="my-5">
       <div className="container">
         <div className="text-center">
-          <h2>Cart</h2>
+          <h2>Course Listing Page</h2>
         </div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Sr no</th>
-              <th>Course</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <th>1</th>
-            <th>A</th>
-            <th>10</th>
-            <th>
-              <button>remove</button>
-            </th>
-          </tbody>
-        </table>
+      </div>
+      <div className="container">
+        <div className="center">
+          <div className="row">
+            {courses.map((course) => (
+              <div key={course._id} className="col-md-3">
+                <CourseCart2 course={course} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default CartPage
+export default CoursePage;
