@@ -1,12 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import { UsersContext } from "../../contexts/UsersContext";
-import { getUserListByRole } from "../../services/usersService";
+import {
+  changeUserStatus,
+  getUserListByRole,
+} from "../../services/usersService";
 import Role from "../../../../server/models/RoleEnum";
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
+import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
+import Alert from "../../Components/Alert";
+import { set } from "mongoose";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -15,8 +23,22 @@ const UserManager = () => {
     }, 0);
   }, []);
 
+  const handleStatusChange = async (e, id) => {
+    e.preventDefault();
+    try {
+      const message = await changeUserStatus(id);
+      setSuccess(message.success);
+      const students = await getUserListByRole(Role.STUDENT);
+      setUsers({ students });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <Container>
+      {success && <Alert msg={success} type="success" />}
+      {error && <Alert msg={error} type="error" />}
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -31,7 +53,13 @@ const UserManager = () => {
           {users.students.map((user) => (
             <tr key={user._id}>
               <td>{user.picture}</td>
-              <td>{user.status}</td>
+              <td>
+                <FormCheckInput
+                  type="checkbox"
+                  checked={user.status}
+                  onChange={(e) => handleStatusChange(e, user._id)}
+                />
+              </td>
               <td>{user.role}</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
