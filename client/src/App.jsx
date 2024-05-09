@@ -4,7 +4,6 @@ import Login from "./pages/users/Login";
 import ForgotPassword from "./pages/users/ForgotPassword";
 import HomePage from "./pages/users/HomePage";
 import ResetPassword from "./pages/users/ResetPassword";
-
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
 import AuthRoutes from "../Routes/AuthRoutes";
@@ -19,13 +18,15 @@ import CreatedCourses from "./pages/instructors/CreatedCoursesLayout";
 import InstructorRoutes from "../Routes/InstructorRoutes";
 import Loading from "./pages/Loading";
 import StudentRoutes from "../Routes/StudentRoutes";
+import CreateCourse from "./pages/instructors/CreateCourse";
+import CartPage from "./pages/students/CartPage";
+import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
   console.log(user.role);
   console.log(user.token);
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     setTimeout(async () => {
@@ -64,10 +65,14 @@ const App = () => {
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </Route>
             <Route element={<InstructorRoutes />}>
-              {/* <Route path="/create-course" element={<CreatedCourses />}></Route> */}
+              <Route path="/create-course" element={<CreateCourse />}></Route>
+              <Route
+                path="/personal-revenue"
+                element={<PersonalRevenue />}
+              ></Route>
             </Route>
             <Route element={<StudentRoutes />}>
-              {/* <Route path="/cart" element={<CreateCourse />}></Route> */}
+              <Route path="/cart" element={<CartPage />}></Route>
             </Route>
           </Route>
           <Route element={<GuestRoutes />}>
@@ -137,6 +142,5 @@ const App = () => {
 
 //   }
 // }
-
 
 export default App;
