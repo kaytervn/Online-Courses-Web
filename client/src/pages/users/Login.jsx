@@ -217,7 +217,7 @@ const Login = () => {
           </Link>
         </form>
 
-        {error && <Alert msg={error} type="success" />}
+        {error && <Alert msg={error} type="error" />}
       </section>
     </Container>
   );
