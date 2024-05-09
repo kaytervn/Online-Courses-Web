@@ -14,7 +14,6 @@ import DataTable, {
 } from "react-data-table-component";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
 
-
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
   const [error, setError] = useState(null);
@@ -143,8 +142,20 @@ const UserManager = () => {
     <Container>
       {success && <Alert msg={success} type="success" />}
       {error && <Alert msg={error} type="error" />}
-      <div className="text-end mb-3 ">
-        <input type="text" onChange={handleSearch} className="w-50" />
+      <div className="text-end mb-3 mt-3 ">
+        {/* <input type="text" onChange={handleSearch} className="w-50" /> */}
+        <div className="input-group news-input">
+          <span className="input-group-text">
+            <i className="fa fa-search" aria-hidden="true"></i>
+          </span>
+          <input
+            type="text"
+            className="form-control"
+            id="searchInput"
+            placeholder="Search..."
+            onChange={handleSearch}
+          />
+        </div>
       </div>
       <DataTable
         columns={columns}
