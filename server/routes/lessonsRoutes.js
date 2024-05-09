@@ -1,10 +1,17 @@
 import express from "express";
-import multer from "multer";
 import auth from "../middlewares/auth.js";
-import {} from "../controllers/lessonsController.js";
+import {
+  createLesson,
+  deleteLesson,
+  getCourseLessons,
+} from "../controllers/lessonsController.js";
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 const router = express.Router();
+
+router.get("/get-course-lessons", getCourseLessons);
+
+router.delete("/delete-lesson/:id", auth, deleteLesson);
+
+router.post("/create-lesson", auth, createLesson);
 
 export { router as lessonsRoutes };
