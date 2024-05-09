@@ -50,7 +50,6 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
-  localStorage.setItem("role", data.role);
 
   return data;
 };
@@ -134,8 +133,21 @@ const getUser = async (token) => {
       Authorization: `Bear ${token}`,
     },
   });
+  const { user } = await res.json();
+  return user;
+};
+
+const getUserListByRole = async (role) => {
+  const res = await fetch(`/api/users/get-list-users/${role}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+
   const data = await res.json();
-  return data;
+  return data.users;
 };
 
 export {
@@ -145,4 +157,5 @@ export {
   checkEmailUser,
   resetPasswordUser,
   getUser,
+  getUserListByRole,
 };
