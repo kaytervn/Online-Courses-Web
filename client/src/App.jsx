@@ -4,23 +4,23 @@ import Login from "./pages/users/Login";
 import ForgotPassword from "./pages/users/ForgotPassword";
 import HomePage from "./pages/users/HomePage";
 import ResetPassword from "./pages/users/ResetPassword";
-import userAuthentication from "./Components/customhook/userAuthentication";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
 import AuthRoutes from "../Routes/AuthRoutes";
 import Register from "./pages/users/Register";
 import AdminRoutes from "../Routes/AdminRoutes";
-import AdminLayout from "./pages/admin/AdminLayout";
 import UserManager from "./pages/admin/UserManager";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
 import Role from "../../server/models/RoleEnum";
 import { getUser } from "./services/usersService";
 import CreatedCourses from "./pages/instructors/CreatedCoursesLayout";
 import InstructorRoutes from "../Routes/InstructorRoutes";
 import Loading from "./pages/Loading";
+import StudentRoutes from "../Routes/StudentRoutes";
 const App = () => {
   const { user, setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -34,6 +34,7 @@ const App = () => {
           picture: dataUser.picture,
           role: dataUser.role,
         });
+        setLoading(false);
       }
     }, 0);
   }, []);
@@ -41,6 +42,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {loading && !user.role && <Route index element={<Loading />} />}
         <Route element={<Layout />}>
           {user.role === Role.ADMIN && (
             <Route index element={<UserManager />} />
@@ -51,7 +53,17 @@ const App = () => {
           {user.role !== Role.ADMIN && user.role !== Role.INSTRUCTOR && (
             <Route index element={<HomePage />} />
           )}
-          <Route element={<AuthRoutes />}></Route>
+          <Route element={<AuthRoutes />}>
+            <Route element={<AdminRoutes />}>
+              {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
+            </Route>
+            <Route element={<InstructorRoutes />}>
+              {/* <Route path="/create-course" element={<CreatedCourses />}></Route> */}
+            </Route>
+            <Route element={<StudentRoutes />}>
+              {/* <Route path="/cart" element={<CreateCourse />}></Route> */}
+            </Route>
+          </Route>
           <Route element={<GuestRoutes />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

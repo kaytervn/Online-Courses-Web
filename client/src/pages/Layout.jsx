@@ -4,10 +4,12 @@ import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { getUser } from "../services/usersService";
 import userImage from "../../images/user.png";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
+import Role from "../../../server/models/RoleEnum.js";
+import InstructorLayout from "../Components/InstructorLayout";
+import AdminLayout from "../Components/AdminLayout.jsx";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -25,12 +27,25 @@ const Layout = () => {
     <>
       <Navbar expand="lg" className="bg-body-tertiary mb-3">
         <Container>
-          <Navbar.Brand href="/">Home</Navbar.Brand>
+          {user.role == Role.ADMIN ? (
+            <Navbar.Brand href="/">User Management</Navbar.Brand>
+          ) : user.role == Role.INSTRUCTOR ? (
+            <Navbar.Brand href="/">My Courses</Navbar.Brand>
+          ) : (
+            <Navbar.Brand href="/">Home</Navbar.Brand>
+          )}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               {user.token ? (
                 <>
+                  {user.role == Role.ADMIN ? (
+                    <AdminLayout />
+                  ) : user.role == Role.INSTRUCTOR ? (
+                    <InstructorLayout />
+                  ) : (
+                    <Navbar.Text>USER</Navbar.Text>
+                  )}
                   <Image
                     src={userImage || user.image}
                     style={{ width: "40px", height: "40px" }}
