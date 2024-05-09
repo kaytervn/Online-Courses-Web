@@ -55,6 +55,31 @@ const loginUser = async (email, password) => {
   return data;
 };
 
+//***********************************************LOGIN USER SOCIAL************************** */
+
+const loginUserSocial = async () => {
+  const res = await fetch("http://localhost:5000/auth/login/success", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+    },
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("role", data.role);
+
+  return data;
+};
+
 //***********************************************FORGOT PASSWORD USER************************** */
 const checkEmailUser = async (email) => {
   if (!email) {
@@ -113,4 +138,11 @@ const getUser = async (token) => {
   return data;
 };
 
-export { registerUser, loginUser, checkEmailUser, resetPasswordUser, getUser };
+export {
+  registerUser,
+  loginUser,
+  loginUserSocial,
+  checkEmailUser,
+  resetPasswordUser,
+  getUser,
+};

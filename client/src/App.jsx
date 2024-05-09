@@ -4,7 +4,7 @@ import Login from "./pages/users/Login";
 import ForgotPassword from "./pages/users/ForgotPassword";
 import HomePage from "./pages/users/HomePage";
 import ResetPassword from "./pages/users/ResetPassword";
-import userAuthentication from "./Components/customhook/userAuthentication";
+// import userAuthentication from "./Components/customhook/userAuthentication";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
 import AuthRoutes from "../Routes/AuthRoutes";
@@ -19,9 +19,11 @@ import { getUser } from "./services/usersService";
 import CreatedCourses from "./pages/instructors/CreatedCoursesLayout";
 import InstructorRoutes from "../Routes/InstructorRoutes";
 import Loading from "./pages/Loading";
+
 const App = () => {
   const { user, setUser } = useContext(UserContext);
   console.log(user.role);
+  console.log(user.token);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -89,5 +91,58 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
+// const App = () => {
+//   const user = userAuthentication();
+
+//   return (
+//     <BrowserRouter>
+//       <div>
+//         {/* <HomePage user={user} /> */}
+//         <Routes>
+//           <Route path="/" element={<Layout />} />
+//           <Route
+//             path="/login"
+//             element={user ? <Navigate to="/homepage" /> : <Login />}
+//           />
+//           <Route path="/forgot-password" element={<ForgotPassword />} />
+//         </Routes>
+//       </div>
+//     </BrowserRouter >
+//   )
+// }
+
+//   if (user) {
+//     return (
+//       <BrowserRouter>
+//         <HomePage user={user} />
+//         <Routes>
+//           <Route path="/" element={<Layout />} />
+//           <Route
+//             path="/login"
+//             element={user ? <Navigate to="/homepage" /> : <Login />}
+//           />
+//           <Route path="/forgot-password" element={<ForgotPassword />} />
+//         </Routes>
+//       </BrowserRouter >
+//     )
+//   }
+//   else {
+//     return (
+//       <BrowserRouter>
+//         <Routes>
+//           <Route path="/" element={<Layout />} />
+//           <Route
+//             path="/login" element={<Login />}
+//           />
+//           <Route path="/homepage" element={<HomePage />} />
+//           <Route path="/forgot-password" element={<ForgotPassword />} />
+//         </Routes>
+//       </BrowserRouter >
+//     )
+
+//   }
+// }
+
 
 export default App;

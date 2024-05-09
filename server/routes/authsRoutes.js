@@ -1,5 +1,6 @@
 import express from "express";
 import passport from "passport";
+import { loginUserSocial } from "../controllers/usersController.js";
 
 const router = express.Router();
 
@@ -42,16 +43,7 @@ router.get(
 );
 
 // Process the response from social media
-router.get("/login/success", (req, res) => {
-  if (req.user) {
-    res.status(200).json({
-      success: true,
-      message: "successfull",
-      user: req.user,
-      //   cookies: req.cookies
-    });
-  }
-});
+router.get("/login/success", loginUserSocial);
 
 router.get("/login/failed", (req, res) => {
   res.status(401).json({
