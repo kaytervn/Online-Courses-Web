@@ -16,6 +16,8 @@ import Button from "react-bootstrap/Button";
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  console.log(user.picture);
+
 
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {
@@ -59,11 +61,21 @@ const Layout = () => {
                     <Nav.Link href="#action">My Courses</Nav.Link>
                   )}
                   <div className="d-flex align-items-center">
-                    <Image
-                      src={userImage || user.image}
-                      style={{ width: "30px", height: "30px" }}
-                      className="ms-2"
-                    ></Image>
+                    {user.picture === null ? (
+                      <Image
+                        src={userImage}
+                        width="30"
+                        className="rounded-circle"
+                      />
+                    ) : (
+                      <Image
+                        src={user.picture}
+                        width="30"
+                        className="rounded-circle"
+                      />
+                    )}
+                    )
+
                   </div>
                   <NavDropdown title={user.name}>
                     <NavDropdown.Item href="/my-profile">

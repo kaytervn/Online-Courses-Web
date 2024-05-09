@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
-import './MyProfilePage.css'
-import { useContext, useEffect } from "react";
+import './MyProfilePage.css';
 import { UserContext } from "../../../contexts/UserContext";
-
-
+import { useDropzone } from 'react-dropzone';
+import axios from 'axios';
 
 const MyProfilePage = () => {
     const { user, setUser } = useContext(UserContext);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileChange = (files) => {
+        const file = files[0];
+        setSelectedFile(file);
+    };
+
+    const handleUpload = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            const response = await axios.post('URL_API_UPLOAD', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            setUser({ ...user, picture: response.data.imageUrl });
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+    };
+
     return (
         <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
             <MDBContainer className="py-5 h-100">
@@ -17,11 +40,13 @@ const MyProfilePage = () => {
                             <MDBRow className="g-0">
                                 <MDBCol md="4" className="gradient-custom text-center text-white"
                                     style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
-                                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                        alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
-                                    <MDBTypography tag="h5">Võ Hữu Tài</MDBTypography>
-                                    <MDBCardText>Web Designer</MDBCardText>
-                                    <MDBIcon far icon="edit mb-5" />
+                                    <MDBCardImage className="rounded-circle my-5" src={user.picture}
+                                        alt="Avatar" style={{ width: '80px' }} fluid />
+                                    <MDBTypography tag="h5">{user.name}</MDBTypography>
+                                    <MDBCardText tag="h6">{user.role}</MDBCardText>
+                                    {/* <useDropzone onChange={handleFileChange} acceptedFiles={['image/*']} maxFileSize={10000000} />
+                                    <button onClick={handleUpload}>Upload</button> */}
+                                    <MDBIcon far icon="edit mb-5" onClick={handleUpload} />
                                 </MDBCol>
                                 <MDBCol md="8">
                                     <MDBCardBody className="p-4">
@@ -30,7 +55,7 @@ const MyProfilePage = () => {
                                         <MDBRow className="pt-1">
                                             <MDBCol size="6" className="mb-3">
                                                 <MDBTypography tag="h6">Email</MDBTypography>
-                                                <MDBCardText className="text-muted">info@example.com</MDBCardText>
+                                                <MDBCardText className="text-muted">{user.email}</MDBCardText>
                                             </MDBCol>
                                             <MDBCol size="6" className="mb-3">
                                                 <MDBTypography tag="h6">Phone</MDBTypography>
@@ -43,7 +68,7 @@ const MyProfilePage = () => {
                                         <MDBRow className="pt-1">
                                             <MDBCol size="6" className="mb-3">
                                                 <MDBTypography tag="h6">Email</MDBTypography>
-                                                <MDBCardText className="text-muted">info@example.com</MDBCardText>
+                                                <MDBCardText className="text-muted">{user.email}</MDBCardText>
                                             </MDBCol>
                                             <MDBCol size="6" className="mb-3">
                                                 <MDBTypography tag="h6">Phone</MDBTypography>
@@ -65,5 +90,6 @@ const MyProfilePage = () => {
             </MDBContainer>
         </section>
     );
-}
+};
+
 export default MyProfilePage;
