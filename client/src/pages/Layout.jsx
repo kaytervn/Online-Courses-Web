@@ -56,7 +56,7 @@ const Layout = () => {
                     ></Image>
                   </div>
                   <NavDropdown title={user.name}>
-                    <NavDropdown.Item href="#action">
+                    <NavDropdown.Item href="/my-profile">
                       My Profile
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
