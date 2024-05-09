@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import DocumentType from "./DocumentTypeEnum";
+import DocumentType from "./DocumentTypeEnum.js";
 
 const DocumentSchema = new mongoose.Schema(
   {

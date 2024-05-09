@@ -9,7 +9,6 @@ import { getUser, loginUser } from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import Container from "react-bootstrap/esm/Container";
-import Role from "../../../../server/models/RoleEnum";
 
 const Login = () => {
   const { setUser } = useContext(UserContext);
@@ -30,19 +29,12 @@ const Login = () => {
       const dataUser = await getUser(token);
       setUser({
         token,
-        email: dataUser.user.email,
-        name: dataUser.user.name,
-        picture: dataUser.user.picture,
-        role: dataUser.user.role,
+        email: dataUser.email,
+        name: dataUser.name,
+        picture: dataUser.picture,
+        role: dataUser.role,
       });
-
-      if (dataUser.user.role === Role.ADMIN) {
-        navigate("/admin");
-      } else if (dataUser.user === Role.INSTRUCTOR) {
-        navigate("/instructor");
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }
