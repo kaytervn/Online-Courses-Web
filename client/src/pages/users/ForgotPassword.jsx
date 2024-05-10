@@ -15,7 +15,6 @@ const ForgotPassword = () => {
   const [error, setError] = useState(null);
 
   const [success, setSuccess] = useState(null);
-  // Form data state
   const [email, setEmail] = useState("");
 
   //Handle login

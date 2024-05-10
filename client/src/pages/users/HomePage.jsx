@@ -4,6 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 const HomePage = () => {
   const { user, setUser } = useContext(UserContext);
+  console.log(user)
   const logout = () => {
     window.open("http://localhost:5000/auth/logout", "_self");
   };

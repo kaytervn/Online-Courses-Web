@@ -65,19 +65,11 @@ const Layout = () => {
                     <StudentLayout />
                   )}
                   <div className="d-flex align-items-center">
-                    {!user.picture ? (
-                      <Image
-                        src={userImage}
-                        width="30"
-                        className="rounded-circle"
-                      />
-                    ) : (
-                      <Image
-                        src={user.picture}
-                        width="30"
-                        className="rounded-circle"
-                      />
-                    )}
+                    <Image
+                      src={user.picture === null || user.picture === "" ? userImage : user.picture}
+                      width="30"
+                      className="rounded-circle"
+                    />
                     )
                   </div>
                   <NavDropdown title={user.name}>
