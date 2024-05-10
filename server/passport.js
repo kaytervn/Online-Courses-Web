@@ -75,7 +75,6 @@ passport.use(
           await user.save();
         }
 
-        // Trả về thông tin người dùng
         done(null, user);
       } catch (error) {
         done(error);

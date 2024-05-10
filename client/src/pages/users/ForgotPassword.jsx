@@ -24,7 +24,6 @@ const ForgotPassword = () => {
     try {
       await checkEmailUser(email);
 
-      // Redirect to login page
       navigate("/login");
     } catch (err) {
       setError(err.message);
