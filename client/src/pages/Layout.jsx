@@ -13,7 +13,11 @@ import AdminLayout from "../Components/AdminLayout.jsx";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import logo from "../../images/cookiedu_logo.png";
+
+import AdminNavBar from "../Components/AdminNavBar.jsx";
+
 import StudentLayout from "../Components/StudentLayout.jsx";
+
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -40,6 +44,7 @@ const Layout = () => {
               <Image width="40" src={logo} />
               Users Management
             </Navbar.Brand>
+            
           ) : user.role == Role.INSTRUCTOR ? (
             <Navbar.Brand href="/">
               <Image width="40" src={logo} />
@@ -58,6 +63,7 @@ const Layout = () => {
                 <>
                   {user.role == Role.ADMIN ? (
                     <AdminLayout />
+                    
                   ) : user.role == Role.INSTRUCTOR ? (
                     <InstructorLayout />
                   ) : (

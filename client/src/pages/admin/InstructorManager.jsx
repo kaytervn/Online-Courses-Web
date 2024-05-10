@@ -14,7 +14,6 @@ import DataTable, {
   defaultThemes,
 } from "react-data-table-component";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
-
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
@@ -22,18 +21,15 @@ import AdminNavBar from "../../Components/AdminNavBar";
 import { Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 
-import Image from "react-bootstrap/esm/Image";
-
-
-const UserManager = () => {
+const InstructorManager = () => {
   const { users, setUsers } = useContext(UsersContext);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     setTimeout(async () => {
-      const students = await getUserListByRole(Role.STUDENT);
-      setUsers({ students });
+      const instructors = await getUserListByRole(Role.INSTRUCTOR);
+      setUsers({ instructors });
     }, 0);
   }, []);
 
@@ -52,11 +48,7 @@ const UserManager = () => {
     },
     {
       name: "Picture",
-      selector: (row) => (
-        <div className="text-center">
-          <Image roundedCircle width="40" src={row.picture} />
-        </div>
-      ),
+      selector: (row) => row.picture,
     },
     {
       name: "Status",
@@ -80,28 +72,21 @@ const UserManager = () => {
     try {
       const message = await changeUserStatus(id);
       setSuccess(message.success);
-      const students = await getUserListByRole(Role.STUDENT);
+      const students = await getUserListByRole(Role.INSTRUCTOR);
       setUsers({ students });
     } catch (err) {
       setError(err.message);
     }
   };
 
-  // const handleSearch = (e) => async () => {
-  //   e.preventDefault();
-  //   const newStudents = users.students.filter((student) =>
-  //     student.name.toLowerCase().includes(e.target.value.toLowerCase())
-  //   );
-  //   setUsers({ students: newStudents });
-  // };
-
   async function handleSearch(e) {
-    const newStudents = (await getUserListByRole(Role.STUDENT)).filter(
+    const newInstructors = (await getUserListByRole(Role.INSTRUCTOR)).filter(
       (student) =>
         student.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    setUsers({ students: newStudents });
+    setUsers({ students: newInstructors });
   }
+
   return (
     <div>
       <Row>
@@ -127,7 +112,7 @@ const UserManager = () => {
           </div>
           <DataTable
             columns={columns}
-            data={users.students}
+            data={users.instructors}
             fixedHeader
             pagination
             customStyles={customStyles}
@@ -138,4 +123,4 @@ const UserManager = () => {
   );
 };
 
-export default UserManager;
+export default InstructorManager;
