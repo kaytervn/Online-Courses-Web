@@ -37,88 +37,88 @@ const Layout = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-dark navbar-dark">
-        <Container className="py-2">
-          {user.role == Role.ADMIN ? (
-            <Navbar.Brand href="/">
-              <Image width="40" src={logo} />
-              Users Management
-            </Navbar.Brand>
-            
-          ) : user.role == Role.INSTRUCTOR ? (
-            <Navbar.Brand href="/">
-              <Image width="40" src={logo} />
-              My Created Courses
-            </Navbar.Brand>
-          ) : (
-            <Navbar.Brand href="/">
-              <Image width="40" src={logo} />
-              <span className="text-warning">COOKI</span>EDU
-            </Navbar.Brand>
-          )}
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              {user.token ? (
-                <>
-                  {user.role == Role.ADMIN ? (
-                    <AdminLayout />
-                    
-                  ) : user.role == Role.INSTRUCTOR ? (
-                    <InstructorLayout />
-                  ) : (      
-                    //<Nav.Link href="#action">My Courses</Nav.Link>                              
-                    <StudentLayout />
-                  )}
-                  <div className="d-flex align-items-center">
-                    <Image
-                      src={user.picture === null || user.picture === "" ? userImage : user.picture}
-                      width="30"
-                      className="rounded-circle"
-                    />
-                    )
-                  </div>
-                  <NavDropdown title={user.name}>
-                    <NavDropdown.Item href="/my-profile">
-                      My Profile
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={handleLogout}>
-                      Log out
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                </>
-              ) : (
-                <>
-                  <Nav.Item>
-                    <Button className="btn-light" href="/cart">
-                      <i
-                        className="fa fa-shopping-cart me-1"
-                        aria-hidden="true"
-                      ></i>
-                      Cart
-                      <span className="badge bg-danger ms-1">0</span>
-                    </Button>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link href="#action">Teach on COOKIEDU</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link href="/login" className="text-warning">
-                      <i className="bi bi-door-open"></i> Sign in
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Button className="btn-primary" href="/register">
-                      Register
-                    </Button>
-                  </Nav.Item>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      {user.role == Role.ADMIN ? (
+        <div></div>
+      ) : (
+        <Navbar expand="lg" className="bg-dark navbar-dark">
+          <Container className="py-2">
+            {user.role == Role.INSTRUCTOR ? (
+              <Navbar.Brand href="/">
+                <Image width="40" src={logo} />
+                My Created Courses
+              </Navbar.Brand>
+            ) : (
+              <Navbar.Brand href="/">
+                <Image width="40" src={logo} />
+                <span className="text-warning">COOKI</span>EDU
+              </Navbar.Brand>
+            )}
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="ms-auto">
+                {user.token ? (
+                  <>
+                    {user.role == Role.ADMIN ? (
+                      <AdminLayout />
+                    ) : user.role == Role.INSTRUCTOR ? (
+                      <InstructorLayout />
+                    ) : (
+                      //<Nav.Link href="#action">My Courses</Nav.Link>
+                      <StudentLayout />
+                    )}
+                    <div className="d-flex align-items-center">
+                      <Image
+                        src={
+                          user.picture === null || user.picture === ""
+                            ? userImage
+                            : user.picture
+                        }
+                        width="30"
+                        className="rounded-circle"
+                      />
+                    </div>
+                    <NavDropdown title={user.name}>
+                      <NavDropdown.Item href="/my-profile">
+                        My Profile
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item onClick={handleLogout}>
+                        Log out
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </>
+                ) : (
+                  <>
+                    <Nav.Item>
+                      <Button className="btn-light" href="/cart">
+                        <i
+                          className="fa fa-shopping-cart me-1"
+                          aria-hidden="true"
+                        ></i>
+                        Cart
+                        <span className="badge bg-danger ms-1">0</span>
+                      </Button>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link href="#action">Teach on COOKIEDU</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link href="/login" className="text-warning">
+                        <i className="bi bi-door-open"></i> Sign in
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Button className="btn-primary" href="/register">
+                        Register
+                      </Button>
+                    </Nav.Item>
+                  </>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      )}
       <Outlet />
     </>
   );

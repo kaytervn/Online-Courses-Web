@@ -24,9 +24,10 @@ const getAllCourse = async () => {
       "Content-Type": "application/json",
     },
   });
-
   const data = await res.json();
   return data;
 };
+
+
 
 export { searchUserCourses, getAllCourse };
