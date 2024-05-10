@@ -3,13 +3,10 @@ import { createContext, useState } from "react";
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-  const [cartItem, setCartitem] = useState({
-    token: localStorage.getItem("token"),
-    
-  });
+  const [cartItems, setCartItems] = useState([]);
 
   return (
-    <CartContext.Provider value={{ cartItem, setCartitem }}>
+    <CartContext.Provider value={{ cartItems, setCartItems }}>
       {children}
     </CartContext.Provider>
   );
