@@ -1,14 +1,12 @@
 const CourseCard = ({ course, instructorName, children }) => {
   return (
-    <div className="card h-100" id="course1">
+    <div className={`cart h-100 ${course.visibility ? "" : "opacity-75"}`}>
       <img src={course.picture} className="card-img-top" />
-      <div className="card-header bg-white">
+      <div className="card-header">
         <h5>{course.title}</h5>
         <div className="d-flex align-items-center">
           <div className="flex-grow-1">{instructorName}</div>
-          <i className="text-primary">
-            {new Date(course.createdAt).toLocaleDateString()}
-          </i>
+          <i>{new Date(course.createdAt).toLocaleDateString()}</i>
         </div>
       </div>
       <div className="card-body">

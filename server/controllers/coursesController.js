@@ -82,7 +82,7 @@ const searchUserCourses = async (req, res) => {
     ];
   }
 
-  if (typeof visibility === "boolean") {
+  if (visibility != "ALL") {
     query.visibility = visibility;
   }
 

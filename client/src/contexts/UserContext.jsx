@@ -9,7 +9,6 @@ const UserProvider = ({ children }) => {
     name: null,
     picture: null,
     role: null,
-    createdCourses: [],
   });
 
   return (

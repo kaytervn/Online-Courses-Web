@@ -1,17 +1,25 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../contexts/UserContext";
 import { searchUserCourses } from "../../services/coursesService";
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import CourseCard from "../../Components/CourseCard";
 import "../../styles/cardHover.css";
 import Topic from "../../../../server/models/TopicEnum.js";
+import { MyCreatedCoursesContext } from "../../contexts/MyCreatedCoursesContext.jsx";
+import { UserContext } from "../../contexts/UserContext.jsx";
+import Pagination from "../../Components/Pagination.jsx";
 
 const CreatedCourses = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { createdCourses, setCreatedCourses } = useContext(
+    MyCreatedCoursesContext
+  );
+  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("ALL");
+  const [selectedVisibility, setSelectedVisibility] = useState("ALL");
+  const [selectedSort, setSelectedSort] = useState("lastUpdated");
+
   const topics = [
     "ALL",
     Topic.WEB,
@@ -21,24 +29,74 @@ const CreatedCourses = () => {
     Topic.GAME,
     Topic.SOFTWARE,
   ];
-  const [selectedVisibility, setSelectedVisibility] = useState("ALL");
   const visibilities = ["ALL", true, false];
 
   const handleTopicChange = (topic) => {
     setSelectedTopic(topic);
+    setCreatedCourses({
+      ...createdCourses,
+      currentPage: 1,
+    });
   };
 
   const handleVisibilityChange = (visibility) => {
     setSelectedVisibility(visibility);
+    setCreatedCourses({
+      ...createdCourses,
+      currentPage: 1,
+    });
+  };
+
+  const handleSortChange = async (e) => {
+    setSelectedSort(e.target.value);
+  };
+
+  const handleSearchInputChange = (e) => {
+    setSearchValue(e.target.value);
+    setCreatedCourses({
+      ...createdCourses,
+      currentPage: 1,
+    });
+  };
+
+  const onPageChange = async (page) => {
+    setCreatedCourses({
+      ...createdCourses,
+      currentPage: page,
+    });
+    setLoading(true);
+    await updateDisplay();
+  };
+
+  const updateDisplay = async () => {
+    const data = await searchUserCourses({
+      keyword: searchValue,
+      visibility: selectedVisibility,
+      topic: selectedTopic,
+      page: createdCourses.currentPage,
+      sort: selectedSort,
+    });
+    setCreatedCourses({
+      ...createdCourses,
+      courses: data.courses,
+      totalPages: data.totalPages,
+    });
+    setLoading(false);
+    console.log({
+      keyword: searchValue,
+      visibility: selectedVisibility,
+      topic: selectedTopic,
+      page: createdCourses.currentPage,
+      sort: selectedSort,
+    });
   };
 
   useEffect(() => {
     setTimeout(async () => {
-      const courses = await searchUserCourses(search);
-      setUser({ ...user, createdCourses: courses });
-      setLoading(false);
-    }, 0);
-  }, []);
+      setLoading(true);
+      await updateDisplay();
+    }, 100);
+  }, [searchValue, selectedVisibility, selectedTopic, selectedSort]);
 
   return (
     <>
@@ -59,8 +117,9 @@ const CreatedCourses = () => {
                   <input
                     type="text"
                     className="form-control"
-                    id="searchInput"
                     placeholder="Search..."
+                    value={searchValue}
+                    onChange={handleSearchInputChange}
                   />
                 </div>
               </div>
@@ -72,6 +131,8 @@ const CreatedCourses = () => {
       <section className="p-5">
         {loading ? (
           <AnimatedProgressBar />
+        ) : createdCourses.length === 0 ? (
+          <p className="fs-2 text-center text-danger">Not Found.</p>
         ) : (
           <div className="container">
             <div className="row">
@@ -83,7 +144,8 @@ const CreatedCourses = () => {
                   <select
                     className="form-select"
                     aria-label="Default select example"
-                    defaultValue="lastUpdated"
+                    value={selectedSort}
+                    onChange={handleSortChange}
                   >
                     <option value="lastUpdated">Last Updated</option>
                     <option value="title">Title</option>
@@ -101,7 +163,7 @@ const CreatedCourses = () => {
                           type="radio"
                           value={visibility}
                           checked={selectedVisibility === visibility}
-                          onChange={() => handleVisibilityChange(visibility)}
+                          onChange={(e) => handleVisibilityChange(visibility)}
                         />
                         <label className="form-check-label">
                           {visibility === false
@@ -126,8 +188,8 @@ const CreatedCourses = () => {
                           type="radio"
                           value={topic}
                           checked={selectedTopic === topic}
+                          onChange={(e) => handleTopicChange(topic)}
                           id={topic}
-                          onChange={() => handleTopicChange(topic)}
                         />
                         <label className="form-check-label" htmlFor={topic}>
                           {topic.toUpperCase()}
@@ -138,11 +200,8 @@ const CreatedCourses = () => {
                 </ul>
               </div>
               <div className="col">
-                <div
-                  className="row row-cols-1 row-cols-md-3 g-4 pb-4"
-                  id="listCourse"
-                >
-                  {user.createdCourses.map((course) => (
+                <div className="row row-cols-1 row-cols-md-3 g-4 pb-4">
+                  {createdCourses.courses.map((course) => (
                     <div key={course._id}>
                       <CourseCard course={course} instructorName={user.name}>
                         <div className="pe-2 flex-grow-1">
@@ -157,37 +216,15 @@ const CreatedCourses = () => {
                     </div>
                   ))}
                 </div>
-                <div className="d-flex justify-content-center">
-                  <ul className="pagination">
-                    <li className="page-item disabled">
-                      <a className="page-link">Previous</a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">
-                        1
-                      </a>
-                    </li>
-                    <li className="page-item active" aria-current="page">
-                      <a className="page-link" href="#">
-                        2
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">
-                        3
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
           </div>
         )}
+        <Pagination
+          currentPage={createdCourses.currentPage}
+          totalPages={createdCourses.totalPages}
+          onPageChange={onPageChange}
+        />
       </section>
     </>
   );
