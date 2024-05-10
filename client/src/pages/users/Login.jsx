@@ -5,7 +5,11 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { CDBBtn, CDBIcon } from "cdbreact";
-import { getUser, loginUser, loginUserSocial } from "../../services/usersService";
+import {
+  getUser,
+  loginUser,
+  loginUserSocial,
+} from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import Container from "react-bootstrap/esm/Container";
@@ -49,10 +53,7 @@ const Login = () => {
     }
   };
 
-  // const handleGoogleLogin = () => {
-  //   window.open("http://localhost:5000/auth/google", "_self");
 
-  // };
 
   const handleGoogleLogin = async (e) => {
     window.open("http://localhost:5000/auth/google", "_self");
@@ -69,7 +70,6 @@ const Login = () => {
         role: dataUser.user.role,
       });
 
-
       if (dataUser.user.role === Role.ADMIN) {
         navigate("/admin");
       } else if (dataUser.user === Role.INSTRUCTOR) {
@@ -81,8 +81,6 @@ const Login = () => {
       setError(err.message);
     }
   };
-
-
 
   const handleFacebookLogin = async (e) => {
     window.open(`http://localhost:5000/auth/facebook`, "_self");
@@ -99,7 +97,6 @@ const Login = () => {
         picture: dataUser.user.picture,
         role: dataUser.user.role,
       });
-
 
       if (dataUser.user.role === Role.ADMIN) {
         navigate("/admin");
@@ -127,7 +124,6 @@ const Login = () => {
         picture: dataUser.user.picture,
         role: dataUser.user.role,
       });
-
 
       if (dataUser.user.role === Role.ADMIN) {
         navigate("/admin");
