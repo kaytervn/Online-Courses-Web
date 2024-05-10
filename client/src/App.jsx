@@ -47,13 +47,13 @@ const App = () => {
         {!user.token ||
           (loading && !user.role && <Route index element={<Loading />} />)}
         <Route element={<Layout />}>
-          {user.role === Role.ADMIN && (
+          {user.role == Role.ADMIN && (
             <>
               <Route index element={<UserManager />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
-          {user.role === Role.INSTRUCTOR && (
+          {user.role == Role.INSTRUCTOR && (
             <>
               <Route index element={<CreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
@@ -63,7 +63,7 @@ const App = () => {
               ></Route>
             </>
           )}
-          {user.role !== Role.ADMIN && user.role !== Role.INSTRUCTOR && (
+          {user.role != Role.ADMIN && user.role != Role.INSTRUCTOR && (
             <>
               <Route index element={<HomePage />} />
               <Route path="/cart" element={<CartPage />}></Route>
