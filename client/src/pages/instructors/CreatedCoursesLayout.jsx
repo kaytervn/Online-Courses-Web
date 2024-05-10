@@ -183,11 +183,11 @@ const CreatedCourses = () => {
                         <CourseCard course={course} instructorName={user.name}>
                           <div className="pe-2 flex-grow-1">
                             <a href="#" className="btn btn-outline-dark w-100">
-                              <i class="bi bi-pencil-square"></i> Edit
+                              <i className="bi bi-pencil-square"></i> Edit
                             </a>
                           </div>
                           <a href="#" className="btn btn-outline-danger">
-                            <i class="bi bi-eye-slash"></i>
+                            <i className="bi bi-eye-slash"></i>
                           </a>
                         </CourseCard>
                       </div>
@@ -197,26 +197,26 @@ const CreatedCourses = () => {
               </div>
               <div className="d-flex justify-content-center">
                 <ul className="pagination">
-                  <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
+                  <li className="page-item disabled">
+                    <a className="page-link">Previous</a>
                   </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
+                  <li className="page-item">
+                    <a className="page-link" href="#">
                       1
                     </a>
                   </li>
-                  <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">
+                  <li className="page-item active" aria-current="page">
+                    <a className="page-link" href="#">
                       2
                     </a>
                   </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
+                  <li className="page-item">
+                    <a className="page-link" href="#">
                       3
                     </a>
                   </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
+                  <li className="page-item">
+                    <a className="page-link" href="#">
                       Next
                     </a>
                   </li>

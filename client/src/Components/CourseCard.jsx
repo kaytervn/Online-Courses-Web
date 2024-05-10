@@ -14,10 +14,10 @@ const CourseCard = ({ course, instructorName, children }) => {
       <div className="card-body">
         <div className="d-flex align-items-center">
           <div className="lead text-success">
-            <i class="bi bi-wallet2"></i> {course.price}
+            <i className="bi bi-wallet2"></i> {course.price}
           </div>
-          <div class="flex-grow-1">
-            <p class="text-primary text-end">{course.topic}</p>
+          <div className="flex-grow-1">
+            <p className="text-primary text-end">{course.topic}</p>
           </div>
         </div>
       </div>
