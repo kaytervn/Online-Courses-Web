@@ -18,7 +18,9 @@ import Loading from "./pages/Loading";
 import CreateCourse from "./pages/instructors/CreateCourse";
 import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
+import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
+
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -50,6 +52,7 @@ const App = () => {
           {user.role == Role.ADMIN && (
             <>
               <Route index element={<UserManager />} />
+              <Route path="/instructor" element={<InstructorManager />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
