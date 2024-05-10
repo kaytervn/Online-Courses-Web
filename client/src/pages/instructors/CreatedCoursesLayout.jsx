@@ -105,7 +105,6 @@ const CreatedCourses = () => {
                   </span>
                   <select
                     className="form-select"
-                    aria-label="Default select example"
                     value={selectedSort}
                     onChange={(e) => {
                       e.preventDefault();
@@ -162,8 +161,12 @@ const CreatedCourses = () => {
                             setSelectedTopic(topic);
                             setCurrentPage(1);
                           }}
+                          id={`radio-${topic}`}
                         />
-                        <label className="form-check-label" htmlFor={topic}>
+                        <label
+                          className="form-check-label"
+                          htmlFor={`radio-${topic}`}
+                        >
                           {topic.toUpperCase()}
                         </label>
                       </div>
@@ -188,9 +191,15 @@ const CreatedCourses = () => {
                                 <i className="bi bi-pencil-square"></i> Edit
                               </a>
                             </div>
-                            <a href="" className="btn btn-outline-danger">
-                              <i className="bi bi-eye-slash"></i>
-                            </a>
+                            {course.visibility == false ? (
+                              <a href="" className="btn btn-outline-danger">
+                                <i className="bi bi-eye-slash"></i>
+                              </a>
+                            ) : (
+                              <a href="" className="btn btn-outline-success">
+                                <i class="bi bi-eye"></i>
+                              </a>
+                            )}
                           </CourseCard>
                         </div>
                       ))}
@@ -202,7 +211,7 @@ const CreatedCourses = () => {
           )}
         </div>
       </section>
-      {!loading && user.createdCourses.length > 0 && (
+      {!loading && pages.length > 0 && (
         <div className="d-flex justify-content-center">
           <ul className="pagination">
             <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
