@@ -1,6 +1,6 @@
 const CourseCard = ({ course, instructorName, children }) => {
   return (
-    <div className={`cart h-100 ${course.visibility ? "" : "opacity-75"}`}>
+    <div className={`card h-100 ${course.visibility ? "" : "opacity-75"}`}>
       <img src={course.picture} className="card-img-top" />
       <div className="card-header">
         <h5>{course.title}</h5>
