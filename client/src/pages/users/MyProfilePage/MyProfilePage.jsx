@@ -75,7 +75,6 @@ const MyProfilePage = () => {
                                             Upload
                                         </Button>
                                     </label>
-                                    {/* <Button variant="outline-light" size="sm" onClick={handleSave}>Save </Button> */}
                                 </Col>
                                 <Col md="8">
                                     <Card.Body className="p-4">
