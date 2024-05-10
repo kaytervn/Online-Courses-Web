@@ -173,6 +173,21 @@ const resetPassword = async (req, res) => {
   });
 };
 
+//***********************************************UPLOAD PROFILE IMAGE************************** */
+
+const upLoadProfileImage = async (req, res) => {
+  const { base64 } = req.body;
+  const userId = req.user._id;
+  console.log(userId);
+  console.log("Link:", base64);
+  try {
+    await User.findByIdAndUpdate({ _id: userId }, { picture: base64 });
+    return res.status(200).json({ success: "Successful" });
+  } catch (error) {
+    return res.status(500).json({ error: "Error" });
+  }
+};
+
 //***********************************************GET ALL USER BY ROLE************************** */
 const getUserListByRole = async (req, res) => {
   const role = req.params.role;
@@ -237,6 +252,7 @@ export {
   loginUser,
   forgotPassword,
   resetPassword,
+  upLoadProfileImage,
   getUser,
   getUserListByRole,
   changeUserStatus,

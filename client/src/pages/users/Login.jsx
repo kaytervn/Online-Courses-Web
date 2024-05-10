@@ -30,6 +30,7 @@ const Login = () => {
       const token = data.token;
       const dataUser = await getUser(token);
       setUser({
+        // id: dataUser._id,
         token,
         email: dataUser.email,
         name: dataUser.name,

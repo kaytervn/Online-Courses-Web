@@ -61,19 +61,11 @@ const Layout = () => {
                     <Nav.Link href="#action">My Courses</Nav.Link>
                   )}
                   <div className="d-flex align-items-center">
-                    {user.picture === null ? (
-                      <Image
-                        src={userImage}
-                        width="30"
-                        className="rounded-circle"
-                      />
-                    ) : (
-                      <Image
-                        src={user.picture}
-                        width="30"
-                        className="rounded-circle"
-                      />
-                    )}
+                    <Image
+                      src={user.picture === null || user.picture === "" ? userImage : user.picture}
+                      width="30"
+                      className="rounded-circle"
+                    />
                     )
 
                   </div>
