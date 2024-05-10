@@ -1,60 +1,62 @@
-import { useContext, useEffect, useState } from "react";
-import React from 'react'
-import Button from "react-bootstrap/esm/Button";
+import React, { useEffect, useState } from "react";
+import { getCart } from "../../services/cartsService";
+import CartItem from "../../Components/CartItem";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 
 const CartPage = () => {
-  const [cartItem, setCaetItem] = useState([]);
-  const [error, setError] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    const getItemCart = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/courses/all", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
+        const data = await getCart();
+        if (data) {
+          setCartItems(data.courseDetails);
+          const total = data.courseDetails.reduce(
+            (acc, item) => acc + item.course.price,
+            0
+          );
+          setTotalPrice(total);
         }
-        const data = await res.json();
-        setCourses(data.courses);
       } catch (error) {
-        setError(error.message);
+        console.error("Error fetching data: ", error);
       }
     };
-
-    getCart();
-  }, []); // Empty dependency array ensures this effect runs once when the component mounts
+    fetchData();
+  }, []);
 
   return (
-    <div className="my-5">
-      <div className="container">
-        <div className="text-center">
-          <h2>Cart</h2>
-        </div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Sr no</th>
-              <th>Course</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <th>1</th>
-            <th>A</th>
-            <th>10</th>
-            <th>
-              <button>remove</button>
-            </th>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <Container>
+      <h2 className="my-4">Cart Items</h2>
+      <Row>
+        <Col md={8}>
+          {cartItems.map((cartItem) => (
+            <Row key={cartItem._id} className="mb-4">
+              <CartItem cartItem={cartItem} />
+            </Row>
+          ))}
+        </Col>
+        <Col md={4}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Order Summary</Card.Title>
+              <Card.Text>
+                Total Price: <strong>${totalPrice.toFixed(2)}</strong>
+              </Card.Text>
+              <Button variant="primary" block>
+                Checkout
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
-}
+};
 
-export default CartPage
+export default CartPage;

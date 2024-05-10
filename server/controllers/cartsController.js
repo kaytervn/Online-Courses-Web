@@ -28,35 +28,109 @@ const addToCart = async (req, res) => {
     if (!cartExists || !courseExists) {
       return res.status(404).json({ error: "Cart or Course not found" });
     }
-
+    const cartItemExists = await CartItem.findOne({
+      cartId: cartId,
+      courseId: courseId,
+    });
+    if (cartItemExists) {
+      return res
+        .status(400)
+        .json({ error: "This course is already in your cart." });
+    }
     // Kiểm tra xem người dùng đã mua khóa học này chưa
     const userInvoices = await Invoice.find({ userId: userId });
     const purchasedCourseIds = new Set();
     for (const invoice of userInvoices) {
-      const invoiceItems = await InvoiceItem.find({ invoiceId: invoice._id });
-      invoiceItems.forEach((item) =>
-        purchasedCourseIds.add(item.courseId.toString())
-      );
+      const invoiceItems = await InvoiceItem.find({
+        invoiceId: invoice._id,
+        courseId: courseId,
+      });
+      if (invoiceItems.length > 0) {
+        return res
+          .status(400)
+          .json({ error: "You have already purchased this course." });
+      }
     }
 
-    if (purchasedCourseIds.has(courseId.toString())) {
-      return res
-        .status(400)
-        .json({ error: "You have already purchased this course." });
-    }
+    // Lấy thông tin của khóa học từ courseId
+    const courseDetails = await Course.findById(courseId);
 
     // Thêm vào giỏ hàng nếu khóa học chưa được mua
     const cartItem = await CartItem.create({
       cartId: cartId,
       courseId: courseId,
     });
-    res
-      .status(200)
-      .json({ success: "Course added to cart successfully", cartItem });
+
+    // Đóng gói cartItem và courseDetails vào một đối tượng
+    const responseData = {
+      success: "Course added to cart successfully",
+      cartItem,
+      courseDetails,
+    };
+
+    res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+
+// const addToCart = async (req, res) => {
+//   const { cartId, courseId } = req.body;
+//   const userId = req.user._id; // Lấy từ middleware xác thực
+
+//   if (!cartId || !courseId) {
+//     return res.status(400).json({ error: "All fields are required" });
+//   }
+
+//   try {
+//     const cartExists = await Cart.findById(cartId);
+//     const courseExists = await Course.findById(courseId);
+
+//     if (!cartExists || !courseExists) {
+//       return res.status(404).json({ error: "Cart or Course not found" });
+//     }
+//     const cartItemExists = await CartItem.findOne({
+//       cartId: cartId,
+//       courseId: courseId,
+//     });
+//     if (cartItemExists) {
+//       return res
+//         .status(400)
+//         .json({ error: "This course is already in your cart." });
+//     }
+//     // Kiểm tra xem người dùng đã mua khóa học này chưa
+//     const userInvoices = await Invoice.find({ userId: userId });
+//     const purchasedCourseIds = new Set();
+//     for (const invoice of userInvoices) {
+//       const invoiceItems = await InvoiceItem.find({
+//         invoiceId: invoice._id,
+//         courseId: courseId,
+//       });
+//       if (invoiceItems.length > 0) {
+//         return res
+//           .status(400)
+//           .json({ error: "You have already purchased this course." });
+//       }
+//     }
+
+//     // Thêm vào giỏ hàng nếu khóa học chưa được mua
+//     const cartItem = await CartItem.create({
+//       cartId: cartId,
+//       courseId: courseId,
+//     });
+//     const courseDetails = await Course.findById(courseId);
+//     res
+//       .status(200)
+//       .json({
+//         success: "Course added to cart successfully",
+//         courseDetails
+//       });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 
 const removeFromCart = async (req, res) => {
