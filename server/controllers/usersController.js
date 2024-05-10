@@ -13,7 +13,6 @@ const createToken = (_id) => {
 
 const getUser = async (req, res) => {
   const user = await User.findById(req.user._id);
-
   try {
     return res.status(200).json({ user });
   } catch (error) {
@@ -258,12 +257,3 @@ export {
   changeUserStatus,
   getUserByOther,
 };
-
-// const getUser = async (req, res) => {
-//   const user = await User.findById(req.user._id);
-//   try {
-//     return res.status(200).json({ user });
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
