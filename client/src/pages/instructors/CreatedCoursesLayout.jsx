@@ -28,6 +28,8 @@ const CreatedCourses = () => {
   ];
   const visibilities = ["ALL", true, false];
 
+  const handleChangeVisibility = (courseId) => {};
+
   const updateDisplay = async () => {
     const data = await searchUserCourses({
       keyword: searchValue,
@@ -192,13 +194,23 @@ const CreatedCourses = () => {
                               </a>
                             </div>
                             {course.visibility == false ? (
-                              <a href="" className="btn btn-outline-danger">
+                              <div
+                                className="btn btn-outline-danger"
+                                onClick={() =>
+                                  handleChangeVisibility(course._id)
+                                }
+                              >
                                 <i className="bi bi-eye-slash"></i>
-                              </a>
+                              </div>
                             ) : (
-                              <a href="" className="btn btn-outline-success">
+                              <div
+                                className="btn btn-outline-success"
+                                onClick={() =>
+                                  handleChangeVisibility(course._id)
+                                }
+                              >
                                 <i class="bi bi-eye"></i>
-                              </a>
+                              </div>
                             )}
                           </CourseCard>
                         </div>

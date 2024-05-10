@@ -5,7 +5,7 @@ import { getCart } from "../services/cartsService";
 const StudentLayout = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [itemCount, setItemCount] = useState(0); 
+  const [itemCount, setItemCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,13 +32,13 @@ const StudentLayout = () => {
   return (
     <>
       <Nav.Item>
-        <Nav.Link href="/list-course">List Course</Nav.Link>
+        <Nav.Link href="/list-courses">List Courses</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Button className="btn-light" href="/cart">
+        <Button className="btn-light me-2" href="/cart">
           <i className="fa fa-shopping-cart me-1" aria-hidden="true"></i>
           Cart
-          <span className="badge bg-danger ms-1">{itemCount}</span>{" "}
+          <span className="badge bg-danger ms-1">{itemCount}</span>
           {/* Hiển thị số lượng item */}
         </Button>
       </Nav.Item>
