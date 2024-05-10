@@ -14,12 +14,16 @@ import DataTable, {
   defaultThemes,
 } from "react-data-table-component";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
 import { Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
+
+import Image from "react-bootstrap/esm/Image";
+
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
@@ -48,7 +52,11 @@ const UserManager = () => {
     },
     {
       name: "Picture",
-      selector: (row) => row.picture,
+      selector: (row) => (
+        <div className="text-center">
+          <Image roundedCircle width="40" src={row.picture} />
+        </div>
+      ),
     },
     {
       name: "Status",
@@ -94,7 +102,6 @@ const UserManager = () => {
     );
     setUsers({ students: newStudents });
   }
- 
   return (
     <div>
       <Row>

@@ -1,57 +1,28 @@
-const CourseCard = () => {
+const CourseCard = ({ course, instructorName, children }) => {
   return (
-    <>
-      <div class="card h-100" id="course1">
-        <img src="${filterArray[i].image}" class="card-img-top" />
-        <div class="card-header bg-white">
-          <h5>${filterArray[i].courseName}</h5>
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">${filterArray[i].teacherName}</div>
-            <i>${filterArray[i].date}</i>
-          </div>
+    <div className={`card h-100 ${course.visibility ? "" : "opacity-75"}`}>
+      <img src={course.picture} className="card-img-top" />
+      <div className="card-header">
+        <h5>{course.title}</h5>
+        <div className="d-flex align-items-center">
+          <div className="flex-grow-1">{instructorName}</div>
+          <i>{new Date(course.createdAt).toLocaleDateString()}</i>
         </div>
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="">
-              <div class="lead pe-2 text-success">
-                <i class="bi bi-cash-coin"></i> ${filterArray[i].price}
-              </div>
-            </div>
-            <div class="">
-              <span class="badge text-bg-success">
-                <i class="fa fa-user" aria-hidden="true"></i> $
-                {filterArray[i].joined}
-              </span>
-            </div>
-            <div class="flex-grow-1">
-              <p class="text-primary text-end">${filterArray[i].level}</p>
-            </div>
+      </div>
+      <div className="card-body">
+        <div className="d-flex align-items-center">
+          <div className="lead text-success">
+            <i className="bi bi-wallet2"></i> {course.price}
           </div>
-          <div class="d-grid pt-2">
-            <a href="#" class="btn btn-dark">
-              Details{" "}
-              <span class="badge text-bg-secondary">
-                <i class="bi bi-chat-square-text-fill"></i> $
-                {filterArray[i].reviews}
-              </span>
-            </a>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="d-flex align-items-center">
-            <div class="pe-2 flex-grow-1">
-              <a href="#" class="btn btn-outline-danger w-100">
-                <i class="fa fa-heart" aria-hidden="true"></i> $
-                {filterArray[i].wishlisted}
-              </a>
-            </div>
-            <a href="#" class="btn btn-outline-primary">
-              <i class="fa fa-cart-plus" aria-hidden="true"></i>
-            </a>
+          <div className="flex-grow-1">
+            <p className="text-primary text-end">{course.topic}</p>
           </div>
         </div>
       </div>
-    </>
+      <div className="card-footer">
+        <div className="d-flex align-items-center">{children}</div>
+      </div>
+    </div>
   );
 };
 

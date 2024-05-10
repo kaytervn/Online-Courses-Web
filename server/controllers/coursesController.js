@@ -68,24 +68,48 @@ const getUserCourses = async (req, res) => {
 // Instructor's courses
 const searchUserCourses = async (req, res) => {
   const user = await User.findById(req.user._id);
+  const { keyword, visibility, topic, page, sort } = req.body;
+  const limit = 6;
+  let query = {
+    userId: user._id,
+    status: true,
+  };
+
+  if (keyword.trim() !== "") {
+    query.$or = [
+      { title: { $regex: keyword.trim(), $options: "i" } },
+      { description: { $regex: keyword.trim(), $options: "i" } },
+    ];
+  }
+
+  if (visibility != "ALL") {
+    query.visibility = visibility;
+  }
+
+  if (topic in Topic) {
+    query.topic = topic;
+  }
+
   try {
-    const { keyword } = req.body;
-    let courses;
-    if (!keyword || keyword.trim() == "") {
-      courses = await Course.find({ userId: user._id, status: true }).sort({
-        createdAt: "desc",
-      });
+    const totalCount = await Course.countDocuments(query);
+    const totalPages = Math.ceil(totalCount / limit);
+    const skip = (page - 1) * limit;
+
+    let courses = await Course.find(query).skip(skip).limit(limit);
+
+    if (sort === "title") {
+      courses = await Course.find(query)
+        .sort({ title: 1 })
+        .skip(skip)
+        .limit(limit);
     } else {
-      courses = await Course.find({
-        userId: user._id,
-        status: true,
-        $or: [
-          { title: { $regex: keyword, $options: "i" } },
-          { description: { $regex: keyword, $options: "i" } },
-        ],
-      }).sort({ createdAt: "desc" });
+      courses = await Course.find(query)
+        .sort({ updatedAt: -1 })
+        .skip(skip)
+        .limit(limit);
     }
-    return res.status(200).json({ courses });
+
+    return res.status(200).json({ courses, totalPages });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

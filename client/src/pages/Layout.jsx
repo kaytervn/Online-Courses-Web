@@ -13,10 +13,18 @@ import AdminLayout from "../Components/AdminLayout.jsx";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import logo from "../../images/cookiedu_logo.png";
+
 import AdminNavBar from "../Components/AdminNavBar.jsx";
+
+import StudentLayout from "../Components/StudentLayout.jsx";
+
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(async () => {}, 0);
+  }, []);
 
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {
@@ -58,18 +66,20 @@ const Layout = () => {
                     
                   ) : user.role == Role.INSTRUCTOR ? (
                     <InstructorLayout />
-                  ) : (
-                    <Nav.Link href="#action">My Courses</Nav.Link>
+                  ) : (      
+                    //<Nav.Link href="#action">My Courses</Nav.Link>                              
+                    <StudentLayout />
                   )}
                   <div className="d-flex align-items-center">
                     <Image
-                      src={userImage || user.image}
-                      style={{ width: "30px", height: "30px" }}
-                      className="ms-2"
-                    ></Image>
+                      src={user.picture === null || user.picture === "" ? userImage : user.picture}
+                      width="30"
+                      className="rounded-circle"
+                    />
+                    )
                   </div>
                   <NavDropdown title={user.name}>
-                    <NavDropdown.Item href="#action">
+                    <NavDropdown.Item href="/my-profile">
                       My Profile
                     </NavDropdown.Item>
                     <NavDropdown.Divider />

@@ -3,6 +3,7 @@ import Layout from "./pages/Layout";
 import Login from "./pages/users/Login";
 import ForgotPassword from "./pages/users/ForgotPassword";
 import HomePage from "./pages/users/HomePage";
+import MyProfilePage from "./pages/users/MyProfilePage/MyProfilePage";
 import ResetPassword from "./pages/users/ResetPassword";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoutes from "../Routes/GuestRoutes";
@@ -18,6 +19,8 @@ import CreateCourse from "./pages/instructors/CreateCourse";
 import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
+import CoursePage from "./pages/students/CoursePage";
+
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -46,14 +49,14 @@ const App = () => {
         {!user.token ||
           (loading && !user.role && <Route index element={<Loading />} />)}
         <Route element={<Layout />}>
-          {user.role === Role.ADMIN && (
+          {user.role == Role.ADMIN && (
             <>
               <Route index element={<UserManager />} />
               <Route path="/instructor" element={<InstructorManager />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
-          {user.role === Role.INSTRUCTOR && (
+          {user.role == Role.INSTRUCTOR && (
             <>
               <Route index element={<CreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
@@ -63,10 +66,16 @@ const App = () => {
               ></Route>
             </>
           )}
-          {user.role !== Role.ADMIN && user.role !== Role.INSTRUCTOR && (
+          {user.role != Role.ADMIN && user.role != Role.INSTRUCTOR && (
             <>
               <Route index element={<HomePage />} />
               <Route path="/cart" element={<CartPage />}></Route>
+              <Route path="/list-course" element={<CoursePage />}></Route>
+            </>
+          )}
+          {user.token && (
+            <>
+              <Route path="/my-profile" element={<MyProfilePage />}></Route>
             </>
           )}
           <Route element={<GuestRoutes />}>

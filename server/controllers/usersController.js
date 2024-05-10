@@ -13,7 +13,6 @@ const createToken = (_id) => {
 
 const getUser = async (req, res) => {
   const user = await User.findById(req.user._id);
-
   try {
     return res.status(200).json({ user });
   } catch (error) {
@@ -173,6 +172,21 @@ const resetPassword = async (req, res) => {
   });
 };
 
+//***********************************************UPLOAD PROFILE IMAGE************************** */
+
+const upLoadProfileImage = async (req, res) => {
+  const { base64 } = req.body;
+  const userId = req.user._id;
+  console.log(userId);
+  console.log("Link:", base64);
+  try {
+    await User.findByIdAndUpdate({ _id: userId }, { picture: base64 });
+    return res.status(200).json({ success: "Successful" });
+  } catch (error) {
+    return res.status(500).json({ error: "Error" });
+  }
+};
+
 //***********************************************GET ALL USER BY ROLE************************** */
 const getUserListByRole = async (req, res) => {
   const role = req.params.role;
@@ -237,17 +251,9 @@ export {
   loginUser,
   forgotPassword,
   resetPassword,
+  upLoadProfileImage,
   getUser,
   getUserListByRole,
   changeUserStatus,
   getUserByOther,
 };
-
-// const getUser = async (req, res) => {
-//   const user = await User.findById(req.user._id);
-//   try {
-//     return res.status(200).json({ user });
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };

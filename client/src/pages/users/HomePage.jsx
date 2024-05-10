@@ -4,104 +4,105 @@ import { UserContext } from "../../contexts/UserContext";
 
 const HomePage = () => {
   const { user, setUser } = useContext(UserContext);
+  console.log(user)
   const logout = () => {
     window.open("http://localhost:5000/auth/logout", "_self");
   };
   return (
     <>
-      <section class="bg-dark text-light p-lg-0 pt-lg-5 text-center text-sm-start">
-        <div class="container">
-          <div class="d-sm-flex align-items-center justify-content-between">
+      <section className="bg-dark text-light p-lg-0 pt-lg-5 text-center text-sm-start">
+        <div className="container">
+          <div className="d-sm-flex align-items-center justify-content-between">
             <div>
               <h1>
-                Find your best <span class="text-warning"> Courses </span>
+                Find your best <span className="text-warning"> Courses </span>
               </h1>
               <h1>
-                & Upgrade your <span class="text-warning"> Skill </span>
+                & Upgrade your <span className="text-warning"> Skill </span>
               </h1>
-              <p class="lead my-4">
+              <p className="lead my-4">
                 We focus on teaching technology-related fields as well as honing
                 skills for our students, from basic to advanced, tailored to
                 each appropriate age group.
               </p>
               <a
                 href="#action"
-                class="btn btn-primary btn-lg"
+                className="btn btn-primary btn-lg"
                 data-bs-toggle="modal"
               >
                 Get Started
               </a>
             </div>
             <img
-              class="img-fluid w-50 d-none d-sm-block d-md-block"
+              className="img-fluid w-50 d-none d-sm-block d-md-block"
               src="/images/learning.png"
               alt=""
             />
           </div>
         </div>
       </section>
-      <section class="bg-primary text-light p-5">
-        <div class="container">
-          <div class="d-md-flex justify-content-between align-items-center">
-            <h2 class="mb-3 mb-md-0">
-              <span class="text-warning">COOKI</span>EDU - Join Us Now!
+      <section className="bg-primary text-light p-5">
+        <div className="container">
+          <div className="d-md-flex justify-content-between align-items-center">
+            <h2 className="mb-3 mb-md-0">
+              <span className="text-warning">COOKI</span>EDU - Join Us Now!
             </h2>
           </div>
         </div>
       </section>
 
-      <section class="p-5">
-        <div class="container">
-          <div class="row text-center g-4">
-            <div class="col-md">
-              <div class="card bg-dark text-light h-100">
-                <div class="card-body text-center">
-                  <div class="h1 mb-3">
-                    <i class="fa fa-heart" aria-hidden="true"></i>
+      <section className="p-5">
+        <div className="container">
+          <div className="row text-center g-4">
+            <div className="col-md">
+              <div className="card bg-dark text-light h-100">
+                <div className="card-body text-center">
+                  <div className="h1 mb-3">
+                    <i className="fa fa-heart" aria-hidden="true"></i>
                   </div>
-                  <h3 class="card-title mb-3">Friendly Community</h3>
-                  <p class="card-text">
+                  <h3 className="card-title mb-3">Friendly Community</h3>
+                  <p className="card-text">
                     Connect and interact with other leaners, exchange
                     information about study materials, and provide support in
                     answering questions.
                   </p>
-                  <a href="#action" class="btn btn-primary">
+                  <a href="#action" className="btn btn-primary">
                     Explore
                   </a>
                 </div>
               </div>
             </div>
-            <div class="col-md">
-              <div class="card bg-secondary text-light h-100">
-                <div class="card-body text-center">
-                  <div class="h1 mb-3">
-                    <i class="fa fa-laptop"></i>
+            <div className="col-md">
+              <div className="card bg-secondary text-light h-100">
+                <div className="card-body text-center">
+                  <div className="h1 mb-3">
+                    <i className="fa fa-laptop"></i>
                   </div>
-                  <h3 class="card-title mb-3">Online Courses</h3>
-                  <p class="card-text">
+                  <h3 className="card-title mb-3">Online Courses</h3>
+                  <p className="card-text">
                     Online courses provide convenient and flexible learning
                     opportunities. Learners can access a wide range of
                     educational materials from anywhere.
                   </p>
-                  <a href="#action" class="btn btn-dark">
+                  <a href="#action" className="btn btn-dark">
                     Explore
                   </a>
                 </div>
               </div>
             </div>
-            <div class="col-md">
-              <div class="card bg-dark text-light h-100">
-                <div class="card-body text-center">
-                  <div class="h1 mb-3">
-                    <i class="fa fa-star" aria-hidden="true"></i>
+            <div className="col-md">
+              <div className="card bg-dark text-light h-100">
+                <div className="card-body text-center">
+                  <div className="h1 mb-3">
+                    <i className="fa fa-star" aria-hidden="true"></i>
                   </div>
-                  <h3 class="card-title mb-3">Promise</h3>
-                  <p class="card-text">
+                  <h3 className="card-title mb-3">Promise</h3>
+                  <p className="card-text">
                     With a team of high-quality and passionate instructors,
                     learners will achieve the desired outcomes according to the
                     specific progression of each course.
                   </p>
-                  <a href="#action" class="btn btn-primary">
+                  <a href="#action" className="btn btn-primary">
                     Explore
                   </a>
                 </div>
@@ -111,17 +112,17 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section id="learn" class="p-5">
-        <div class="container">
-          <div class="row align-items-center justify-content-between">
-            <div class="col-md">
-              <img src="/images/fundamentals.svg" class="img-fluid" alt="" />
+      <section id="learn" className="p-5">
+        <div className="container">
+          <div className="row align-items-center justify-content-between">
+            <div className="col-md">
+              <img src="/images/fundamentals.svg" className="img-fluid" alt="" />
             </div>
-            <div class="col-md p-5">
+            <div className="col-md p-5">
               <h2>
-                We <span class="text-warning">COOK</span> IT
+                We <span className="text-warning">COOK</span> IT
               </h2>
-              <p class="lead">
+              <p className="lead">
                 This online learning platform focused on technical skills in the
                 field of technology.
               </p>
@@ -138,24 +139,24 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section id="instructors" class="p-5 bg-dark">
-        <div class="container">
-          <h2 class="text-center text-white">Our Instructors</h2>
-          <p class="lead text-center text-white mb-5">
+      <section id="instructors" className="p-5 bg-dark">
+        <div className="container">
+          <h2 className="text-center text-white">Our Instructors</h2>
+          <p className="lead text-center text-white mb-5">
             Our instructors all have over 5 years ofs experience in teaching
             technical courses in the field of technology.
           </p>
-          <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-              <div class="card bg-light h-100">
-                <div class="card-body text-center">
+          <div className="row g-4">
+            <div className="col-md-6 col-lg-3">
+              <div className="card bg-light h-100">
+                <div className="card-body text-center">
                   <img
                     src="/images/ins1.svg"
-                    class="rounded-circle mb-3"
+                    className="rounded-circle mb-3"
                     alt=""
                   />
-                  <h3 class="card-title mb-3">Ms. Olivia</h3>
-                  <p class="card-text">
+                  <h3 className="card-title mb-3">Ms. Olivia</h3>
+                  <p className="card-text">
                     A dedicated instructor with expertise in electrical
                     engineering and circuit design.
                   </p>
@@ -163,16 +164,16 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div class="col-md-6 col-lg-3">
-              <div class="card bg-light h-100">
-                <div class="card-body text-center">
+            <div className="col-md-6 col-lg-3">
+              <div className="card bg-light h-100">
+                <div className="card-body text-center">
                   <img
                     src="/images/ins2.svg"
-                    class="rounded-circle mb-3"
+                    className="rounded-circle mb-3"
                     alt=""
                   />
-                  <h3 class="card-title mb-3">Dr. Doofenshmirtz</h3>
-                  <p class="card-text">
+                  <h3 className="card-title mb-3">Dr. Doofenshmirtz</h3>
+                  <p className="card-text">
                     An innovative and knowledgeable professor skilled in
                     mechanical engineering and robotics.
                   </p>
@@ -180,16 +181,16 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div class="col-md-6 col-lg-3">
-              <div class="card bg-light h-100">
-                <div class="card-body text-center">
+            <div className="col-md-6 col-lg-3">
+              <div className="card bg-light h-100">
+                <div className="card-body text-center">
                   <img
                     src="/images/ins3.svg"
-                    class="rounded-circle mb-3"
+                    className="rounded-circle mb-3"
                     alt=""
                   />
-                  <h3 class="card-title mb-3">Ms. Beast</h3>
-                  <p class="card-text">
+                  <h3 className="card-title mb-3">Ms. Beast</h3>
+                  <p className="card-text">
                     A passionate and experienced teacher specializing in
                     computer programming and software development.
                   </p>
@@ -197,16 +198,16 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div class="col-md-6 col-lg-3">
-              <div class="card bg-light h-100">
-                <div class="card-body text-center">
+            <div className="col-md-6 col-lg-3">
+              <div className="card bg-light h-100">
+                <div className="card-body text-center">
                   <img
                     src="/images/ins4.svg"
-                    class="rounded-circle mb-3"
+                    className="rounded-circle mb-3"
                     alt=""
                   />
-                  <h3 class="card-title mb-3">Ms. Martinez</h3>
-                  <p class="card-text">
+                  <h3 className="card-title mb-3">Ms. Martinez</h3>
+                  <p className="card-text">
                     An enthusiastic teacher with a background in civil
                     engineering, focusing on structural design and construction.
                   </p>
@@ -217,20 +218,20 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section class="p-5">
-        <div class="container">
-          <h2 class="text-center mb-4">Student Feedback</h2>
+      <section className="p-5">
+        <div className="container">
+          <h2 className="text-center mb-4">Student Feedback</h2>
           <div
             id="carouselExampleCaptions"
-            class="carousel carousel-dark slide"
+            className="carousel carousel-dark slide"
             data-bs-ride="carousel"
           >
-            <div class="carousel-indicators">
+            <div className="carousel-indicators">
               <button
                 type="button"
                 data-bs-target="#carouselExampleCaptions"
                 data-bs-slide-to="0"
-                class="active"
+                className="active"
                 aria-current="true"
                 aria-label="Slide 1"
               ></button>
@@ -247,20 +248,20 @@ const HomePage = () => {
                 aria-label="Slide 3"
               ></button>
             </div>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <div class="row align-items-center justify-content-between">
-                  <div class="col-1"></div>
-                  <div class="col-6">
+            <div className="carousel-inner">
+              <div className="carousel-item active">
+                <div className="row align-items-center justify-content-between">
+                  <div className="col-1"></div>
+                  <div className="col-6">
                     <img
                       src="/images/stu1.png"
-                      class="d-block w-100"
+                      className="d-block w-100"
                       alt="..."
                     />
                   </div>
-                  <div class="col-4">
+                  <div className="col-4">
                     <h2>MAX SLACKER</h2>
-                    <p class="lead">
+                    <p className="lead">
                       <b>Age:</b> 17
                     </p>
                     <p>
@@ -278,26 +279,26 @@ const HomePage = () => {
                       these courses."
                     </p>
                   </div>
-                  <div class="col-1"></div>
+                  <div className="col-1"></div>
                 </div>
-                <div class="carousel-caption text-dark d-none d-md-block">
+                <div className="carousel-caption text-dark d-none d-md-block">
                   <b>Registered Courses:</b> Software Engineering, Database
                   Management, Cybersecurity
                 </div>
               </div>
-              <div class="carousel-item">
-                <div class="row align-items-center justify-content-between">
-                  <div class="col-1"></div>
-                  <div class="col-6">
+              <div className="carousel-item">
+                <div className="row align-items-center justify-content-between">
+                  <div className="col-1"></div>
+                  <div className="col-6">
                     <img
                       src="/images/stu2.png"
-                      class="d-block w-100"
+                      className="d-block w-100"
                       alt="..."
                     />
                   </div>
-                  <div class="col-4">
+                  <div className="col-4">
                     <h2>NEEDA JOBSOON</h2>
-                    <p class="lead">
+                    <p className="lead">
                       <b>Age:</b> 20
                     </p>
                     <p>
@@ -314,26 +315,26 @@ const HomePage = () => {
                       real-world projects."
                     </p>
                   </div>
-                  <div class="col-1"></div>
+                  <div className="col-1"></div>
                 </div>
-                <div class="carousel-caption text-dark d-none d-md-block">
+                <div className="carousel-caption text-dark d-none d-md-block">
                   <b>Registered Courses:</b> Introduction to Computer Science,
                   Data Structures and Algorithms, Machine Learning
                 </div>
               </div>
-              <div class="carousel-item">
-                <div class="row align-items-center justify-content-between">
-                  <div class="col-1"></div>
-                  <div class="col-6">
+              <div className="carousel-item">
+                <div className="row align-items-center justify-content-between">
+                  <div className="col-1"></div>
+                  <div className="col-6">
                     <img
                       src="/images/stu3.png"
-                      class="d-block w-100"
+                      className="d-block w-100"
                       alt="..."
                     />
                   </div>
-                  <div class="col-4">
+                  <div className="col-4">
                     <h2>ADRAHMA QUEEN</h2>
-                    <p class="lead">
+                    <p className="lead">
                       <b>Age:</b> 17
                     </p>
                     <p>
@@ -351,37 +352,37 @@ const HomePage = () => {
                       through these courses."
                     </p>
                   </div>
-                  <div class="col-1"></div>
+                  <div className="col-1"></div>
                 </div>
-                <div class="carousel-caption text-dark d-none d-md-block">
+                <div className="carousel-caption text-dark d-none d-md-block">
                   <b>Registered Courses:</b> Networking Fundamentals, Cloud
                   Computing, Internet of Things
                 </div>
               </div>
             </div>
             <button
-              class="carousel-control-prev"
+              className="carousel-control-prev"
               type="button"
               data-bs-target="#carouselExampleCaptions"
               data-bs-slide="prev"
             >
               <span
-                class="carousel-control-prev-icon"
+                className="carousel-control-prev-icon"
                 aria-hidden="true"
               ></span>
-              <span class="visually-hidden">Previous</span>
+              <span className="visually-hidden">Previous</span>
             </button>
             <button
-              class="carousel-control-next"
+              className="carousel-control-next"
               type="button"
               data-bs-target="#carouselExampleCaptions"
               data-bs-slide="next"
             >
               <span
-                class="carousel-control-next-icon"
+                className="carousel-control-next-icon"
                 aria-hidden="true"
               ></span>
-              <span class="visually-hidden">Next</span>
+              <span className="visually-hidden">Next</span>
             </button>
           </div>
         </div>
