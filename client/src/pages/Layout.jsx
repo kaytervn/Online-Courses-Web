@@ -16,8 +16,10 @@ import logo from "../../images/cookiedu_logo.png";
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  console.log(user.picture);
 
+  useEffect(() => {
+    setTimeout(async () => {}, 0);
+  }, []);
 
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {
@@ -61,7 +63,7 @@ const Layout = () => {
                     <Nav.Link href="#action">My Courses</Nav.Link>
                   )}
                   <div className="d-flex align-items-center">
-                    {user.picture === null ? (
+                    {!user.picture ? (
                       <Image
                         src={userImage}
                         width="30"
@@ -75,7 +77,6 @@ const Layout = () => {
                       />
                     )}
                     )
-
                   </div>
                   <NavDropdown title={user.name}>
                     <NavDropdown.Item href="/my-profile">
