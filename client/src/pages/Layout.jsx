@@ -66,17 +66,19 @@ const Layout = () => {
                     
                   ) : user.role == Role.INSTRUCTOR ? (
                     <InstructorLayout />
-                  ) : (      
-                    //<Nav.Link href="#action">My Courses</Nav.Link>                              
+                  ) : (
                     <StudentLayout />
                   )}
                   <div className="d-flex align-items-center">
                     <Image
-                      src={user.picture === null || user.picture === "" ? userImage : user.picture}
+                      src={
+                        user.picture === null || user.picture === ""
+                          ? userImage
+                          : user.picture
+                      }
                       width="30"
                       className="rounded-circle"
                     />
-                    )
                   </div>
                   <NavDropdown title={user.name}>
                     <NavDropdown.Item href="/my-profile">
@@ -91,20 +93,13 @@ const Layout = () => {
               ) : (
                 <>
                   <Nav.Item>
-                    <Button className="btn-light" href="/cart">
-                      <i
-                        className="fa fa-shopping-cart me-1"
-                        aria-hidden="true"
-                      ></i>
-                      Cart
-                      <span className="badge bg-danger ms-1">0</span>
-                    </Button>
+                    <Nav.Link href="/list-courses">List Courses</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
                     <Nav.Link href="#action">Teach on COOKIEDU</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link href="/login" className="text-warning">
+                    <Nav.Link href="/login" className="text-warning me-2">
                       <i className="bi bi-door-open"></i> Sign in
                     </Nav.Link>
                   </Nav.Item>

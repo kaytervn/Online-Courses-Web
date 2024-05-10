@@ -17,6 +17,19 @@ const searchUserCourses = async ({
   return data;
 };
 
+const searchCourses = async ({ keyword, topic, page, sort }) => {
+  const res = await fetch("/api/courses/search-courses", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ keyword, topic, page, sort }),
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+};
+
 const getAllCourse = async () => {
   const res = await fetch("/api/courses/all", {
     method: "GET",
@@ -29,4 +42,4 @@ const getAllCourse = async () => {
   return data;
 };
 
-export { searchUserCourses, getAllCourse };
+export { searchUserCourses, getAllCourse, searchCourses };
