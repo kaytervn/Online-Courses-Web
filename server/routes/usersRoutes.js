@@ -6,7 +6,7 @@ import {
   forgotPassword,
   resetPassword,
   updateProfileInformation,
-  upLoadProfileImage,
+  changePassword,
   getUser,
   getUserListByRole,
   getUserByOther,
@@ -41,8 +41,8 @@ router.put(
   updateProfileInformation
 );
 
-//upload profile image
-router.patch("/upload-image", auth, upLoadProfileImage);
+// change password
+router.put("/change-password", auth, changePassword);
 
 //get all users by role
 router.get("/get-list-users/:role", auth, getUserListByRole);
