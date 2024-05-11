@@ -15,7 +15,7 @@ import styled from "styled-components";
 import { IoLogOut } from "react-icons/io5";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { Image, Navbar } from "react-bootstrap";
+import { Button, Image, Modal, Navbar } from "react-bootstrap";
 import logo from "../../images/cookiedu_logo.png";
 import "../styles/sidebar.css";
 
@@ -26,18 +26,28 @@ const AdminNavBar = () => {
   const [broken, setBroken] = useState(false);
   const [rtl, setRtl] = useState(false);
   const [hasImage, setHasImage] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   const SidebarContainer = styled.div`
     height: 100vh;
     width: 100%;
   `;
+
   const handleLogout = () => {
-    if (confirm("Confirm logout?")) {
-      setUser({ email: null, name: null, picture: null, role: null });
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      navigate("/");
-    }
+    setShowLogoutModal(true); // Hiển thị cửa sổ xác nhận khi nhấn logout
+  };
+
+  const confirmLogout = () => {
+    // Xử lý logout
+    setUser({ email: null, name: null, picture: null, role: null });
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/");
+    setShowLogoutModal(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false); // Ẩn cửa sổ xác nhận khi hủy logout
   };
   return (
     <SidebarContainer>
@@ -129,6 +139,22 @@ const AdminNavBar = () => {
               <MenuItem icon={<IoLogOut />} onClick={handleLogout}>
                 {" "}
                 Logout{" "}
+                <div>
+                  <Modal show={showLogoutModal} onHide={cancelLogout} centered>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Confirm Change</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to log out?</Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={cancelLogout}>
+                        Cancel
+                      </Button>
+                      <Button variant="primary" onClick={confirmLogout}>
+                        Confirm
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </div>
               </MenuItem>
             </Menu>
           </Sidebar>
