@@ -6,7 +6,7 @@ import userImage from "../../../../images/user.png";
 import { useNavigate } from 'react-router-dom';
 import { updateUserProfile } from '../../../services/usersService';
 import Alert from '../../../Components/Alert';
-
+import { Modal } from "react-bootstrap";
 
 
 const EditProfile = () => {
@@ -14,6 +14,7 @@ const EditProfile = () => {
     const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [userData, setUserData] = useState({
         name: user.name || '',
         picture: user.picture || '',
@@ -57,12 +58,21 @@ const EditProfile = () => {
                 picture: selectedImage || user.picture,
                 phone: userData.phone,
             })
-            navigate('/my-profile')
+            setShowLogoutModal(true);
+            // navigate('/my-profile')
         }
         catch (error) {
             setError(error.message);
         }
     };
+
+
+
+    const confirmLogout = () => {
+        navigate("/my-profile");
+        setShowLogoutModal(false);
+    };
+
 
     const handleCancel = (e) => {
         e.preventDefault();
@@ -168,6 +178,17 @@ const EditProfile = () => {
                         </Card>
                     </Col>
                 </Row>
+                <Modal show={showLogoutModal} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Information Update</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Update successfully</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={confirmLogout}>
+                            Continue
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Container>
         </section>
     );

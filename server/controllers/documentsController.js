@@ -1,7 +1,10 @@
+import mongoose from "mongoose";
 import Course from "../models/CourseModel.js";
 import Document from "../models/DocumentModel.js";
-import DocumentType from "../models/DocumentTypeEnum.js";
 import Lesson from "../models/LessonModel.js";
+import Role from "../models/RoleEnum.js";
+import User from "../models/UserModel.js";
+import cloudinary from "../utils/cloudinary.js";
 
 const getLessonDocuments = async (req, res) => {
   const { lessonId } = req.body;
@@ -21,22 +24,15 @@ const createDocument = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
-  const { title, type, description, lessonId } = req.body;
+  const { title, description, lessonId } = req.body;
 
   const lesson = await Lesson.findById(lessonId);
   if (!lesson) {
     return res.status(400).json({ error: "Lesson Not Found" });
   }
 
-  if (!title || !(type in DocumentType) || !description) {
+  if (!title || !description) {
     return res.status(400).json({ error: "All fields are required" });
-  }
-
-  let resourceType;
-  if (type == DocumentType.VDIEO) {
-    resourceType = "video";
-  } else {
-    resourceType = "raw";
   }
 
   const course = await Course.findById(lesson.courseId);
@@ -49,7 +45,7 @@ const createDocument = async (req, res) => {
     const uploadResponse = await new Promise((resolve, reject) => {
       const bufferData = req.file.buffer;
       cloudinary.uploader
-        .upload_stream({ resource_type: resourceType }, (error, result) => {
+        .upload_stream({ resource_type: "video" }, (error, result) => {
           if (error) {
             reject(error);
           } else {
@@ -63,7 +59,6 @@ const createDocument = async (req, res) => {
       cloudinary: uploadResponse.public_id,
       content: uploadResponse.secure_url,
       title,
-      type,
       description,
     });
     return res.status(200).json({ document });
