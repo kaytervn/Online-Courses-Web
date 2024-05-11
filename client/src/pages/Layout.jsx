@@ -44,11 +44,10 @@ const Layout = () => {
               <Image width="40" src={logo} />
               Users Management
             </Navbar.Brand>
-            
           ) : user.role == Role.INSTRUCTOR ? (
             <Navbar.Brand href="/">
               <Image width="40" src={logo} />
-              My Created Courses
+              My <span className="text-warning">Created</span> Courses
             </Navbar.Brand>
           ) : (
             <Navbar.Brand href="/">
@@ -63,7 +62,6 @@ const Layout = () => {
                 <>
                   {user.role == Role.ADMIN ? (
                     <AdminLayout />
-                    
                   ) : user.role == Role.INSTRUCTOR ? (
                     <InstructorLayout />
                   ) : (

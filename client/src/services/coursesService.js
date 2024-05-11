@@ -54,9 +54,25 @@ const changeCourseVisibility = async (_id) => {
   return data;
 };
 
+const createCourse = async (formData) => {
+  const res = await fetch(`/api/courses/create-course`, {
+    method: "POST",
+    body: formData,
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
 export {
   searchUserCourses,
   getAllCourse,
   searchCourses,
   changeCourseVisibility,
+  createCourse,
 };
