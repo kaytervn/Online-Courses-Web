@@ -5,7 +5,11 @@ const CourseCard = ({ course, children }) => {
         course.visibility ? "" : "text-white bg-warning opacity-50"
       }`}
     >
-      <img src={course.picture} className="card-img-top" />
+      <img
+        src={course.picture}
+        className="card-img-top object-fit-contain"
+        style={{ height: "200px" }}
+      />
       <div className="card-header">
         <h5>{course.title}</h5>
         <div className="d-flex align-items-center">
