@@ -174,6 +174,26 @@ const resetPassword = async (req, res) => {
 
 //***********************************************UPLOAD PROFILE IMAGE************************** */
 
+const updateProfileInformation = async (req, res) => {
+  try {
+    const { data, picture } = req.body;
+    console.log(data, picture);
+    const userId = req.user._id;
+    const user = await User.findByIdAndUpdate(userId, {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      picture: picture,
+    });
+
+    return res.status(200).json({ success: "Profile updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to update profile" });
+  }
+};
+
+//***********************************************UPLOAD PROFILE IMAGE************************** */
+
 const upLoadProfileImage = async (req, res) => {
   const { base64 } = req.body;
   const userId = req.user._id;
@@ -251,6 +271,7 @@ export {
   loginUser,
   forgotPassword,
   resetPassword,
+  updateProfileInformation,
   upLoadProfileImage,
   getUser,
   getUserListByRole,
