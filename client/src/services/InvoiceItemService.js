@@ -8,7 +8,20 @@ const getAllInvoiceItemsAdmin = async () => {
   });
 
   const { statistics, totalRevenuePage } = await res.json();
-  return {statistics, totalRevenuePage};
+  return { statistics, totalRevenuePage };
 };
 
-export { getAllInvoiceItemsAdmin };
+const getAllInvoiceItemsInstructor = async () => {
+  const res = await fetch(`/api/invoiceItems/all-courses/instructor`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+
+  const { statistics, totalRevenueInstructor } = await res.json();
+  return { statistics, totalRevenueInstructor };
+};
+
+export { getAllInvoiceItemsAdmin, getAllInvoiceItemsInstructor };
