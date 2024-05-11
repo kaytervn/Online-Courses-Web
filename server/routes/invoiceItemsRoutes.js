@@ -1,7 +1,10 @@
 import express from "express";
 
 import auth from "../middlewares/auth.js";
-import { getAllCourseStasticsAdmin } from "../controllers/InvoiceItemsController.js";
+import {
+  getAllCourseStasticsAdmin,
+  getAllCourseStasticsInstructor,
+} from "../controllers/InvoiceItemsController.js";
 
 const router = express.Router();
 
@@ -12,5 +15,6 @@ const router = express.Router();
 // router.post("/review_course", auth, reviewCourse);
 
 router.get("/all-courses", auth, getAllCourseStasticsAdmin);
+router.get("/all-courses/instructor", auth, getAllCourseStasticsInstructor);
 
 export { router as invoiceItemsRoutes };
