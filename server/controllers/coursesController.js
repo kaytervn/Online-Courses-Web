@@ -95,21 +95,17 @@ const searchUserCourses = async (req, res) => {
     const totalPages = Math.ceil(totalCount / limit);
     const skip = (page - 1) * limit;
 
-    let courses = await Course.find(query).skip(skip).limit(limit);
+    const courses = await Course.find(query)
+      .sort(sort === "title" ? { title: 1 } : { updatedAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    if (sort === "title") {
-      courses = await Course.find(query)
-        .sort({ title: 1 })
-        .skip(skip)
-        .limit(limit);
-    } else {
-      courses = await Course.find(query)
-        .sort({ updatedAt: -1 })
-        .skip(skip)
-        .limit(limit);
-    }
+    const newCourses = courses.map((course) => ({
+      ...course._doc,
+      instructorName: user.name,
+    }));
 
-    return res.status(200).json({ courses, totalPages });
+    return res.status(200).json({ courses: newCourses, totalPages });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -131,8 +127,10 @@ const getSortOption = (sort) => {
 };
 
 const searchCourses = async (req, res) => {
-  const { keyword, topic, page, sort } = req.body;
+  const { keyword, topic, page = 1, sort } = req.body;
   const limit = 6;
+  const skip = (page - 1) * limit;
+
   let query = { visibility: true, status: true };
 
   if (keyword.trim() !== "") {
@@ -147,16 +145,28 @@ const searchCourses = async (req, res) => {
   }
 
   try {
-    const totalCount = await Course.countDocuments(query);
+    const [totalCount, courses] = await Promise.all([
+      Course.countDocuments(query),
+      Course.find(query)
+        .sort(getSortOption(sort))
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+    ]);
+
     const totalPages = Math.ceil(totalCount / limit);
-    const skip = (page - 1) * limit;
 
-    const courses = await Course.find(query)
-      .sort(getSortOption(sort))
-      .skip(skip)
-      .limit(limit);
+    const newCourses = await Promise.all(
+      courses.map(async (course) => {
+        const user = await User.findById(course.userId);
+        return {
+          ...course,
+          instructorName: user.name,
+        };
+      })
+    );
 
-    return res.status(200).json({ courses, totalPages });
+    return res.status(200).json({ courses: newCourses, totalPages });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

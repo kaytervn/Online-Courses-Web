@@ -26,7 +26,6 @@ const searchCourses = async ({ keyword, topic, page, sort }) => {
     body: JSON.stringify({ keyword, topic, page, sort }),
   });
   const data = await res.json();
-  console.log(data);
   return data;
 };
 
