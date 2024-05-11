@@ -19,18 +19,26 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
-import { Table } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 
 import Image from "react-bootstrap/esm/Image";
 import "../../styles/dataTable.css";
-import UserDetail from "./UserDetail";
+import "../../styles/customBackdrop.css";
 import { useNavigate } from "react-router-dom";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+
   const navigate = useNavigate();
   useEffect(() => {
     setTimeout(async () => {
@@ -48,6 +56,30 @@ const UserManager = () => {
       }
     }, 0);
   }, [success, error]);
+
+  const cancelPopupStatus = () => {
+    setShowPopup(false);
+  };
+
+  const confirmChangeStatus = async (e) => {
+    e.preventDefault();
+    // Xử lý confirm change status
+    try {
+      const message = await changeUserStatus(userId);
+      setSuccess(message.success);
+      const students = await getUserListByRole(Role.STUDENT);
+      setUsers({ students });
+      setShowPopup(false);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleShowPopup = (e, id) => {
+    e.preventDefault();
+    setUserId(id);
+    setShowPopup(true);
+  };
 
   const columns = [
     {
@@ -82,21 +114,43 @@ const UserManager = () => {
     {
       name: "Status",
       selector: (row) => (
-        <div className="d-flex justify-content-center">
+        <div>
           {row.status ? (
-            <button
-              className="btn btn-success"
-              onClick={(e) => handleStatusChange(e, row._id)}
-            >
-              Enable
-            </button>
+            <div>
+              <button
+                className="btn btn-success"
+                onClick={(e) => handleShowPopup(e, row._id)}
+              >
+                Enable
+              </button>
+            </div>
           ) : (
-            <button
-              className="btn btn-danger"
-              onClick={(e) => handleStatusChange(e, row._id)}
-            >
-              Disable
-            </button>
+            <div>
+              <Modal show={showPopup} onHide={cancelPopupStatus} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Confirm Change</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  Are you sure you want to change status this student?
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={cancelPopupStatus}>
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    onClick={(e) => {
+                      confirmChangeStatus(e, row._id);
+                    }}
+                  >
+                    Confirm
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+              <button className="btn btn-danger" onClick={handleShowPopup}>
+                Disable
+              </button>
+            </div>
           )}
         </div>
       ),
@@ -122,20 +176,6 @@ const UserManager = () => {
       ),
     },
   ];
-
-  const handleStatusChange = async (e, id) => {
-    e.preventDefault();
-    if (confirm("Confirm change status for this student?")) {
-      try {
-        const message = await changeUserStatus(id);
-        setSuccess(message.success);
-        const students = await getUserListByRole(Role.STUDENT);
-        setUsers({ students });
-      } catch (err) {
-        setError(err.message);
-      }
-    }
-  };
 
   const handleGotoDetail = async (e, id) => {
     e.preventDefault();
