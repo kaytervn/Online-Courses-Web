@@ -121,10 +121,7 @@ const AdminNavBar = () => {
                 {" "}
                 Revenue Statistics
               </MenuItem>
-              <MenuItem
-                component={<Link to="/create/instructor" />}
-                icon={<BarChart />}
-              >
+              <MenuItem component={<Link to="/register" />} icon={<BarChart />}>
                 {" "}
                 Add Instructor Account
               </MenuItem>
