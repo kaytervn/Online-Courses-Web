@@ -1,8 +1,9 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from '../../Components/Alert';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
 import React from 'react';
 import { CDBBtn, CDBIcon } from 'cdbreact';
 import { registerUser } from '../../services/usersService';
@@ -12,6 +13,7 @@ import Container from 'react-bootstrap/esm/Container';
 const Register = () => {
 
     const [error, setError] = useState(null)
+    const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -25,12 +27,12 @@ const Register = () => {
         e.preventDefault();
         try {
             await registerUser(formData.name, formData.email, formData.password, formData.confirmPassword);
-            navigate('/login')
+            setUser({ email: formData.email });
+            navigate('/otp-authentication')
         }
         catch (error) {
             setError(error.message);
         }
-
     };
     return (
         <Container className='d-flex justify-content-center align-items-center' style={{ height: '100vh' }}>

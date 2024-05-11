@@ -1,3 +1,23 @@
+//***********************************************SEND OTP************************** */
+
+const checkOTPUser = async (email, otp) => {
+  const res = await fetch("/api/users/otp-authentication", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, otp }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+
+  return data;
+};
+
 //***********************************************REGISTER USER************************** */
 
 const registerUser = async (name, email, password, confirmPassword) => {
@@ -23,8 +43,40 @@ const registerUser = async (name, email, password, confirmPassword) => {
     throw Error(data.error);
   }
 
-  localStorage.setItem("token", data.token);
+  return data;
+};
 
+//***********************************************REGISTER INSSTRUCTOR************************** */
+
+const registerInstructor = async (
+  name,
+  email,
+  password,
+  confirmPassword,
+  role
+) => {
+  if (!name || !email || !password || !confirmPassword) {
+    throw Error("Please fill all the fields");
+  }
+
+  if (password !== confirmPassword) {
+    throw Error("Passwords do not match!");
+  }
+
+  const res = await fetch("/api/users/register/instructor", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({ name, email, password, role }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
   return data;
 };
 
@@ -50,7 +102,7 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
-  localStorage.setItem("cartId",data.cartId);
+  localStorage.setItem("cartId", data.cartId);
 
   console.log("user:", localStorage.getItem("token", data.token));
   console.log("cart:", localStorage.getItem("cartId", data.token));
@@ -148,14 +200,36 @@ const updateUserProfile = async (formData) => {
     if (!res.ok) {
       throw new Error(data.error || "Failed to update profile");
     }
-    console.log(data);
-    return data;
   } catch (error) {
-    console.error("Failed to update profile:", error.message);
-    throw error;
+    throw Error(error.message);
   }
 };
 
+//***********************************************REGISTER USER************************** */
+
+const changePassword = async (password, new_password, confirm_password) => {
+  if (!password || !new_password || !confirm_password) {
+    throw Error("Please fill all the fields");
+  }
+  if (new_password !== confirm_password) {
+    throw Error("Passwords do not match!");
+  }
+
+  const res = await fetch("/api/users/change-password", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({ password, new_password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+};
 //***********************************************GET USER************************** */
 const getUser = async (token) => {
   const res = await fetch("/api/users/", {
@@ -194,14 +268,29 @@ const changeUserStatus = async (id) => {
   return data;
 };
 
+const getUserByOther = async (id) => {
+  const res = await fetch(`/api/users/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const { user } = await res.json();
+  return user;
+};
+
 export {
   registerUser,
+  registerInstructor,
+  checkOTPUser,
   loginUser,
   loginUserSocial,
   checkEmailUser,
   resetPasswordUser,
   updateUserProfile,
+  changePassword,
   getUser,
   getUserListByRole,
   changeUserStatus,
+  getUserByOther,
 };

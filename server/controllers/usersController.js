@@ -7,6 +7,8 @@ import nodemailer from "nodemailer";
 import cloudinary from "../utils/cloudinary.js";
 import { createCartForUser } from "./cartsController.js";
 import Cart from "../models/CartModel.js";
+import Role from "../models/RoleEnum.js";
+import OTP from "otp-generator";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
@@ -42,13 +44,97 @@ const registerUser = async (req, res) => {
       const salt = await bcrypt.genSalt(); //default is 10 times
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
-      const user = await User.create({ email, password: hashed, name });
+      //generate otp
+      const otp = OTP.generate(6, {
+        digit: true,
+        lowerCaseAlphabets: false,
+        upperCaseAlphabets: false,
+        specialChars: false,
+      });
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      var mailOptions = {
+        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
+        to: `${email}`,
+        subject: "Your OTP to verify your email",
+        text: `${otp}`,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return res.status(500).json({ error: error.message });
+        } else {
+          return res.status(200).json({ success: "Email sent!" });
+        }
+      });
+
+      console.log("OTP:", otp);
+      const user = await User.create({ email, password: hashed, name, otp });
+      const cart = await createCartForUser(user._id);
+      // const token = createToken(user._id);
+      res.status(200).json({ success: "Register successful!", user });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+};
+
+const registerInstructor = async (req, res) => {
+  const { name, email, password } = req.body;
+  const userAuth = await User.findById(req.user._id);
+  if (userAuth.role != "ADMIN") {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  //check params user enter
+  if (!email || !password || !name) {
+    res.status(400).json({ error: "All fields are required!" });
+  }
+
+  // check email exist
+  const user = await User.findOne({ email });
+
+  if (user) {
+    res.status(400).json({ error: "Email already existed!" });
+  } else {
+    try {
+      //hash password
+      const salt = await bcrypt.genSalt(); //default is 10 times
+      const hashed = await bcrypt.hash(password, salt); //this is password after hashed
+
+      const user = await User.create({
+        email,
+        password: hashed,
+        name,
+        role: Role.INSTRUCTOR,
+      });
       const cart = await createCartForUser(user._id);
       const token = createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  }
+};
+
+//***********************************************CHECK EMAIL AND OTP USER************************** */
+
+const checkEmailOTPUser = async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email });
+
+  if (otp == user.otp) {
+    await user.updateOne({ status: true });
+    return res.status(200).json({ success: "Email verified!" });
+  } else {
+    return res.status(400).json({ error: "OTP is incorrect!" });
   }
 };
 
@@ -183,13 +269,14 @@ const resetPassword = async (req, res) => {
 //***********************************************UPLOAD PROFILE IMAGE************************** */
 
 const updateProfileInformation = async (req, res) => {
-  const { name, picture, email, phone } = req.body;
-  console.log(name, picture, email, phone);
+  const { name, picture, phone } = req.body;
+  console.log(name, picture, phone);
   const userId = req.user._id;
   const user = await User.findById(userId);
+
   try {
-    if (req.file && course.cloudinary) {
-      await cloudinary.uploader.destroy(course.cloudinary);
+    if (req.file && user.cloudinary) {
+      await cloudinary.uploader.destroy(user.cloudinary);
       const uploadResponse = await new Promise((resolve, reject) => {
         const bufferData = req.file.buffer;
         cloudinary.uploader
@@ -210,31 +297,56 @@ const updateProfileInformation = async (req, res) => {
 
     await user.updateOne({
       name: name,
-      email: email,
       phone: phone,
     });
     console.log("Success: Profile updated successfully");
     return res.status(200).json({ success: "Profile updated successfully" });
   } catch (error) {
-    console.log("Error:", error.message);
-    return res.status(500).json({ error: "Failed to update profile" });
+    return res.status(500).json({ error: error.message });
   }
 };
 
-//***********************************************UPLOAD PROFILE IMAGE************************** */
+// //***********************************************UPLOAD PROFILE IMAGE************************** */
 
-const upLoadProfileImage = async (req, res) => {
-  const { base64 } = req.body;
+const changePassword = async (req, res) => {
+  const { password, new_password } = req.body;
   const userId = req.user._id;
-  console.log(userId);
-  console.log("Link:", base64);
+  const user = await User.findById(userId);
   try {
-    await User.findByIdAndUpdate({ _id: userId }, { picture: base64 });
-    return res.status(200).json({ success: "Successful" });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(400).json({ error: "Current password is incorrect!" });
+    } else {
+      try {
+        const salt = await bcrypt.genSalt();
+        const hashed = await bcrypt.hash(new_password, salt);
+        await user.updateOne({ password: hashed });
+        return res
+          .status(200)
+          .json({ success: "Password updated successfully" });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    }
   } catch (error) {
-    return res.status(500).json({ error: "Error" });
+    return res.status(500).json({ error: error.message });
   }
 };
+
+// //***********************************************UPLOAD PROFILE IMAGE************************** */
+
+// const upLoadProfileImage = async (req, res) => {
+//   const { base64 } = req.body;
+//   const userId = req.user._id;
+//   console.log(userId);
+//   console.log("Link:", base64);
+//   try {
+//     await User.findByIdAndUpdate({ _id: userId }, { picture: base64 });
+//     return res.status(200).json({ success: "Successful" });
+//   } catch (error) {
+//     return res.status(500).json({ error: "Error" });
+//   }
+// };
 
 //***********************************************GET ALL USER BY ROLE************************** */
 const getUserListByRole = async (req, res) => {
@@ -296,12 +408,14 @@ const getUserByOther = async (req, res) => {
 
 export {
   registerUser,
+  registerInstructor,
+  checkEmailOTPUser,
   loginUserSocial,
   loginUser,
   forgotPassword,
   resetPassword,
   updateProfileInformation,
-  upLoadProfileImage,
+  changePassword,
   getUser,
   getUserListByRole,
   changeUserStatus,

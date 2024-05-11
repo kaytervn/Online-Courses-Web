@@ -23,8 +23,12 @@ import CoursePage from "./pages/students/CoursePage";
 import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
+
 import RevenueStatistic from "./pages/admin/RevenueStatistic";
 import EditCourseIntro from "./pages/instructors/EditCourseIntro";
+import UserDetail from "./pages/admin/UserDetail";
+
+import ChangePassword from "./pages/users/MyProfilePage/ChangePassword";
 import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
 import CreateLesson from "./pages/instructors/CreateLesson";
 import CheckoutPage from "./pages/students/CheckoutPage";
@@ -32,6 +36,8 @@ import MyCoursePage from "./pages/students/MyCoursePage";
 import UpdateLesson from "./pages/instructors/UpdateLesson";
 import UpdateLessonDetails from "./pages/instructors/UpdateLessonDetails";
 import CreateDocument from "./pages/instructors/CreateDocument";
+import InstructorRegister from "./pages/admin/InstructorRegister";
+import OTPAuthentication from "./pages/users/OTPAuthentication";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -67,6 +73,8 @@ const App = () => {
               <Route path="/instructor" element={<InstructorManager />} />
               <Route path="/course" element={<CourseManager />} />
               <Route path="/statistics" element={<RevenueStatistic />} />
+              <Route path="/user" element={<UserDetail />} />
+              <Route path="/register" element={<InstructorRegister />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
@@ -115,12 +123,17 @@ const App = () => {
             <>
               <Route path="/my-profile" element={<MyProfilePage />}></Route>
               <Route path="/my-profile/edit" element={<EditProfile />}></Route>
+              <Route
+                path="/my-profile/change-password"
+                element={<ChangePassword />}
+              ></Route>
             </>
           )}
           <Route element={<GuestRoutes />}>
             <Route path="/list-courses" element={<CoursePage />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/otp-authentication" element={<OTPAuthentication />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route
               path="/reset-password/:id/:token"
