@@ -40,32 +40,6 @@ const getCart = async () => {
 };
 
 
-// const addToCart = async (courseId, setNotification) => {
-//   const cartId = localStorage.getItem("cartId")
-//   console.log("Attempting to add to cart:", courseId, "Cart ID:", cartId);
-//   try {
-//     const response = await fetch(`/api/carts/addToCart`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${localStorage.getItem("token")}`,
-//       },
-//       body: JSON.stringify({ courseId, cartId }),
-//     });
-//     const data = await response.json();
-//     if (response.ok) {
-//       setNotification({
-//         message: "Thêm vào giỏ hàng thành công!",
-//         type: "success"
-//       });
-//     } else {
-//       throw new Error(data.message || "Không thể thêm vào giỏ hàng.");
-//     }
-//   } catch (error) {
-//     setNotification({ message: error.toString(), type: "error" });
-//     console.error("Error adding to cart:", error);
-//   }
-// };
 
 
 const removeFromCart = async (cartId, courseId) => {
@@ -95,41 +69,24 @@ const removeFromCart = async (cartId, courseId) => {
   }
 };
 
-// // Hàm này được sử dụng để xóa một khóa học khỏi giỏ hàng.
-// const removeFromCart = async (cartId, courseId, setCartItems, setNotification) => {
-//   try {
-//     const response = await fetch(`/api/carts/removeFromCart/${cartId}/${courseId}`, {
-//       method: "DELETE", // Phương thức DELETE được sử dụng cho yêu cầu xóa.
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${localStorage.getItem("token")}`, // Thêm token xác thực người dùng.
-//       },
-//     });
-
-//     const data = await response.json(); // Phân tích dữ liệu JSON trả về từ server.
-
-//     if (response.ok) {
-//       console.log("Removed successfully:", data.message); // Log thông báo thành công từ server.
-
-//       // Cập nhật trạng thái giỏ hàng để loại bỏ mặt hàng đã xóa.
-//       setCartItems(prevItems => prevItems.filter(item => item.course._id !== courseId));
-
-//       // Cập nhật thông báo cho người dùng
-//       setNotification({
-//         message: "Xóa khóa học khỏi giỏ hàng thành công!",
-//         type: "success"
-//       });
-
-//       return true; // Trả về true để chỉ ra rằng việc xóa đã thành công.
-//     } else {
-//       throw new Error(data.error || "Failed to remove item from cart."); // Ném lỗi nếu API trả về lỗi.
-//     }
-//   } catch (error) {
-//     console.error("Error removing from cart:", error.message); // Log lỗi nếu có.
-//     setNotification({ message: error.toString(), type: "error" }); // Cập nhật thông báo lỗi cho người dùng.
-//     return false; // Trả về false để chỉ ra rằng việc xóa không thành công.
-//   }
-// };
+const addToCart = async (courseId) => {
+  const cartId = localStorage.getItem("cartId");
+  const response = await fetch(`/api/carts/addToCart`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({ courseId, cartId }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || "Không thể thêm vào giỏ hàng.");
+  }
+  console.log(data);
+  return data; // Trả về dữ liệu để hiển thị toast
+};
 
 
-export { getCart, removeFromCart};
+
+export { getCart, removeFromCart, addToCart };

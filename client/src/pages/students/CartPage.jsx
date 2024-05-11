@@ -8,6 +8,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import { CartContext } from "../../contexts/CartContext";
+import { Link } from "react-router-dom";
 
 
 const CartPage = () => {
@@ -30,7 +31,7 @@ const CartPage = () => {
       console.error("Error fetching data: ", error);
     }
   };
-
+  console.log("item:" , cartItems)
   const updateTotalPrice = (items) => {
     const total = items.reduce((acc, item) => acc + item.course.price, 0);
     setTotalPrice(total);
@@ -79,9 +80,11 @@ const CartPage = () => {
               <Card.Text>
                 Total Price: <strong>${totalPrice.toFixed(2)}</strong>
               </Card.Text>
-              <Button variant="primary" block>
-                Checkout
-              </Button>
+              <Link to="/checkout">
+                <Button variant="primary" block>
+                  Checkout
+                </Button>
+              </Link>
             </Card.Body>
           </Card>
         </Col>

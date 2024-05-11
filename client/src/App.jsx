@@ -20,6 +20,8 @@ import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
+import CheckoutPage from "./pages/students/CheckoutPage";
+import MyCoursePage from "./pages/students/MyCoursePage";
 
 
 const App = () => {
@@ -71,6 +73,8 @@ const App = () => {
               <Route index element={<HomePage />} />
               <Route path="/list-courses" element={<CoursePage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
+              <Route path="/checkout" element={<CheckoutPage />}></Route>
+              <Route path="/my-course" element={<MyCoursePage />}></Route>
             </>
           )}
           {user.token && (

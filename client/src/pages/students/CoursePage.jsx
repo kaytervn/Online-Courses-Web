@@ -9,7 +9,8 @@ import imgSample from "../../../images/course.png";
 import { useNotification } from "../../contexts/NotificationContext ";
 //import { addToCart } from "../../services/cartsService.js";
 import { Toast, ToastContainer } from "react-bootstrap";
-
+import { addToCart, getCart } from "../../services/cartsService.js";
+import { CartContext } from "../../contexts/CartContext";
 
 const CoursePage = () => {
   const { courses, setCourses } = useContext(CoursesContext);
@@ -20,13 +21,13 @@ const CoursePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pages, setPages] = useState([]);
-  const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ message: "", type: "" });
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
-  const [reload, setReload] = useState(false);
-  const { addNotification } = useNotification();
+  const { setItemCount } = useContext(CartContext);
+  const [cartItems, setCartItems] = useState([]);
+
   const topics = [
     "ALL",
     Topic.WEB,
@@ -36,35 +37,25 @@ const CoursePage = () => {
     Topic.GAME,
     Topic.SOFTWARE,
   ];
+  
   const handleAddToCart = async (courseId) => {
-    const cartId = localStorage.getItem("cartId");
     try {
-      const response = await fetch(`/api/carts/addToCart`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ courseId, cartId }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setToastMessage("Thêm vào giỏ hàng thành công!");
-        setToastType("success");
-        window.location.reload();
-      } else {
-        throw new Error(data.error || "Không thể thêm vào giỏ hàng.");
-      }
+      
+      const result = await addToCart(courseId); 
+      setToastMessage("Thêm vào giỏ hàng thành công!");
+      setToastType("success");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 5000);
+      fetchData();
+      setItemCount(cartItems.length +1 );     
     } catch (error) {
       setToastMessage(error.toString());
       setToastType("danger");
-    } finally {
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 5000); 
+      setTimeout(() => setShowToast(false), 5000);
     }
   };
+
   // Simpler Toast Component
   const renderToast = () => {
     if (!showToast) return null;
@@ -108,6 +99,7 @@ const CoursePage = () => {
   };
 
   useEffect(() => {
+    fetchData();
     if (notification.message) {
       if (notification.type === "success") {
         updateDisplay();
@@ -119,7 +111,16 @@ const CoursePage = () => {
       setLoading(false);
     }, 100);
   }, [searchValue, selectedTopic, selectedSort, currentPage, notification]);
-
+const fetchData = async () => {
+  try {
+    const data = await getCart();
+    if (data) {
+      setCartItems(data.courseDetails);
+    }
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  }
+};
   return (
     <>
       {/* {notification.message && (
