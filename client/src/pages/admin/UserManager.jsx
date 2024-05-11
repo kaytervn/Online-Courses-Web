@@ -19,7 +19,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
-import { Button, Modal, Table } from "react-bootstrap";
+import { Button, Modal, Table, Toast, ToastContainer } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 
 import Image from "react-bootstrap/esm/Image";
@@ -29,12 +29,8 @@ import { useNavigate } from "react-router-dom";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-
   const [showPopup, setShowPopup] = useState(false);
   const [userId, setUserId] = useState(null);
-
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
@@ -44,18 +40,8 @@ const UserManager = () => {
     setTimeout(async () => {
       const students = await getUserListByRole(Role.STUDENT);
       setUsers({ students });
-
-      if (success || error) {
-        const timer = setTimeout(() => {
-          setSuccess("");
-          setError("");
-        }, 2000);
-
-        // Xóa timeout khi component unmount
-        return () => clearTimeout(timer);
-      }
     }, 0);
-  }, [success, error]);
+  }, []);
 
   const cancelPopupStatus = () => {
     setShowPopup(false);
@@ -66,12 +52,19 @@ const UserManager = () => {
     // Xử lý confirm change status
     try {
       const message = await changeUserStatus(userId);
-      setSuccess(message.success);
       const students = await getUserListByRole(Role.STUDENT);
       setUsers({ students });
       setShowPopup(false);
+      setToastMessage(message.success);
+      setToastType("success");
+      if (showToast) setShowToast(false);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3004);
     } catch (err) {
-      setError(err.message);
+      setToastMessage(err.toString());
+      setToastType("danger");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3004);
     }
   };
 
@@ -126,28 +119,10 @@ const UserManager = () => {
             </div>
           ) : (
             <div>
-              <Modal show={showPopup} onHide={cancelPopupStatus} centered>
-                <Modal.Header closeButton>
-                  <Modal.Title>Confirm Change</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  Are you sure you want to change status this student?
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={cancelPopupStatus}>
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={(e) => {
-                      confirmChangeStatus(e, row._id);
-                    }}
-                  >
-                    Confirm
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-              <button className="btn btn-danger" onClick={handleShowPopup}>
+              <button
+                className="btn btn-danger"
+                onClick={(e) => handleShowPopup(e, row._id)}
+              >
                 Disable
               </button>
             </div>
@@ -192,6 +167,31 @@ const UserManager = () => {
     );
     setUsers({ students: newStudents });
   }
+
+  // Simpler Toast Component
+  const renderToast = () => {
+    if (!showToast) return null;
+    return (
+      <ToastContainer
+        className="p-3"
+        position="top-end"
+        style={{ position: "fixed", top: 0, right: 0, zIndex: 1050 }}
+      >
+        <Toast
+          onClose={() => setShowToast(false)}
+          bg={toastType}
+          delay={10000}
+          autohide
+        >
+          <Toast.Header>
+            <strong className="me-auto">Thông Báo</strong>
+            <small>Just now</small>
+          </Toast.Header>
+          <Toast.Body style={{ color: "white" }}>{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+    );
+  };
   return (
     <Row className="ms-(-6) me-0">
       <Col md={3}>
@@ -199,10 +199,30 @@ const UserManager = () => {
       </Col>
       <Col md={8}>
         <Container>
+          {renderToast()}
+          <Modal show={showPopup} onHide={cancelPopupStatus} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Change</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Are you sure you want to change status this student?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={cancelPopupStatus}>
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={(e) => {
+                  confirmChangeStatus(e, userId);
+                }}
+              >
+                Confirm
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <h1 className="mt-3 mb-3"> Students Manager</h1>
 
-          {success && <Alert msg={success} type="success" />}
-          {error && <Alert msg={error} type="error" />}
           <div className="text-end mb-3 mt-3">
             <div className="input-group news-input">
               <span className="input-group-text">
