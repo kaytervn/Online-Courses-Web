@@ -102,38 +102,36 @@ const InstructorManager = () => {
   }
 
   return (
-    <div>
-      <Row>
-        <Col md={3}>
-          <AdminNavBar />
-        </Col>
-        <Col md={8}>
-          {success && <Alert msg={success} type="success" />}
-          {error && <Alert msg={error} type="error" />}
-          <div className="text-end mb-3 mt-3">
-            <div className="input-group news-input">
-              <span className="input-group-text">
-                <i className="fa fa-search" aria-hidden="true"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                id="searchInput"
-                placeholder="Search..."
-                onChange={handleSearch}
-              />
-            </div>
+    <Row>
+      <Col md={3}>
+        <AdminNavBar />
+      </Col>
+      <Col md={8}>
+        {success && <Alert msg={success} type="success" />}
+        {error && <Alert msg={error} type="error" />}
+        <div className="text-end mb-3 mt-3">
+          <div className="input-group news-input">
+            <span className="input-group-text">
+              <i className="fa fa-search" aria-hidden="true"></i>
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              id="searchInput"
+              placeholder="Search..."
+              onChange={handleSearch}
+            />
           </div>
-          <DataTable
-            columns={columns}
-            data={users.instructors}
-            fixedHeader
-            pagination
-            customStyles={customStyles}
-          ></DataTable>
-        </Col>
-      </Row>
-    </div>
+        </div>
+        <DataTable
+          columns={columns}
+          data={users.instructors}
+          fixedHeader
+          pagination
+          customStyles={customStyles}
+        ></DataTable>
+      </Col>
+    </Row>
   );
 };
 

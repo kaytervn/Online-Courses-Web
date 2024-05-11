@@ -5,17 +5,37 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { SubMenu } from "react-pro-sidebar";
 import { Service } from "../../images/icons/Service";
 import { menuClasses } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUsersBetweenLines } from "react-icons/fa6";
-import { PiStudent } from "react-icons/pi";
+import { PiStudentBold } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 import { FaBook } from "react-icons/fa6";
 import { BarChart } from "../../images/icons/BarChart";
 import styled from "styled-components";
+import { IoLogOut } from "react-icons/io5";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 const AdminNavBar = () => {
+  const { setUser } = useContext(UserContext);
+     const [collapsed, setCollapsed] = useState(false);
+     const [toggled, setToggled] = useState(false);
+     const [broken, setBroken] = useState(false);
+     const [rtl, setRtl] = useState(false);
+     const [hasImage, setHasImage] = useState(false);
+
+
+  const navigate = useNavigate();
   const SidebarContainer = styled.div`
     height: 100vh;
   `;
+  const handleLogout = () => {
+    if (confirm("Confirm logout?")) {
+      setUser({ email: null, name: null, picture: null, role: null });
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      navigate("/");
+    }
+  };
   return (
     <SidebarContainer>
       <div style={{ display: "flex", height: "100%" }}>
@@ -57,7 +77,7 @@ const AdminNavBar = () => {
                 label="User Manager"
                 icon={<FaUsersBetweenLines />}
               >
-                <MenuItem icon={<PiStudent />} component={<Link to="/" />}>
+                <MenuItem icon={<PiStudentBold />} component={<Link to="/" />}>
                   Student Manager
                 </MenuItem>
                 <MenuItem
@@ -73,6 +93,11 @@ const AdminNavBar = () => {
               </MenuItem>
 
               <MenuItem icon={<BarChart />}> Revenue statistics</MenuItem>
+
+              <MenuItem icon={<IoLogOut />} onClick={handleLogout}>
+                {" "}
+                Logout{" "}
+              </MenuItem>
             </Menu>
           </Sidebar>
         </div>
