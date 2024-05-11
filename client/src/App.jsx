@@ -26,7 +26,8 @@ import CourseManager from "./pages/admin/CourseManager";
 import CourseIntro from "./pages/instructors/CourseIntro";
 import RevenueStatistic from "./pages/admin/RevenueStatistic";
 import EditCourseIntro from "./pages/instructors/EditCourseIntro";
-
+import CheckoutPage from "./pages/students/CheckoutPage";
+import MyCoursePage from "./pages/students/MyCoursePage";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -88,6 +89,8 @@ const App = () => {
               <Route index element={<HomePage />} />
               <Route path="/cart" element={<CartPage />}></Route>
               <Route path="/list-courses" element={<CoursePage />}></Route>
+              <Route path="/checkout" element={<CheckoutPage />}></Route>
+              <Route path="/my-course" element={<MyCoursePage />}></Route>
             </>
           )}
           {user.token && (

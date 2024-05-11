@@ -16,6 +16,7 @@ const createCartForUser = async (userId) => {
 const addToCart = async (req, res) => {
   const { cartId, courseId } = req.body;
   const userId = req.user._id; // Lấy từ middleware xác thực
+  console.log(`Cart ID: ${cartId}, Course ID: ${courseId}`);
 
   if (!cartId || !courseId) {
     return res.status(400).json({ error: "All fields are required" });
@@ -67,10 +68,11 @@ const addToCart = async (req, res) => {
       cartItem,
       courseDetails,
     };
-
+  console.log("them thanh cong");
     res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({ error: error.message });
+    console.log("them ko thanh cong");
   }
 };
 
