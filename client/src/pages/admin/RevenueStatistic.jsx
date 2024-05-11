@@ -34,19 +34,12 @@ const RevenueStatistic = () => {
   useEffect(() => {
     setTimeout(async () => {
       const statistics = await getAllInvoiceItemsAdmin();
-      setStatistics({ statistics });
-
-      if (success || error) {
-        const timer = setTimeout(() => {
-          setSuccess("");
-          setError("");
-        }, 2000);
-
-        // Xóa timeout khi component unmount
-        return () => clearTimeout(timer);
-      }
+      setStatistics({
+        listStatistics: statistics.statistics,
+        totalRevenuePage: statistics.totalRevenuePage,
+      });
     }, 0);
-  }, [success, error]);
+  }, []);
 
   const columns = [
     {
@@ -57,13 +50,21 @@ const RevenueStatistic = () => {
       textAlign: "center",
     },
     {
-      name: "Student Name",
-      selector: (row) => row.userName,
+      name: "Instructor Name",
+      selector: (row) => row.instructorName,
+      sortable: true,
+      // width: "200px",
+      textAlign: "center",
+    },
+    {
+      name: "Total Buyers",
+      selector: (row) => row.totalBuyers,
       sortable: true,
     },
     {
-      name: "Course Price",
-      selector: (row) => row.coursePrice,
+      name: "Total Revenue",
+      selector: (row) => row.totalRevenue,
+      sortable: true,
     },
   ];
 
@@ -104,11 +105,15 @@ const RevenueStatistic = () => {
           </div>
           <DataTable
             columns={columns}
-            data={statistics.statistics}
+            data={statistics.listStatistics}
             fixedHeader
             pagination
             customStyles={customStyles}
           ></DataTable>
+          <h2 className="text-end mt-3">
+            {" "}
+            Tổng doanh thu hệ thống: {statistics.totalRevenuePage}{" "}
+          </h2>
         </Container>
       </Col>
     </Row>

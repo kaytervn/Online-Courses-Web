@@ -1,5 +1,5 @@
 const getAllInvoiceItemsAdmin = async () => {
-  const res = await fetch(`/api/invoiceItems/all/`, {
+  const res = await fetch(`/api/invoiceItems/all-courses/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -7,8 +7,8 @@ const getAllInvoiceItemsAdmin = async () => {
     },
   });
 
-  const { statistics } = await res.json();
-  return statistics;
+  const { statistics, totalRevenuePage } = await res.json();
+  return {statistics, totalRevenuePage};
 };
 
 export { getAllInvoiceItemsAdmin };

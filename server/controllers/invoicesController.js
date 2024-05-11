@@ -47,6 +47,7 @@ const checkout = async (req, res) => {
       const invoiceItem = new InvoiceItem({
         invoiceId: invoice._id,
         courseId: item.courseId,
+        
       });
       await invoiceItem.save({ session });
     }

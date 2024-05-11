@@ -4,7 +4,8 @@ export const StatisticsContext = createContext();
 
 const StatisticsProvider = ({ children }) => {
   const [statistics, setStatistics] = useState({
-    statistics: [],
+    listStatistics: [],
+    totalRevenuePage: 0,
   });
 
   return (

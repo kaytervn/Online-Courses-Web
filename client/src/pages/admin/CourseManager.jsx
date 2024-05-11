@@ -166,7 +166,7 @@ const CourseManager = () => {
   }
 
   return (
-    <Row>
+    <Row className="ms-(-6) me-0">
       <Col md={3}>
         <AdminNavBar />
       </Col>
