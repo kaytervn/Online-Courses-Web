@@ -69,7 +69,6 @@ const UpdateCourseIntro = () => {
                           if (index < Math.floor(formData.averageStars)) {
                             return (
                               <i key={index} className="bi bi-star-fill">
-                                {" "}
                               </i>
                             );
                           } else if (
