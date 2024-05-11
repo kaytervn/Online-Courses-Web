@@ -5,20 +5,23 @@ import UserProvider from "./contexts/UserContext.jsx";
 import UsersProvider from "./contexts/UsersContext.jsx";
 import CartProvider from "./contexts/CartContext.jsx";
 import CoursesProvider from "./contexts/CoursesContext.jsx";
+import NotificationProvider from "./contexts/NotificationContext .jsx";
+import StatisticsProvider from "./contexts/StatisticsContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CoursesProvider>
+    <StatisticsProvider>
       <CartProvider>
-        <CoursesProvider>
-          <UsersProvider>
-            <UserProvider>
-              <App />
-            </UserProvider>
-          </UsersProvider>
-        </CoursesProvider>
+        <NotificationProvider>
+          <CoursesProvider>
+            <UsersProvider>
+              <UserProvider>
+                <App />
+              </UserProvider>
+            </UsersProvider>
+          </CoursesProvider>
+        </NotificationProvider>
       </CartProvider>
-    </CoursesProvider>
-
+    </StatisticsProvider>
   </React.StrictMode>
 );

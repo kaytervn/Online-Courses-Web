@@ -6,6 +6,7 @@ import "dotenv/config.js";
 import nodemailer from "nodemailer";
 import cloudinary from "../utils/cloudinary.js";
 import { createCartForUser } from "./cartsController.js";
+import Cart from "../models/CartModel.js";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
@@ -88,14 +89,20 @@ const loginUser = async (req, res) => {
   //encrypt hash password
   // check password
   const match = await bcrypt.compare(password, user.password);
-
+  let cart = await Cart.findOne({ userId: user._id });
+  if (!cart) {
+    // Assuming Cart model exists and you have a logic to create a new cart
+    cart = await Cart.create({ userId: user._id });
+  }
   // const passwordCheck = await User.findOne({compare})
   if (!match) {
     return res.status(400).json({ error: "Password is incorrect!" });
   }
 
   try {
-    return res.status(200).json({ email, token, role: user.role });
+    return res
+      .status(200)
+      .json({ email, token, role: user.role, cartId: cart._id });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -179,26 +186,32 @@ const updateProfileInformation = async (req, res) => {
   const { name, picture, email, phone } = req.body;
   console.log(name, picture, email, phone);
   const userId = req.user._id;
+  const user = await User.findById(userId);
   try {
-    const uploadResponse = await new Promise((resolve, reject) => {
-      const bufferData = req.file.buffer;
-      cloudinary.uploader
-        .upload_stream({ resource_type: "image" }, (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        })
-        .end(bufferData);
-    });
+    if (req.file && course.cloudinary) {
+      await cloudinary.uploader.destroy(course.cloudinary);
+      const uploadResponse = await new Promise((resolve, reject) => {
+        const bufferData = req.file.buffer;
+        cloudinary.uploader
+          .upload_stream({ resource_type: "image" }, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          })
+          .end(bufferData);
+      });
+      await user.updateOne({
+        picture: uploadResponse.secure_url,
+        cloudinary: uploadResponse.public_id,
+      });
+    }
 
-    const user = await User.findByIdAndUpdate(userId, {
+    await user.updateOne({
       name: name,
       email: email,
       phone: phone,
-      cloudinary: uploadResponse.public_id,
-      picture: uploadResponse.secure_url,
     });
     console.log("Success: Profile updated successfully");
     return res.status(200).json({ success: "Profile updated successfully" });

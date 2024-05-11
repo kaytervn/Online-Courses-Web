@@ -47,6 +47,7 @@ const checkout = async (req, res) => {
       const invoiceItem = new InvoiceItem({
         invoiceId: invoice._id,
         courseId: item.courseId,
+        
       });
       await invoiceItem.save({ session });
     }
@@ -106,6 +107,7 @@ const myInvoice = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 const getMyCourses = async (req, res) => {
   const userId = req.user._id;
   try {
