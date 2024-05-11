@@ -30,7 +30,7 @@ const Register = () => {
         catch (error) {
             setError(error.message);
         }
-        // console.log(formData);
+
     };
     return (
         <Container className='d-flex justify-content-center align-items-center' style={{ height: '100vh' }}>

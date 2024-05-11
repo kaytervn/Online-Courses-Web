@@ -10,6 +10,8 @@ import { cartsRoutes } from "./routes/cartsRouter.js";
 import { lessonsRoutes } from "./routes/lessonsRoutes.js";
 import { documentsRoutes } from "./routes/documentsRoutes.js";
 import { commentsRoutes } from "./routes/commentsRoutes.js";
+import { invoicesRoutes } from "./routes/invoicesRoutes.js";
+import { reviewsRoutes } from "./routes/reviewsRoutes.js";
 
 const app = express();
 
@@ -40,6 +42,8 @@ app.use("/api/carts", cartsRoutes);
 app.use("/api/lessons", lessonsRoutes);
 app.use("/api/documents", documentsRoutes);
 app.use("/api/comments", commentsRoutes);
+app.use("/api/invoices", invoicesRoutes);
+app.use("/api/reviews", reviewsRoutes);
 app.use("/auth", authsRoutes);
 
 // Connect to the MongoDB database

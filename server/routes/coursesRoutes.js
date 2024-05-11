@@ -13,6 +13,9 @@ import {
   findCourse,
   updateCourseIntro,
   deleteCourse,
+  getCourse,
+  changeCourseStatus,
+  searchCourses,
 } from "../controllers/coursesController.js";
 
 const storage = multer.memoryStorage();
@@ -38,9 +41,13 @@ router.get("/user-courses", auth, getUserCourses);
 
 // search user (instructor created) courses
 router.post("/search-user-courses", auth, searchUserCourses);
+router.post("/search-courses", searchCourses);
 
 // change course visibilily
 router.put("/change-course-visibility/:id", auth, changeCourseVisibility);
+
+// change course status
+router.put("/change-course-status/:id", auth, changeCourseStatus);
 
 //get all Courses
 router.get("/all", getAllCourses);
@@ -49,6 +56,7 @@ router.get("/getNewestCourse", getNewestCourse);
 
 router.get("/getBestSellerCourse", getBestSellerCourse);
 
-router.get("/find/:str", findCourse);
+router.get("/find_course/:str", findCourse);
 
+router.get("/get_course/:id", getCourse);
 export { router as coursesRoutes };

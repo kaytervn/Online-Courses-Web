@@ -15,7 +15,6 @@ const ForgotPassword = () => {
   const [error, setError] = useState(null);
 
   const [success, setSuccess] = useState(null);
-  // Form data state
   const [email, setEmail] = useState("");
 
   //Handle login
@@ -24,7 +23,6 @@ const ForgotPassword = () => {
     try {
       await checkEmailUser(email);
 
-      // Redirect to login page
       navigate("/login");
     } catch (err) {
       setError(err.message);

@@ -1,14 +1,20 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "../../Components/Alert";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { CDBBtn, CDBIcon } from "cdbreact";
-import { getUser, loginUser } from "../../services/usersService";
+import {
+  getUser,
+  loginUser,
+  loginUserSocial,
+} from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import Container from "react-bootstrap/esm/Container";
+
+import Role from "../../../../server/models/RoleEnum";
 
 const Login = () => {
   const { setUser } = useContext(UserContext);
@@ -25,19 +31,24 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = await loginUser(email, password);
-      
       const token = data.token;
-
-      const user = await getUser(token);
+      const dataUser = await getUser(token);
       setUser({
+        // id: dataUser._id,
         token,
-        email:user.email,
-        name: user.name,
-        picture: user.picture,
-        role: user.role,
+        email: dataUser.email,
+        name: dataUser.name,
+        picture: dataUser.picture,
+        role: dataUser.role,
       });
-      
-      navigate("/");
+
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -45,31 +56,101 @@ const Login = () => {
 
 
 
-
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async (e) => {
     window.open("http://localhost:5000/auth/google", "_self");
-  };
-
-  const handleFacebookLogin = async () => {
+    e.preventDefault();
     try {
-      window.open(`http://localhost:5000/auth/facebook`, "_self");
+      const data = await loginUserSocial();
+      const token = data.token;
+      const dataUser = await getUser(token);
+      setUser({
+        token,
+        email: dataUser.user.email,
+        name: dataUser.user.name,
+        picture: dataUser.user.picture,
+        role: dataUser.user.role,
+      });
+
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
-      console.error("Error logging in with Facebook:", err);
+      setError(err.message);
     }
   };
 
-  const handleGithubLogin = async () => {
+  const handleFacebookLogin = async (e) => {
+    window.open(`http://localhost:5000/auth/facebook`, "_self");
+
+    e.preventDefault();
     try {
-      window.open(`http://localhost:5000/auth/github`, "_self");
+      const data = await loginUserSocial();
+      const token = data.token;
+      const dataUser = await getUser(token);
+      setUser({
+        token,
+        email: dataUser.user.email,
+        name: dataUser.user.name,
+        picture: dataUser.user.picture,
+        role: dataUser.user.role,
+      });
+
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
-      console.error("Error logging in with Github:", err);
+      setError(err.message);
+    }
+  };
+
+  const handleGithubLogin = async (e) => {
+    window.open(`http://localhost:5000/auth/github`, "_self");
+    e.preventDefault();
+    try {
+      const data = await loginUserSocial();
+      const token = data.token;
+      const dataUser = await getUser(token);
+      setUser({
+        token,
+        email: dataUser.user.email,
+        name: dataUser.user.name,
+        picture: dataUser.user.picture,
+        role: dataUser.user.role,
+      });
+
+      if (dataUser.user.role === Role.ADMIN) {
+        navigate("/admin");
+      } else if (dataUser.user === Role.INSTRUCTOR) {
+        navigate("/instructor");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-      <section className="card shadow-lg p-5 bg-body-tertiary rounded-4" style={{ width: '400px' }}>
-        <h3 className="title fw-medium mb-5 d-flex justify-content-center"> Log in</h3>
-        <form onSubmit={handleLogin} >
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "100vh" }}
+    >
+      <section
+        className="card shadow-lg p-5 bg-body-tertiary rounded-4"
+        style={{ width: "400px" }}
+      >
+        <h3 className="title fw-medium mb-5 d-flex justify-content-center">
+          {" "}
+          Log in
+        </h3>
+        <form onSubmit={handleLogin}>
           <div className="mb-5 row">
             <input
               type="email"
@@ -90,7 +171,13 @@ const Login = () => {
             />
           </div>
 
-          <button className="btn btn-success mb-4 d-flex justify-content-center" style={{ marginLeft: '38%' }}> Login</button>
+          <button
+            className="btn btn-success mb-4 d-flex justify-content-center"
+            style={{ marginLeft: "38%" }}
+          >
+            {" "}
+            Login
+          </button>
 
           <div className="other-login">
             <p className="text-center"> or sign up with</p>
@@ -121,7 +208,11 @@ const Login = () => {
               </CDBBtn>
             </div>
           </div>
-          <Link to="/forgot-password" className="fs-6 fst-italic fw-lighter d-flex justify-content-center" style={{ textDecoration: 'none' }}>
+          <Link
+            to="/forgot-password"
+            className="fs-6 fst-italic fw-lighter d-flex justify-content-center"
+            style={{ textDecoration: "none" }}
+          >
             Forgot password
           </Link>
         </form>
@@ -129,7 +220,6 @@ const Login = () => {
         {error && <Alert msg={error} type="error" />}
       </section>
     </Container>
-
   );
 };
 

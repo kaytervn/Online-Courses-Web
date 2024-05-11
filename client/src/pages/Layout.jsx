@@ -4,51 +4,120 @@ import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { getUser } from "../services/usersService";
 import userImage from "../../images/user.png";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
+import Role from "../../../server/models/RoleEnum.js";
+import InstructorLayout from "../Components/InstructorLayout";
+import AdminLayout from "../Components/AdminLayout.jsx";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Button from "react-bootstrap/Button";
+import logo from "../../images/cookiedu_logo.png";
+
+import AdminNavBar from "../Components/AdminNavBar.jsx";
+
+import StudentLayout from "../Components/StudentLayout.jsx";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setTimeout(async () => {}, 0);
+  }, []);
+
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {
       setUser({ email: null, name: null, picture: null, role: null });
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       navigate("/");
     }
   };
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary mb-3">
-        <Container>
-          <Navbar.Brand href="/">Home</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              {user.token ? (
-                <>
-                  <Image
-                    src={userImage || user.image}
-                    style={{ width: "40px", height: "40px" }}
-                    className="me-2"
-                  ></Image>
-                  <Navbar.Text>{user.name}</Navbar.Text>
-                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                </>
-              ) : (
-                <>
-                  <Nav.Link href="/login">Login</Nav.Link>
-                  <Nav.Link href="/register">Register</Nav.Link>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+
+      {user.role == Role.ADMIN ? null : (
+        <Navbar expand="lg" className="bg-dark navbar-dark">
+          <Container className="py-2">
+            {user.role == Role.INSTRUCTOR ? (
+              <Navbar.Brand href="/">
+                <Image width="40" src={logo} />
+                My Created Courses
+              </Navbar.Brand>
+            ) : (
+              <Navbar.Brand href="/">
+                <Image width="40" src={logo} />
+                <span className="text-warning">COOKI</span>EDU
+              </Navbar.Brand>
+            )}
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="ms-auto">
+                {user.token ? (
+                  <>
+                    {user.role == Role.ADMIN ? (
+                      <AdminLayout />
+                    ) : user.role == Role.INSTRUCTOR ? (
+                      <InstructorLayout />
+                    ) : (
+                      //<Nav.Link href="#action">My Courses</Nav.Link>
+                      <StudentLayout />
+                    )}
+                    <div className="d-flex align-items-center">
+                      <Image
+                        src={
+                          user.picture === null || user.picture === ""
+                            ? userImage
+                            : user.picture
+                        }
+                        width="30"
+                        className="rounded-circle"
+                      />
+                    </div>
+                    <NavDropdown title={user.name}>
+                      <NavDropdown.Item href="/my-profile">
+                        My Profile
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item onClick={handleLogout}>
+                        Log out
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </>
+                ) : (
+                  <>
+                    <Nav.Item>
+                      <Button className="btn-light" href="/cart">
+                        <i
+                          className="fa fa-shopping-cart me-1"
+                          aria-hidden="true"
+                        ></i>
+                        Cart
+                        <span className="badge bg-danger ms-1">0</span>
+                      </Button>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link href="#action">Teach on COOKIEDU</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link href="/login" className="text-warning">
+                        <i className="bi bi-door-open"></i> Sign in
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Button className="btn-primary" href="/register">
+                        Register
+                      </Button>
+                    </Nav.Item>
+                  </>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      )}
       <Outlet />
     </>
   );

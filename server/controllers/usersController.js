@@ -50,6 +50,23 @@ const registerUser = async (req, res) => {
   }
 };
 
+//***********************************************LOGIN USER SOCIAL************************** */
+
+const loginUserSocial = async (req, res) => {
+  if (req.user) {
+    const user = await User.findById(req.user._id);
+    const token = createToken(user._id);
+    res.status(200).json({
+      success: true,
+      message: "successfull",
+      user: user,
+      token,
+      role: user.role,
+      //   cookies: req.cookies
+    });
+  }
+};
+
 //***********************************************LOGIN USER************************** */
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -77,7 +94,7 @@ const loginUser = async (req, res) => {
   }
 
   try {
-    return res.status(200).json({ email, token });
+    return res.status(200).json({ email, token, role: user.role });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -155,6 +172,21 @@ const resetPassword = async (req, res) => {
   });
 };
 
+//***********************************************UPLOAD PROFILE IMAGE************************** */
+
+const upLoadProfileImage = async (req, res) => {
+  const { base64 } = req.body;
+  const userId = req.user._id;
+  console.log(userId);
+  console.log("Link:", base64);
+  try {
+    await User.findByIdAndUpdate({ _id: userId }, { picture: base64 });
+    return res.status(200).json({ success: "Successful" });
+  } catch (error) {
+    return res.status(500).json({ error: "Error" });
+  }
+};
+
 //***********************************************GET ALL USER BY ROLE************************** */
 const getUserListByRole = async (req, res) => {
   const role = req.params.role;
@@ -196,6 +228,7 @@ const changeUserStatus = async (req, res) => {
     return res.status(200).json({
       success: "User status Was Updated",
       status: user.status,
+      user,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -214,20 +247,13 @@ const getUserByOther = async (req, res) => {
 
 export {
   registerUser,
+  loginUserSocial,
   loginUser,
   forgotPassword,
   resetPassword,
+  upLoadProfileImage,
   getUser,
   getUserListByRole,
   changeUserStatus,
   getUserByOther,
 };
-
-// const getUser = async (req, res) => {
-//   const user = await User.findById(req.user._id);
-//   try {
-//     return res.status(200).json({ user });
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
