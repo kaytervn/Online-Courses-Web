@@ -15,8 +15,12 @@ const MyProfilePage = () => {
         navigate("/my-profile/edit");
     };
 
+    const handleChangePassword = () => {
+        navigate("/my-profile/change-password");
+    };
+
     return (
-        <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
+        <section className="vh-90" style={{ backgroundColor: '#f4f5f7' }}>
             <Container className="py-5 h-100">
                 <Row className="justify-content-center align-items-center h-100">
                     <Col lg="6" className="mb-4 mb-lg-0">
@@ -41,7 +45,7 @@ const MyProfilePage = () => {
 
                                 </Col>
                                 <Col md="8">
-                                    <Card.Body className="p-4">
+                                    <Card.Body className="p-4 shadow bg-body-tertiary rounded" style={{ backgroundColor: "#f8f9fa" }}>
                                         <Card.Title as="h4">Information</Card.Title>
                                         <hr className="mt-0 mb-4" />
                                         <Row className="pt-1">
@@ -73,7 +77,14 @@ const MyProfilePage = () => {
                                             <a href="#!" className="me-3"><i className="fab fa-twitter fa-lg"></i></a>
                                             <a href="#!" className="me-3"><i className="fab fa-instagram fa-lg"></i></a>
                                         </div>
+
+                                        <div className='text-center mt-5'>
+                                            <Button variant="outline-primary" size="sm" as="span" onClick={handleChangePassword}>
+                                                Change Password
+                                            </Button>
+                                        </div>
                                     </Card.Body>
+
                                 </Col>
                             </Row>
                         </Card>
