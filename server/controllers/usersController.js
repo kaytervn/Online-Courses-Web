@@ -10,7 +10,6 @@ import Cart from "../models/CartModel.js";
 import Role from "../models/RoleEnum.js";
 import OTP from "otp-generator";
 
-
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
@@ -87,7 +86,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-
 const registerInstructor = async (req, res) => {
   const { name, email, password } = req.body;
   const userAuth = await User.findById(req.user._id);
@@ -111,13 +109,20 @@ const registerInstructor = async (req, res) => {
       const salt = await bcrypt.genSalt(); //default is 10 times
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
-      const user = await User.create({ email, password: hashed, name, role: Role.INSTRUCTOR});
+      const user = await User.create({
+        email,
+        password: hashed,
+        name,
+        role: Role.INSTRUCTOR,
+      });
       const cart = await createCartForUser(user._id);
       const token = createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  }
+};
 
 //***********************************************CHECK EMAIL AND OTP USER************************** */
 
@@ -130,7 +135,6 @@ const checkEmailOTPUser = async (req, res) => {
     return res.status(200).json({ success: "Email verified!" });
   } else {
     return res.status(400).json({ error: "OTP is incorrect!" });
-
   }
 };
 
