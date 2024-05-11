@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import {
   registerUser,
   loginUser,
@@ -14,6 +15,8 @@ import {
 import auth from "../middlewares/auth.js";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // register user
 router.post("/register", registerUser);
@@ -31,7 +34,12 @@ router.post("/reset-password/:id/:token", resetPassword);
 router.get("/", auth, getUser);
 
 // update profile information
-router.put("/update-profile", auth, updateProfileInformation);
+router.put(
+  "/update-profile",
+  auth,
+  upload.single("picture"),
+  updateProfileInformation
+);
 
 //upload profile image
 router.patch("/upload-image", auth, upLoadProfileImage);
