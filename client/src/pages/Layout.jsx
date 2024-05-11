@@ -13,9 +13,6 @@ import AdminLayout from "../Components/AdminLayout.jsx";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import logo from "../../images/cookiedu_logo.png";
-
-import AdminNavBar from "../Components/AdminNavBar.jsx";
-
 import StudentLayout from "../Components/StudentLayout.jsx";
 
 const Layout = () => {
