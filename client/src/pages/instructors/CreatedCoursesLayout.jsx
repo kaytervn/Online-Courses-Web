@@ -1,5 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { searchUserCourses } from "../../services/coursesService";
+import {
+  changeCourseVisibility,
+  searchUserCourses,
+} from "../../services/coursesService";
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import CourseCard from "../../Components/CourseCard";
 import Topic from "../../../../server/models/TopicEnum.js";
@@ -9,6 +12,11 @@ import "../../styles/cardHover.css";
 const CreatedCourses = () => {
   const { user, setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState({
+    message: "",
+    variant: "",
+  });
+
   const [searchValue, setSearchValue] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("ALL");
   const [selectedVisibility, setSelectedVisibility] = useState("ALL");
@@ -28,7 +36,17 @@ const CreatedCourses = () => {
   ];
   const visibilities = ["ALL", true, false];
 
-  const handleChangeVisibility = (courseId) => {};
+  const handleChangeVisibility = async (courseId) => {
+    if (confirm("Confirm change visibility?")) {
+      try {
+        const data = await changeCourseVisibility(courseId);
+        setAlert({ ...alert, message: data.success, variant: "success" });
+      } catch (error) {
+        setAlert({ ...alert, message: error.message, variant: "danger" });
+      }
+      setAlert({ ...alert, message: "", variant: "" });
+    }
+  };
 
   const updateDisplay = async () => {
     const data = await searchUserCourses({
@@ -58,6 +76,7 @@ const CreatedCourses = () => {
     selectedVisibility,
     selectedSort,
     currentPage,
+    alert,
   ]);
 
   return (
@@ -99,127 +118,135 @@ const CreatedCourses = () => {
           {loading ? (
             <AnimatedProgressBar />
           ) : (
-            <div className="row">
-              <div className="col-2">
-                <div className="input-group pb-4">
-                  <span className="input-group-text bg-warning text-light">
-                    <i className="fa fa-sort" aria-hidden="true"></i>
-                  </span>
-                  <select
-                    className="form-select"
-                    value={selectedSort}
-                    onChange={(e) => {
-                      e.preventDefault();
-                      setSelectedSort(e.target.value);
-                    }}
-                  >
-                    <option value="lastUpdated">Last Updated</option>
-                    <option value="title">Title</option>
-                  </select>
-                </div>
-                <ul className="list-group pb-4">
-                  <li className="list-group-item bg-warning text-light text-center">
-                    <b>Visibility</b>
-                  </li>
-                  {visibilities.map((visibility) => (
-                    <li className="list-group-item" key={visibility}>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value={visibility}
-                          checked={selectedVisibility === visibility}
-                          onChange={(e) => {
-                            e.preventDefault();
-                            setSelectedVisibility(visibility);
-                            setCurrentPage(1);
-                          }}
-                        />
-                        <label className="form-check-label">
-                          {visibility === false
-                            ? "PRIVATE"
-                            : visibility === true
-                            ? "PUBLIC"
-                            : visibility}
-                        </label>
-                      </div>
+            <>
+              {alert.message != "" && (
+                <MyAlert msg={alert.message} variant={alert.variant} />
+              )}
+              <div className="row">
+                <div className="col-2">
+                  <div className="input-group pb-4">
+                    <span className="input-group-text bg-warning text-light">
+                      <i className="fa fa-sort" aria-hidden="true"></i>
+                    </span>
+                    <select
+                      className="form-select"
+                      value={selectedSort}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setSelectedSort(e.target.value);
+                      }}
+                    >
+                      <option value="lastUpdated">Last Updated</option>
+                      <option value="title">Title</option>
+                    </select>
+                  </div>
+                  <ul className="list-group pb-4">
+                    <li className="list-group-item bg-warning text-light text-center">
+                      <b>Visibility</b>
                     </li>
-                  ))}
-                </ul>
-                <ul className="list-group">
-                  <li className="list-group-item bg-warning text-light text-center">
-                    <b>Topic</b>
-                  </li>
-                  {topics.map((topic) => (
-                    <li className="list-group-item" key={topic}>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value={topic}
-                          checked={selectedTopic === topic}
-                          onChange={(e) => {
-                            e.preventDefault();
-                            setSelectedTopic(topic);
-                            setCurrentPage(1);
-                          }}
-                          id={`radio-${topic}`}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={`radio-${topic}`}
-                        >
-                          {topic.toUpperCase()}
-                        </label>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="col">
-                <div className="row row-cols-1 row-cols-md-3 g-4 pb-4">
-                  {user.createdCourses.length === 0 ? (
-                    <p className="fs-2 text-center text-danger">Not Found.</p>
-                  ) : (
-                    <>
-                      {user.createdCourses.map((course) => (
-                        <div key={course._id}>
-                          <CourseCard
-                            course={course}
-                            instructorName={user.name}
-                          >
-                            <div className="pe-2 flex-grow-1">
-                              <a href="" className="btn btn-outline-dark w-100">
-                                <i className="bi bi-pencil-square"></i> Edit
-                              </a>
-                            </div>
-                            {course.visibility == false ? (
-                              <div
-                                className="btn btn-outline-danger"
-                                onClick={() =>
-                                  handleChangeVisibility(course._id)
-                                }
-                              >
-                                <i className="bi bi-eye-slash"></i>
-                              </div>
-                            ) : (
-                              <div
-                                className="btn btn-outline-success"
-                                onClick={() =>
-                                  handleChangeVisibility(course._id)
-                                }
-                              >
-                                <i class="bi bi-eye"></i>
-                              </div>
-                            )}
-                          </CourseCard>
+                    {visibilities.map((visibility) => (
+                      <li className="list-group-item" key={visibility}>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            value={visibility}
+                            checked={selectedVisibility === visibility}
+                            onChange={(e) => {
+                              e.preventDefault();
+                              setSelectedVisibility(visibility);
+                              setCurrentPage(1);
+                            }}
+                          />
+                          <label className="form-check-label">
+                            {visibility === false
+                              ? "PRIVATE"
+                              : visibility === true
+                              ? "PUBLIC"
+                              : visibility}
+                          </label>
                         </div>
-                      ))}
-                    </>
-                  )}
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="list-group">
+                    <li className="list-group-item bg-warning text-light text-center">
+                      <b>Topic</b>
+                    </li>
+                    {topics.map((topic) => (
+                      <li className="list-group-item" key={topic}>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            value={topic}
+                            checked={selectedTopic === topic}
+                            onChange={(e) => {
+                              e.preventDefault();
+                              setSelectedTopic(topic);
+                              setCurrentPage(1);
+                            }}
+                            id={`radio-${topic}`}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={`radio-${topic}`}
+                          >
+                            {topic.toUpperCase()}
+                          </label>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="col">
+                  <div className="row row-cols-1 row-cols-md-3 g-4 pb-4">
+                    {user.createdCourses.length === 0 ? (
+                      <p className="fs-2 text-center text-danger">Not Found.</p>
+                    ) : (
+                      <>
+                        {user.createdCourses.map((course) => (
+                          <div key={course._id}>
+                            <CourseCard
+                              course={course}
+                              instructorName={user.name}
+                            >
+                              <div className="pe-2 flex-grow-1">
+                                <a
+                                  href=""
+                                  className="btn btn-outline-dark w-100"
+                                >
+                                  <i className="bi bi-pencil-square"></i> Edit
+                                </a>
+                              </div>
+                              {course.visibility == false ? (
+                                <div
+                                  className="btn btn-outline-success"
+                                  onClick={() =>
+                                    handleChangeVisibility(course._id)
+                                  }
+                                >
+                                  <i className="bi bi-eye"></i>
+                                </div>
+                              ) : (
+                                <div
+                                  className="btn btn-outline-danger"
+                                  onClick={() =>
+                                    handleChangeVisibility(course._id)
+                                  }
+                                >
+                                  <i className="bi bi-eye-slash"></i>
+                                </div>
+                              )}
+                            </CourseCard>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </section>

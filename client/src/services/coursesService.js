@@ -42,4 +42,21 @@ const getAllCourse = async () => {
   return data;
 };
 
-export { searchUserCourses, getAllCourse, searchCourses };
+const changeCourseVisibility = async (_id) => {
+  const res = await fetch(`/api/courses/change-course-visibility/${_id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+
+export {
+  searchUserCourses,
+  getAllCourse,
+  searchCourses,
+  changeCourseVisibility,
+};
