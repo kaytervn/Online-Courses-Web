@@ -29,6 +29,18 @@ const searchCourses = async ({ keyword, topic, page, sort }) => {
   return data;
 };
 
+const getCourse = async (_id) => {
+  const res = await fetch(`/api/courses/get_course/${_id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const { course, reviews, averageStars } = await res.json();
+  return { course, reviews, averageStars };
+};
+
 const getAllCourse = async () => {
   const res = await fetch("/api/courses/all", {
     method: "GET",
@@ -74,4 +86,5 @@ export {
   searchCourses,
   changeCourseVisibility,
   createCourse,
+  getCourse,
 };

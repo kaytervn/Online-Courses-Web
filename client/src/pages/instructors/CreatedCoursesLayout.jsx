@@ -8,6 +8,7 @@ import CourseCard from "../../Components/CourseCard";
 import Topic from "../../../../server/models/TopicEnum.js";
 import { UserContext } from "../../contexts/UserContext";
 import "../../styles/cardHover.css";
+import { Link } from "react-router-dom";
 
 const CreatedCourses = () => {
   const { user, setUser } = useContext(UserContext);
@@ -206,12 +207,14 @@ const CreatedCourses = () => {
                           <div key={course._id}>
                             <CourseCard course={course}>
                               <div className="pe-2 flex-grow-1">
-                                <a
-                                  href="/course-intro"
+                                <Link
+                                  to="/update-course-intro"
+                                  title="Edit"
+                                  state={course}
                                   className="btn btn-outline-dark w-100"
                                 >
                                   <i className="bi bi-pencil-square"></i> Edit
-                                </a>
+                                </Link>
                               </div>
                               {course.visibility == false ? (
                                 <div
