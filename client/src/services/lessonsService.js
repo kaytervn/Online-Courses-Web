@@ -26,4 +26,35 @@ const createLesson = async ({ courseId, title, description }) => {
   return data;
 };
 
-export { getCourseLessons, createLesson };
+const updateLesson = async ({ _id, title, description }) => {
+  const res = await fetch(`/api/lessons/update-lesson/${_id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({ title, description }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
+const deleteLesson = async (_id) => {
+  const res = await fetch(`/api/lessons/delete-lesson/${_id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
+export { getCourseLessons, createLesson, updateLesson, deleteLesson };

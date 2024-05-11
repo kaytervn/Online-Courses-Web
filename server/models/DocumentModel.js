@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import DocumentType from "./DocumentTypeEnum.js";
 
 const DocumentSchema = new mongoose.Schema(
   {
@@ -14,11 +13,6 @@ const DocumentSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: true,
-    },
-    type: {
-      type: String,
-      enum: Object.values(DocumentType),
       required: true,
     },
     description: {

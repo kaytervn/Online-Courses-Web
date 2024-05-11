@@ -13,6 +13,7 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "cdbreact": "^1.5.19",
+    "cloudinary-video-player": "^2.0.2",
     "install": "^0.13.0",
     "mdb-react-ui-kit": "^8.0.0",
     "npm": "^10.7.0",

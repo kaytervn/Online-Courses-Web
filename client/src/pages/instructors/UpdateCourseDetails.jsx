@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getCourseLessons } from "../../services/lessonsService";
+import { deleteLesson, getCourseLessons } from "../../services/lessonsService";
 import CourseIntroView from "../../Components/CourseIntroView";
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import LessonCard from "../../Components/LessonCard";
 import { deleteCourse } from "../../services/coursesService";
+import { MyAlert } from "../../Components/CustomAlert";
 
 const UpdateCourseDetails = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState({
+    message: "",
+    variant: "",
+  });
   const [formData, setFormData] = useState({
     _id: state._id,
     userId: state.userId,
@@ -35,7 +40,7 @@ const UpdateCourseDetails = () => {
   }, []);
 
   const handleDelete = async (_id) => {
-    if (confirm("Confirm delete?")) {
+    if (confirm("Confirm delete course?")) {
       try {
         await deleteCourse(_id);
         navigate("/");
@@ -43,6 +48,22 @@ const UpdateCourseDetails = () => {
         console.log(error.message);
       }
     }
+  };
+
+  const handleDeleteLesson = async (_id) => {
+    if (confirm("Confirm delete lesson?")) {
+      try {
+        const data = await deleteLesson(_id);
+        setAlert({ ...alert, message: data.success, variant: "success" });
+        const newLessons = formData.lessons.filter(
+          (lesson) => lesson._id != _id
+        );
+        setFormData({ ...formData, lessons: newLessons });
+      } catch (error) {
+        setAlert({ ...alert, message: error.message, variant: "danger" });
+      }
+    }
+    setTimeout(() => setAlert({ ...alert, message: "", variant: "" }), 2000);
   };
 
   return (
@@ -74,9 +95,31 @@ const UpdateCourseDetails = () => {
                 </p>
               ) : (
                 <>
+                  {alert.message != "" && (
+                    <div style={{ width: "1000px" }}>
+                      <MyAlert msg={alert.message} variant={alert.variant} />
+                    </div>
+                  )}
                   {formData.lessons.map((lesson) => (
                     <div key={lesson._id}>
-                      <LessonCard lesson={lesson}></LessonCard>
+                      <LessonCard lesson={lesson}>
+                        <Link to="/update-lesson" state={lesson}>
+                          <button className="btn btn-primary me-2">
+                            <i className="bi bi-pencil-square"></i>
+                          </button>
+                        </Link>
+                        <button
+                          className="btn btn-danger me-2"
+                          onClick={() => handleDeleteLesson(lesson._id)}
+                        >
+                          <i className="bi bi-trash-fill"></i>
+                        </button>
+                        <Link to="/update-lesson-details" state={lesson}>
+                          <button className="btn btn-success">
+                            Edit Lesson
+                          </button>
+                        </Link>
+                      </LessonCard>
                     </div>
                   ))}
                 </>
