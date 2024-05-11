@@ -151,10 +151,11 @@ const searchCourses = async (req, res) => {
     const totalPages = Math.ceil(totalCount / limit);
     const skip = (page - 1) * limit;
 
-    let courses = await Course.find(query)
+    const courses = await Course.find(query)
       .sort(getSortOption(sort))
       .skip(skip)
       .limit(limit);
+
     return res.status(200).json({ courses, totalPages });
   } catch (error) {
     return res.status(500).json({ error: error.message });
