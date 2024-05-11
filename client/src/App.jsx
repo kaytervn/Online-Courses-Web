@@ -35,6 +35,7 @@ import CheckoutPage from "./pages/students/CheckoutPage";
 import MyCoursePage from "./pages/students/MyCoursePage";
 import InstructorRegister from "./pages/admin/InstructorRegister";
 import OTPAuthentication from "./pages/users/OTPAuthentication";
+import CourseIntroPage from "./pages/students/CourseIntroPage";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -105,6 +106,7 @@ const App = () => {
               <Route path="/list-courses" element={<CoursePage />}></Route>
               <Route path="/checkout" element={<CheckoutPage />}></Route>
               <Route path="/my-course" element={<MyCoursePage />}></Route>
+              <Route path="/course-intro" element={<CourseIntroPage />}></Route>
             </>
           )}
           {user.token && (
