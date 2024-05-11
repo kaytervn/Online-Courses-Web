@@ -194,7 +194,7 @@ const CoursePage = () => {
                                 href=""
                                 className="btn btn-outline-primary w-100"
                               >
-                                View Details
+                                View Intro
                               </a>
                             </div>
                             <a
