@@ -117,6 +117,20 @@ const editCourseIntro = async ({ _id, formData }) => {
   return data;
 };
 
+const deleteCourse = async (_id) => {
+  const res = await fetch(`/api/courses/delete-course/${_id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
 export {
   searchUserCourses,
   getAllCourse,
@@ -127,4 +141,5 @@ export {
   changeCourseStatus,
   getAllCourseAdmin,
   editCourseIntro,
+  deleteCourse,
 };

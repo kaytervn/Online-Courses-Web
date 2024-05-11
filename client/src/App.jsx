@@ -24,6 +24,8 @@ import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
 import EditCourseIntro from "./pages/instructors/EditCourseIntro";
+import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
+import CreateLesson from "./pages/instructors/CreateLesson";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -68,6 +70,11 @@ const App = () => {
               <Route
                 path="/update-course-intro"
                 element={<UpdateCourseIntro />}
+              ></Route>
+              <Route path="/create-lesson" element={<CreateLesson />}></Route>
+              <Route
+                path="/update-course-details"
+                element={<UpdateCourseDetails />}
               ></Route>
               <Route
                 path="/personal-revenue"
