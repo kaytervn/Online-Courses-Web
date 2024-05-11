@@ -57,14 +57,14 @@ const CheckoutPage = () => {
           toast.error("Vui lòng chọn phương thức thanh toán");
           return;
         }
-         if (
-           paymentMethod !== PaymentMethod.MOMO &&
-           paymentMethod !== PaymentMethod.PAYPAL
-         ) {
-           //setPaymentMethodError(true);
-           toast.error("Phương thức thanh toán không hợp lệ");
-           return;
-         }
+        //  if (
+        //    paymentMethod != PaymentMethod.MOMO &&
+        //    paymentMethod != PaymentMethod.PAYPAL
+        //  ) {
+        //    //setPaymentMethodError(true);
+        //    toast.error("Phương thức thanh toán không hợp lệ");
+        //    return;
+        //  }
         // Tải lại dữ liệu giỏ hàng từ server để đảm bảo dữ liệu mới nhất
         const updatedCart = await getCart();
         setCartItems(updatedCart.courseDetails); // Cập nhật lại danh sách trong trang
