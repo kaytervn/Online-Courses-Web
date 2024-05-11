@@ -5,8 +5,6 @@ import User from "../models/UserModel.js";
 import Role from "../models/RoleEnum.js";
 import Topic from "../models/TopicEnum.js";
 import Review from "../models/ReviewModel.js";
-import Lesson from "../models/LessonModel.js";
-import Document from "../models/DocumentModel.js";
 
 const createCourse = async (req, res) => {
   if (!req.file) {
@@ -329,14 +327,13 @@ const findCourse = async (req, res) => {
 
 const getCourse = async (req, res) => {
   const courseId = req.params.id;
-
   if (!mongoose.Types.ObjectId.isValid(courseId)) {
     return res.status(400).json({ error: "Invalid course ID" });
   }
 
   try {
-    const course = await Course.findById(courseId);
-
+    let course;
+    course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ message: "Khóa học không tồn tại." });
     }
@@ -361,10 +358,14 @@ const getCourse = async (req, res) => {
     }, 0);
 
     const avgStars = reviews.length > 0 ? totalRatings / reviews.length : 0;
+    const user = await User.findById(course.userId);
+    const updatedCourse = { ...course.toObject(), instructorName: user.name };
 
-    res
-      .status(200)
-      .json({ course, reviews: newReviews, averageStars: avgStars });
+    res.status(200).json({
+      course: updatedCourse,
+      reviews: newReviews,
+      averageStars: avgStars,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
