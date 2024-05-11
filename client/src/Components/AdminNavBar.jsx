@@ -113,7 +113,13 @@ const AdminNavBar = () => {
                 Course Manager
               </MenuItem>
 
-              <MenuItem icon={<BarChart />}> Revenue statistics</MenuItem>
+              <MenuItem
+                component={<Link to="/statistics" />}
+                icon={<BarChart />}
+              >
+                {" "}
+                Revenue Statistics
+              </MenuItem>
 
               <MenuItem icon={<IoLogOut />} onClick={handleLogout}>
                 {" "}

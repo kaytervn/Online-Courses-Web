@@ -106,6 +106,7 @@ const myInvoice = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 const getMyCourses = async (req, res) => {
   const userId = req.user._id;
   try {

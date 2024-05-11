@@ -12,6 +12,7 @@ import { documentsRoutes } from "./routes/documentsRoutes.js";
 import { commentsRoutes } from "./routes/commentsRoutes.js";
 import { invoicesRoutes } from "./routes/invoicesRoutes.js";
 import { reviewsRoutes } from "./routes/reviewsRoutes.js";
+import { invoiceItemsRoutes } from "./routes/invoiceItemsRoutes.js";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/api/lessons", lessonsRoutes);
 app.use("/api/documents", documentsRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/invoices", invoicesRoutes);
+app.use("/api/invoiceItems", invoiceItemsRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/auth", authsRoutes);
 
