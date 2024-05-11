@@ -140,7 +140,7 @@ const UserManager = () => {
   const handleGotoDetail = async (e, id) => {
     e.preventDefault();
     console.log(id);
-    navigate(`/user/${id}`, { state: { userId: id } });
+    navigate(`/user`, { state: { userId: id } });
   };
 
   async function handleSearch(e) {
