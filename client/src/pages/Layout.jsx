@@ -13,9 +13,6 @@ import AdminLayout from "../Components/AdminLayout.jsx";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import logo from "../../images/cookiedu_logo.png";
-
-import AdminNavBar from "../Components/AdminNavBar.jsx";
-
 import StudentLayout from "../Components/StudentLayout.jsx";
 
 const Layout = () => {
@@ -37,14 +34,13 @@ const Layout = () => {
 
   return (
     <>
-
       {user.role == Role.ADMIN ? null : (
         <Navbar expand="lg" className="bg-dark navbar-dark">
           <Container className="py-2">
             {user.role == Role.INSTRUCTOR ? (
               <Navbar.Brand href="/">
                 <Image width="40" src={logo} />
-                My Created Courses
+                My <span className="text-warning">Created</span> Courses
               </Navbar.Brand>
             ) : (
               <Navbar.Brand href="/">
@@ -62,7 +58,6 @@ const Layout = () => {
                     ) : user.role == Role.INSTRUCTOR ? (
                       <InstructorLayout />
                     ) : (
-                      //<Nav.Link href="#action">My Courses</Nav.Link>
                       <StudentLayout />
                     )}
                     <div className="d-flex align-items-center">
@@ -89,14 +84,7 @@ const Layout = () => {
                 ) : (
                   <>
                     <Nav.Item>
-                      <Button className="btn-light" href="/cart">
-                        <i
-                          className="fa fa-shopping-cart me-1"
-                          aria-hidden="true"
-                        ></i>
-                        Cart
-                        <span className="badge bg-danger ms-1">0</span>
-                      </Button>
+                      <Nav.Link href="/list-courses">List Courses</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
                       <Nav.Link href="#action">Teach on COOKIEDU</Nav.Link>

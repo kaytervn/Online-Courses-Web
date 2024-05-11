@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 import nodemailer from "nodemailer";
+import cloudinary from "../utils/cloudinary.js";
 import { createCartForUser } from "./cartsController.js";
 
 //***********************************************CREATE TOKEN************************** */
@@ -174,6 +175,47 @@ const resetPassword = async (req, res) => {
 
 //***********************************************UPLOAD PROFILE IMAGE************************** */
 
+const updateProfileInformation = async (req, res) => {
+  const { name, picture, email, phone } = req.body;
+  console.log(name, picture, email, phone);
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  try {
+    if (req.file && course.cloudinary) {
+      await cloudinary.uploader.destroy(course.cloudinary);
+      const uploadResponse = await new Promise((resolve, reject) => {
+        const bufferData = req.file.buffer;
+        cloudinary.uploader
+          .upload_stream({ resource_type: "image" }, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          })
+          .end(bufferData);
+      });
+      await user.updateOne({
+        picture: uploadResponse.secure_url,
+        cloudinary: uploadResponse.public_id,
+      });
+    }
+
+    await user.updateOne({
+      name: name,
+      email: email,
+      phone: phone,
+    });
+    console.log("Success: Profile updated successfully");
+    return res.status(200).json({ success: "Profile updated successfully" });
+  } catch (error) {
+    console.log("Error:", error.message);
+    return res.status(500).json({ error: "Failed to update profile" });
+  }
+};
+
+//***********************************************UPLOAD PROFILE IMAGE************************** */
+
 const upLoadProfileImage = async (req, res) => {
   const { base64 } = req.body;
   const userId = req.user._id;
@@ -251,6 +293,7 @@ export {
   loginUser,
   forgotPassword,
   resetPassword,
+  updateProfileInformation,
   upLoadProfileImage,
   getUser,
   getUserListByRole,

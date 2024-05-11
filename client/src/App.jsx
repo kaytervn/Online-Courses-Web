@@ -20,11 +20,13 @@ import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
-
+import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
+import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
-
 import CourseIntro from "./pages/instructors/CourseIntro";
 import RevenueStatistic from "./pages/admin/RevenueStatistic";
+import EditCourseIntro from "./pages/instructors/EditCourseIntro";
+
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -40,6 +42,7 @@ const App = () => {
           email: dataUser.email,
           name: dataUser.name,
           picture: dataUser.picture,
+          phone: dataUser.phone,
           role: dataUser.role,
         });
         setLoading(false);
@@ -66,23 +69,31 @@ const App = () => {
             <>
               <Route index element={<CreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
-              <Route path="/course-intro" element={<CourseIntro />}></Route>
+              <Route
+                path="/update-course-intro"
+                element={<UpdateCourseIntro />}
+              ></Route>
               <Route
                 path="/personal-revenue"
                 element={<PersonalRevenue />}
+              ></Route>
+              <Route
+                path="/edit-course-intro"
+                element={<EditCourseIntro />}
               ></Route>
             </>
           )}
           {user.role != Role.ADMIN && user.role != Role.INSTRUCTOR && (
             <>
               <Route index element={<HomePage />} />
-              <Route path="/list-courses" element={<CoursePage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
+              <Route path="/list-courses" element={<CoursePage />}></Route>
             </>
           )}
           {user.token && (
             <>
               <Route path="/my-profile" element={<MyProfilePage />}></Route>
+              <Route path="/my-profile/edit" element={<EditProfile />}></Route>
             </>
           )}
           <Route element={<GuestRoutes />}>
@@ -97,6 +108,7 @@ const App = () => {
           </Route>
           {!loading && <Route path="*" element={<NotFoundPage />} />}
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -124,6 +124,35 @@ const resetPasswordUser = async (id, token, password) => {
   // }
 };
 
+//***********************************************REGISTER USER************************** */
+
+const updateUserProfile = async (formData) => {
+  try {
+    console.log(formData);
+
+    const res = await fetch("/api/users/update-profile", {
+      method: "PUT",
+      body: formData,
+      // crossDomain: true,
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to update profile");
+    }
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Failed to update profile:", error.message);
+    throw error;
+  }
+};
+
 //***********************************************GET USER************************** */
 const getUser = async (token) => {
   const res = await fetch("/api/users/", {
@@ -168,6 +197,7 @@ export {
   loginUserSocial,
   checkEmailUser,
   resetPasswordUser,
+  updateUserProfile,
   getUser,
   getUserListByRole,
   changeUserStatus,

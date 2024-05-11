@@ -1,9 +1,11 @@
 import express from "express";
+import multer from "multer";
 import {
   registerUser,
   loginUser,
   forgotPassword,
   resetPassword,
+  updateProfileInformation,
   upLoadProfileImage,
   getUser,
   getUserListByRole,
@@ -13,6 +15,8 @@ import {
 import auth from "../middlewares/auth.js";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // register user
 router.post("/register", registerUser);
@@ -28,6 +32,14 @@ router.post("/reset-password/:id/:token", resetPassword);
 
 //get user
 router.get("/", auth, getUser);
+
+// update profile information
+router.put(
+  "/update-profile",
+  auth,
+  upload.single("picture"),
+  updateProfileInformation
+);
 
 //upload profile image
 router.patch("/upload-image", auth, upLoadProfileImage);
