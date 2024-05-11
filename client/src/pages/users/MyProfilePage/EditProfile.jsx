@@ -29,19 +29,6 @@ const EditProfile = () => {
     }, [user]);
 
 
-    // const handleImageChange = (e) => {
-    //     const file = e.target.files[0];
-
-    //     const reader = new FileReader();
-    //     reader.readAsDataURL(file);
-    //     reader.onload = () => {
-    //         setSelectedImage(reader.result);
-    //     };
-    //     reader.onerror = (error) => {
-    //         console.error('Error:', error);
-    //     };
-
-    // };
 
 
 
@@ -65,7 +52,7 @@ const EditProfile = () => {
                 token: localStorage.getItem('token'),
                 email: userData.email,
                 name: userData.name,
-                picture: selectedImage,
+                picture: selectedImage || user.picture,
                 phone: userData.phone,
             })
             navigate('/my-profile')
@@ -75,6 +62,11 @@ const EditProfile = () => {
         }
     };
 
+    const handleCancel = (e) => {
+        e.preventDefault();
+        navigate('/my-profile');
+    }
+
     return (
         <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
             <Container className="py-5 h-100">
@@ -82,7 +74,7 @@ const EditProfile = () => {
                     <Col lg="6" className="mb-4 mb-lg-0">
                         <Card className="mb-3" style={{ borderRadius: '.5rem' }}>
                             <Row className="g-0" style={{ height: "450px" }}>
-                                <Col md="4" className="gradient-custom text-center text-white"
+                                <Col md="4" className="gradient-custom text-center text-white shadow bg-body-tertiary rounded"
                                     style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
                                     <Card.Img
                                         className="rounded-circle my-5"
@@ -114,49 +106,56 @@ const EditProfile = () => {
                                     </label>
                                 </Col>
                                 <Col md="8">
-                                    <Card.Body className="p-4">
+                                    <Card.Body className="p-4 shadow bg-body-tertiary rounded" style={{ backgroundColor: "#f8f9fa" }}>
                                         <Card.Title as="h4">Information</Card.Title>
                                         <hr className="mt-0 mb-4" />
-                                        <Form>
-                                            <Form.Group className="mb-3" controlId="formName">
-                                                <Form.Label>Name</Form.Label>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="name"
-                                                    value={userData.name}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formEmail">
-                                                <Form.Label>Email</Form.Label>
-                                                <Form.Control
-                                                    type="email"
-                                                    name="email"
-                                                    value={userData.email}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formPhone">
-                                                <Form.Label>Phone</Form.Label>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="phone"
-                                                    value={userData.phone}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </Form.Group>
-                                        </Form>
+                                        <Row>
+                                            <Form>
+                                                <Form.Group className="mb-3" controlId="formName">
+                                                    <Form.Label>Name</Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        name="name"
+                                                        value={userData.name}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </Form.Group>
+                                                <Form.Group className="mb-3" controlId="formEmail">
+                                                    <Form.Label>Email</Form.Label>
+                                                    <Form.Control
+                                                        type="email"
+                                                        name="email"
+                                                        value={userData.email}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </Form.Group>
+                                                <Form.Group className="mb-3" controlId="formPhone">
+                                                    <Form.Label>Phone</Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        name="phone"
+                                                        value={userData.phone}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </Form.Group>
+                                            </Form>
+                                        </Row>
 
-                                        <div className="d-flex justify-content-start mt-5">
-                                            <a href="#!" className="me-3"><i className="fab fa-facebook fa-lg"></i></a>
-                                            <a href="#!" className="me-3"><i className="fab fa-twitter fa-lg"></i></a>
-                                            <a href="#!" className="me-3"><i className="fab fa-instagram fa-lg"></i></a>
-                                        </div>
+                                        <Row>
+                                            <div className="d-flex justify-content-start mt-5">
+                                                <a href="#!" className="me-3"><i className="fab fa-facebook fa-lg"></i></a>
+                                                <a href="#!" className="me-3"><i className="fab fa-twitter fa-lg"></i></a>
+                                                <a href="#!" className="me-3"><i className="fab fa-instagram fa-lg"></i></a>
+                                            </div>
+                                        </Row>
 
-                                        <Row className='d-flex justify-content-center text-align'>
-                                            <Button variant="outline-primary" size="sm" className="col-3 mt-1" onClick={handleSave}>
+                                        <Row className='d-flex justify-content-center text-align mt-5'>
+                                            <Col className='d-flex justify-content-center'><Button variant="outline-danger" size="sm" className="mt-1" onClick={handleCancel}>
+                                                Cancel
+                                            </Button></Col>
+                                            <Col className='d-flex justify-content-center'><Button variant="outline-success" size="sm" className="mt-1" onClick={handleSave}>
                                                 Save
-                                            </Button>
+                                            </Button></Col>
                                         </Row>
                                     </Card.Body>
                                 </Col>

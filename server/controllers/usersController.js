@@ -179,26 +179,32 @@ const updateProfileInformation = async (req, res) => {
   const { name, picture, email, phone } = req.body;
   console.log(name, picture, email, phone);
   const userId = req.user._id;
+  const user = await User.findById(userId);
   try {
-    const uploadResponse = await new Promise((resolve, reject) => {
-      const bufferData = req.file.buffer;
-      cloudinary.uploader
-        .upload_stream({ resource_type: "image" }, (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        })
-        .end(bufferData);
-    });
+    if (req.file && course.cloudinary) {
+      await cloudinary.uploader.destroy(course.cloudinary);
+      const uploadResponse = await new Promise((resolve, reject) => {
+        const bufferData = req.file.buffer;
+        cloudinary.uploader
+          .upload_stream({ resource_type: "image" }, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          })
+          .end(bufferData);
+      });
+      await user.updateOne({
+        picture: uploadResponse.secure_url,
+        cloudinary: uploadResponse.public_id,
+      });
+    }
 
-    const user = await User.findByIdAndUpdate(userId, {
+    await user.updateOne({
       name: name,
       email: email,
       phone: phone,
-      cloudinary: uploadResponse.public_id,
-      picture: uploadResponse.secure_url,
     });
     console.log("Success: Profile updated successfully");
     return res.status(200).json({ success: "Profile updated successfully" });
