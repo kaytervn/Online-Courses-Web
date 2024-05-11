@@ -53,7 +53,16 @@ const UserManager = () => {
       name: "Picture",
       selector: (row) => (
         <div className="text-center">
-          <Image roundedCircle width="40" src={row.picture} />
+          {row.picture == "" || row.picture == "false" ? (
+            <Image
+              roundedCircle
+              width={"40"}
+              height={"40"}
+              src={"../../../images/user.png"}
+            />
+          ) : (
+            <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
+          )}
         </div>
       ),
     },
@@ -86,18 +95,13 @@ const UserManager = () => {
     }
   };
 
-  // const handleSearch = (e) => async () => {
-  //   e.preventDefault();
-  //   const newStudents = users.students.filter((student) =>
-  //     student.name.toLowerCase().includes(e.target.value.toLowerCase())
-  //   );
-  //   setUsers({ students: newStudents });
-  // };
-
   async function handleSearch(e) {
+    console.log(await getUserListByRole(Role.STUDENT));
     const newStudents = (await getUserListByRole(Role.STUDENT)).filter(
       (student) =>
-        student.name.toLowerCase().includes(e.target.value.toLowerCase())
+        student.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        student.email.toLowerCase().includes(e.target.value.toLowerCase())
+        
     );
     setUsers({ students: newStudents });
   }

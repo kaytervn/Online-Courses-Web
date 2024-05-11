@@ -18,7 +18,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
-import { Table } from "react-bootstrap";
+import { Image, Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 
 const InstructorManager = () => {
@@ -48,7 +48,20 @@ const InstructorManager = () => {
     },
     {
       name: "Picture",
-      selector: (row) => row.picture,
+      selector: (row) => (
+        <div className="text-center">
+          {row.picture == "" || row.picture == "false" ? (
+            <Image
+              roundedCircle
+              width={"40"}
+              height={"40"}
+              src={"../../../images/user.png"}
+            />
+          ) : (
+            <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
+          )}
+        </div>
+      ),
     },
     {
       name: "Status",
@@ -72,8 +85,8 @@ const InstructorManager = () => {
     try {
       const message = await changeUserStatus(id);
       setSuccess(message.success);
-      const students = await getUserListByRole(Role.INSTRUCTOR);
-      setUsers({ students });
+      const instructors = await getUserListByRole(Role.INSTRUCTOR);
+      setUsers({ instructors });
     } catch (err) {
       setError(err.message);
     }
@@ -81,10 +94,11 @@ const InstructorManager = () => {
 
   async function handleSearch(e) {
     const newInstructors = (await getUserListByRole(Role.INSTRUCTOR)).filter(
-      (student) =>
-        student.name.toLowerCase().includes(e.target.value.toLowerCase())
+      (instructor) =>
+        instructor.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        instructor.email.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    setUsers({ students: newInstructors });
+    setUsers({ instructors: newInstructors });
   }
 
   return (

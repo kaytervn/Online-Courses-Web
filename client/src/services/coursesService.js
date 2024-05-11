@@ -28,6 +28,45 @@ const getAllCourse = async () => {
   return data;
 };
 
+const getAllCourseAdmin = async () => {
+  const res = await fetch("/api/courses/all", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const {courses} = await res.json();
+  return courses;
+};
 
+const changeCourseVisibility = async (id) => {
+  const res = await fetch(`/api/courses/change-course-visibility/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+};
 
-export { searchUserCourses, getAllCourse };
+const changeCourseStatus = async (id) => {
+  const res = await fetch(`/api/courses/change-course-status/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+
+export {
+  searchUserCourses,
+  getAllCourse,
+  changeCourseVisibility,
+  changeCourseStatus,
+  getAllCourseAdmin,
+};

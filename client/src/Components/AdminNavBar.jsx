@@ -3,17 +3,21 @@
 // import { Link } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { SubMenu } from "react-pro-sidebar";
-
-import { BarChart } from "../../images/icons/BarChart";
-import { Calendar } from "../../images/icons/Calendar";
-import { ShoppingCart } from "../../images/icons/ShoppingCart";
 import { Service } from "../../images/icons/Service";
 import { menuClasses } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
-
+import { FaUsersBetweenLines } from "react-icons/fa6";
+import { PiStudent } from "react-icons/pi";
+import { GiTeacher } from "react-icons/gi";
+import { FaBook } from "react-icons/fa6";
+import { BarChart } from "../../images/icons/BarChart";
+import styled from "styled-components";
 const AdminNavBar = () => {
+  const SidebarContainer = styled.div`
+    height: 100vh;
+  `;
   return (
-    <div>
+    <SidebarContainer>
       <div style={{ display: "flex", height: "100%" }}>
         <div style={{ display: "flex", height: "100%" }}>
           <Sidebar backgroundColor="#212529">
@@ -48,26 +52,32 @@ const AdminNavBar = () => {
                 },
               }}
             >
-              <SubMenu defaultOpen label="User Manager" icon={<BarChart />}>
-                <MenuItem component={<Link to="/" />}>Student Manager</MenuItem>
-                <MenuItem component={<Link to="/instructor" />}>
+              <SubMenu
+                defaultOpen
+                label="User Manager"
+                icon={<FaUsersBetweenLines />}
+              >
+                <MenuItem icon={<PiStudent />} component={<Link to="/" />}>
+                  Student Manager
+                </MenuItem>
+                <MenuItem
+                  icon={<GiTeacher />}
+                  component={<Link to="/instructor" />}
+                >
                   {" "}
                   Instructor Manager
                 </MenuItem>
               </SubMenu>
-              <MenuItem
-                component={<Link to="/course" />}
-                icon={<Calendar />}
-              >
+              <MenuItem component={<Link to="/course" />} icon={<FaBook />}>
                 Course Manager
               </MenuItem>
 
-              <MenuItem icon={<Service />}> Examples</MenuItem>
+              <MenuItem icon={<BarChart />}> Revenue statistics</MenuItem>
             </Menu>
           </Sidebar>
         </div>
       </div>
-    </div>
+    </SidebarContainer>
   );
 };
 

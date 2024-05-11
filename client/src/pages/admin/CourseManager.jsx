@@ -1,27 +1,19 @@
 import { useContext, useEffect, useState } from "react";
-import { UsersContext } from "../../contexts/UsersContext";
-import {
-  changeUserStatus,
-  getUserListByRole,
-} from "../../services/usersService";
-import Role from "../../../../server/models/RoleEnum";
-import Container from "react-bootstrap/Container";
 import Alert from "../../Components/Alert";
 
-import DataTable, {
-  Alignment,
-  createTheme,
-  defaultThemes,
-} from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
-import { Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 import { CoursesContext } from "../../contexts/CoursesContext";
-import { getAllCourse } from "../../services/coursesService";
+import {
+  changeCourseStatus,
+  changeCourseVisibility,
+  getAllCourseAdmin,
+} from "../../services/coursesService";
+import { Image } from "react-bootstrap";
 
 const CourseManager = () => {
   const { courses, setCourses } = useContext(CoursesContext);
@@ -30,7 +22,7 @@ const CourseManager = () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      const listCourses = await getAllCourse();
+      const listCourses = await getAllCourseAdmin();
       setCourses({ listCourses });
     }, 0);
   }, []);
@@ -43,7 +35,20 @@ const CourseManager = () => {
     },
     {
       name: "Picture",
-      selector: (row) => row.picture,
+      selector: (row) => (
+        <div className="text-center">
+          {row.picture == "" || row.picture == "false" ? (
+            <Image
+              roundedCircle
+              width={"40"}
+              height={"40"}
+              src={"../../../images/user.png"}
+            />
+          ) : (
+            <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
+          )}
+        </div>
+      ),
       sortable: true,
     },
     {
@@ -61,7 +66,7 @@ const CourseManager = () => {
         <FormCheckInput
           type="checkbox"
           checked={row.visibility}
-          //   onChange={(e) => handleVisibilityChange(e, row._id)}
+          onChange={(e) => handleVisibilityChange(e, row._id)}
         />
       ),
     },
@@ -71,43 +76,47 @@ const CourseManager = () => {
         <FormCheckInput
           type="checkbox"
           checked={row.status}
-          //   onChange={(e) => handleStatusChange(e, row._id)}
+          onChange={(e) => handleStatusChange(e, row._id)}
         />
       ),
     },
   ];
 
-  //   const handleStatusChange = async (e, id) => {
-  //     e.preventDefault();
-  //     try {
-  //       const message = await id;
-  //       setSuccess(message.success);
-  //       const listCourses = await getAllCourse();
-  //       setCourses({ listCourses });
-  //     } catch (err) {
-  //       setError(err.message);
-  //     }
-  //   };
+  const handleStatusChange = async (e, id) => {
+    e.preventDefault();
+    try {
+      const message = await changeCourseStatus(id);
+      setSuccess(message.success);
+      const listCourses = await getAllCourseAdmin();
+      setCourses({ listCourses });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
-  //   const handleVisibilityChange = async (e, id) => {
-  //     e.preventDefault();
-  //     try {
-  //       const message = await changeCourseVisibility(id);
-  //       setSuccess(message.success);
-  //       const listCourses = await getAllCourse();
-  //       setCourses({ listCourses });
-  //     } catch (err) {
-  //       setError(err.message);
-  //     }
-  //   };
+  const handleVisibilityChange = async (e, id) => {
+    e.preventDefault();
+    try {
+      const message = await changeCourseVisibility(id);
+      setSuccess(message.success);
+      const listCourses = await getAllCourseAdmin();
+      setCourses({ listCourses });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
-  //   async function handleSearch(e) {
-  //     const newInstructors = (await getUserListByRole(Role.INSTRUCTOR)).filter(
-  //       (student) =>
-  //         student.name.toLowerCase().includes(e.target.value.toLowerCase())
-  //     );
-  //     setCourses({ listCourses: newInstructors });
-  //   }
+  async function handleSearch(e) {
+    e.preventDefault();
+    console.log(await getAllCourseAdmin());
+    const newCourses = (await getAllCourseAdmin()).filter(
+      (course) =>
+        course.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        course.description.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    console.log(newCourses);
+    setCourses({ listCourses: newCourses });
+  }
 
   return (
     <div>
@@ -128,7 +137,7 @@ const CourseManager = () => {
                 className="form-control"
                 id="searchInput"
                 placeholder="Search..."
-                // onChange={handleSearch}
+                onChange={handleSearch}
               />
             </div>
           </div>
