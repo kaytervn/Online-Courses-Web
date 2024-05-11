@@ -23,8 +23,6 @@ import CoursePage from "./pages/students/CoursePage";
 import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
-import CourseIntro from "./pages/instructors/CourseIntro";
-
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -85,8 +83,7 @@ const App = () => {
           )}
           {user.token && (
             <>
-              <Route path="/my-profile" element={<MyProfilePage />}>
-              </Route>
+              <Route path="/my-profile" element={<MyProfilePage />}></Route>
               <Route path="/my-profile/edit" element={<EditProfile />}></Route>
             </>
           )}
