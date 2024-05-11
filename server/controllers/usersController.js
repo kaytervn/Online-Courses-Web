@@ -8,6 +8,8 @@ import cloudinary from "../utils/cloudinary.js";
 import { createCartForUser } from "./cartsController.js";
 import Cart from "../models/CartModel.js";
 import Role from "../models/RoleEnum.js";
+import OTP from "otp-generator";
+
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
@@ -43,15 +45,48 @@ const registerUser = async (req, res) => {
       const salt = await bcrypt.genSalt(); //default is 10 times
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
-      const user = await User.create({ email, password: hashed, name });
+      //generate otp
+      const otp = OTP.generate(6, {
+        digit: true,
+        lowerCaseAlphabets: false,
+        upperCaseAlphabets: false,
+        specialChars: false,
+      });
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      var mailOptions = {
+        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
+        to: `${email}`,
+        subject: "Your OTP to verify your email",
+        text: `${otp}`,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return res.status(500).json({ error: error.message });
+        } else {
+          return res.status(200).json({ success: "Email sent!" });
+        }
+      });
+
+      console.log("OTP:", otp);
+      const user = await User.create({ email, password: hashed, name, otp });
       const cart = await createCartForUser(user._id);
-      const token = createToken(user._id);
-      res.status(200).json({ success: "Register successful!", user, token });
+      // const token = createToken(user._id);
+      res.status(200).json({ success: "Register successful!", user });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }
 };
+
 
 const registerInstructor = async (req, res) => {
   const { name, email, password } = req.body;
@@ -83,6 +118,19 @@ const registerInstructor = async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+
+//***********************************************CHECK EMAIL AND OTP USER************************** */
+
+const checkEmailOTPUser = async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email });
+
+  if (otp == user.otp) {
+    await user.updateOne({ status: true });
+    return res.status(200).json({ success: "Email verified!" });
+  } else {
+    return res.status(400).json({ error: "OTP is incorrect!" });
+
   }
 };
 
@@ -357,6 +405,7 @@ const getUserByOther = async (req, res) => {
 export {
   registerUser,
   registerInstructor,
+  checkEmailOTPUser,
   loginUserSocial,
   loginUser,
   forgotPassword,

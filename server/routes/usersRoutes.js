@@ -12,6 +12,7 @@ import {
   getUserByOther,
   changeUserStatus,
   registerInstructor,
+  checkEmailOTPUser,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -22,8 +23,13 @@ const upload = multer({ storage: storage });
 // register user
 router.post("/register", registerUser);
 
+
 // register instructor
 router.post("/register/instructor", auth, registerInstructor);
+
+// otp authentication
+router.post("/otp-authentication", checkEmailOTPUser);
+
 
 //login user
 router.post("/login", loginUser);
