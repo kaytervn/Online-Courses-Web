@@ -20,12 +20,13 @@ import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
 import { Image, Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
+import { useNavigate } from "react-router-dom";
 
 const InstructorManager = () => {
   const { users, setUsers } = useContext(UsersContext);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setTimeout(async () => {
       const instructors = await getUserListByRole(Role.INSTRUCTOR);
@@ -104,11 +105,24 @@ const InstructorManager = () => {
       name: "",
       selector: (row) => (
         <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-primary ms-3">Detail</button>
+          <button
+            className="btn btn-outline-primary ms-3"
+            onClick={(e) => {
+              handleGotoDetail(e, row._id);
+            }}
+          >
+            Detail
+          </button>
         </div>
       ),
     },
   ];
+
+  const handleGotoDetail = async (e, id) => {
+    e.preventDefault();
+    console.log(id);
+    navigate(`/user/${id}`, { state: { userId: id } });
+  };
 
   const handleStatusChange = async (e, id) => {
     e.preventDefault();
@@ -139,7 +153,7 @@ const InstructorManager = () => {
         <AdminNavBar />
       </Col>
       <Col md={8}>
-        <h1 className=""> Instructors Manager</h1>
+        <h1 className="mt-3 mb-3"> Instructors Manager</h1>
         {success && <Alert msg={success} type="success" />}
         {error && <Alert msg={error} type="error" />}
         <div className="text-end mb-3 mt-3">

@@ -15,8 +15,10 @@ export const customStyles = {
   },
   headCells: {
     style: {
-      textAlign: "center",
-
+      justifyContent: "center",
+      alignItems: "center",
+      display: "flex",
+      fontSize: "20px",
       "&:not(:last-of-type)": {
         borderRightStyle: "solid",
         borderRightWidth: "1px",
@@ -36,12 +38,19 @@ export const customStyles = {
   },
   cells: {
     style: {
+      fontSize: "16px",
       "&:not(:last-of-type)": {
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
         borderRightStyle: "solid",
         borderRightWidth: "1px",
         borderRightColor: defaultThemes.default.divider.default,
       },
       "&:last-of-type": {
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
         borderRightStyle: "solid",
         borderRightWidth: "1px",
         borderRightColor: defaultThemes.default.divider.default,
