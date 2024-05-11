@@ -20,6 +20,7 @@ import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
+import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
           email: dataUser.email,
           name: dataUser.name,
           picture: dataUser.picture,
+          phone: dataUser.phone,
           role: dataUser.role,
         });
         setLoading(false);
@@ -75,7 +77,9 @@ const App = () => {
           )}
           {user.token && (
             <>
-              <Route path="/my-profile" element={<MyProfilePage />}></Route>
+              <Route path="/my-profile" element={<MyProfilePage />}>
+              </Route>
+              <Route path="/my-profile/edit" element={<EditProfile />}></Route>
             </>
           )}
           <Route element={<GuestRoutes />}>

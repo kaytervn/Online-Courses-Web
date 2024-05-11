@@ -4,6 +4,7 @@ import {
   loginUser,
   forgotPassword,
   resetPassword,
+  updateProfileInformation,
   upLoadProfileImage,
   getUser,
   getUserListByRole,
@@ -28,6 +29,9 @@ router.post("/reset-password/:id/:token", resetPassword);
 
 //get user
 router.get("/", auth, getUser);
+
+// update profile information
+router.put("/update-profile", auth, updateProfileInformation);
 
 //upload profile image
 router.patch("/upload-image", auth, upLoadProfileImage);
