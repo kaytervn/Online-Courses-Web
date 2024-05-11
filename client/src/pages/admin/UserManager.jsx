@@ -107,8 +107,7 @@ const UserManager = () => {
       name: "",
       selector: (row) => (
         <div className="d-flex justify-content-center">
-          <button className="btn btn-primary">Add</button>
-          <button className="btn btn-primary ms-3">Edit</button>
+          <button className="btn btn-outline-primary ms-3">Detail</button>
         </div>
       ),
     },

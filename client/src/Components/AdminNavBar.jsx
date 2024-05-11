@@ -15,6 +15,8 @@ import styled from "styled-components";
 import { IoLogOut } from "react-icons/io5";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { Image, Navbar } from "react-bootstrap";
+import logo from "../../images/cookiedu_logo.png";
 const AdminNavBar = () => {
   const { setUser } = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(false);
@@ -41,6 +43,25 @@ const AdminNavBar = () => {
       <div style={{ display: "flex", height: "100%", width: "100%" }}>
         <div style={{ display: "flex", height: "100%", width: "100%" }}>
           <Sidebar backgroundColor="#212529">
+            <Navbar.Brand
+              href="/"
+              className="d-flex justify-content-center align-items-center mb-7s mb-3"
+            >
+              <Image width={"40px"} height={"40px"} src={logo} />
+              <span
+                className="text-warning text-center text-lg-start"
+                style={{ fontSize: "30px" }}
+              >
+                COOKI
+              </span>
+              <span
+                className="text-light text-center text-lg-start"
+                style={{ fontSize: "30px" }}
+              >
+                {" "}
+                EDU{" "}
+              </span>
+            </Navbar.Brand>
             <Menu
               closeOnClick
               menuItemStyles={{
