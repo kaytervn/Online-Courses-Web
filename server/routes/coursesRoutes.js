@@ -14,6 +14,7 @@ import {
   updateCourseIntro,
   deleteCourse,
   getCourse,
+  changeCourseStatus,
   searchCourses,
 } from "../controllers/coursesController.js";
 
@@ -44,6 +45,9 @@ router.post("/search-courses", searchCourses);
 
 // change course visibilily
 router.put("/change-course-visibility/:id", auth, changeCourseVisibility);
+
+// change course status
+router.put("/change-course-status/:id", auth, changeCourseStatus);
 
 //get all Courses
 router.get("/all", getAllCourses);
