@@ -50,7 +50,10 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
+  localStorage.setItem("cartId",data.cartId);
 
+  console.log("user:", localStorage.getItem("token", data.token));
+  console.log("cart:", localStorage.getItem("cartId", data.token));
   return data;
 };
 
@@ -145,14 +148,36 @@ const updateUserProfile = async (formData) => {
     if (!res.ok) {
       throw new Error(data.error || "Failed to update profile");
     }
-    console.log(data);
-    return data;
   } catch (error) {
-    console.error("Failed to update profile:", error.message);
-    throw error;
+    throw Error(error.message);
   }
 };
 
+//***********************************************REGISTER USER************************** */
+
+const changePassword = async (password, new_password, confirm_password) => {
+  if (!password || !new_password || !confirm_password) {
+    throw Error("Please fill all the fields");
+  }
+  if (new_password !== confirm_password) {
+    throw Error("Passwords do not match!");
+  }
+
+  const res = await fetch("/api/users/change-password", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({ password, new_password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+};
 //***********************************************GET USER************************** */
 const getUser = async (token) => {
   const res = await fetch("/api/users/", {
@@ -209,6 +234,7 @@ export {
   checkEmailUser,
   resetPasswordUser,
   updateUserProfile,
+  changePassword,
   getUser,
   getUserListByRole,
   changeUserStatus,

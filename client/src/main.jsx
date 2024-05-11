@@ -5,6 +5,7 @@ import UserProvider from "./contexts/UserContext.jsx";
 import UsersProvider from "./contexts/UsersContext.jsx";
 import CartProvider from "./contexts/CartContext.jsx";
 import CoursesProvider from "./contexts/CoursesContext.jsx";
+import NotificationProvider from "./contexts/NotificationContext .jsx";
 import StatisticsProvider from "./contexts/StatisticsContext.jsx";
 import UserDetail from "./pages/admin/UserDetail.jsx";
 import UserDetailProvider from "./contexts/UserDetailContext.jsx";
@@ -12,6 +13,8 @@ import UserDetailProvider from "./contexts/UserDetailContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <StatisticsProvider>
+
+   <NotificationProvider>
       <UserDetailProvider>
         <CoursesProvider>
           <CartProvider>
@@ -24,7 +27,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             </CoursesProvider>
           </CartProvider>
         </CoursesProvider>
+   </NotificationProvider>
       </UserDetailProvider>
+
     </StatisticsProvider>
   </React.StrictMode>
 );

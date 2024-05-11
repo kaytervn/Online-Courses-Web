@@ -5,11 +5,13 @@ import { UserContext } from "../../../contexts/UserContext";
 import userImage from "../../../../images/user.png";
 import { useNavigate } from 'react-router-dom';
 import { updateUserProfile } from '../../../services/usersService';
+import Alert from '../../../Components/Alert';
 
 
 
 const EditProfile = () => {
     const { user, setUser } = useContext(UserContext);
+    const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
@@ -43,7 +45,7 @@ const EditProfile = () => {
         try {
             const formData = new FormData();
             formData.append('name', userData.name);
-            formData.append('email', userData.email);
+            // formData.append('email', userData.email);
             formData.append('phone', userData.phone);
             formData.append('picture', userData.picture);
 
@@ -58,7 +60,7 @@ const EditProfile = () => {
             navigate('/my-profile')
         }
         catch (error) {
-            console.log("Error saving:", error);
+            setError(error.message);
         }
     };
 
@@ -68,7 +70,7 @@ const EditProfile = () => {
     }
 
     return (
-        <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
+        <section className="vh-90" style={{ backgroundColor: '#f4f5f7' }}>
             <Container className="py-5 h-100">
                 <Row className="justify-content-center align-items-center h-100">
                     <Col lg="6" className="mb-4 mb-lg-0">
@@ -125,10 +127,12 @@ const EditProfile = () => {
                                                     <Form.Control
                                                         type="email"
                                                         name="email"
-                                                        value={userData.email}
-                                                        onChange={handleInputChange}
+                                                        value={user.email}
+                                                        disabled:true
+                                                    // readOnly:true
                                                     />
                                                 </Form.Group>
+
                                                 <Form.Group className="mb-3" controlId="formPhone">
                                                     <Form.Label>Phone</Form.Label>
                                                     <Form.Control
@@ -156,6 +160,7 @@ const EditProfile = () => {
                                             <Col className='d-flex justify-content-center'><Button variant="outline-success" size="sm" className="mt-1" onClick={handleSave}>
                                                 Save
                                             </Button></Col>
+                                            {error && <Alert msg={error} type="error" />}
                                         </Row>
                                     </Card.Body>
                                 </Col>

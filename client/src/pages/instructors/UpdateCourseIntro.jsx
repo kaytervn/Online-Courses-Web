@@ -41,14 +41,16 @@ const UpdateCourseIntro = () => {
       ) : (
         <>
           <CourseIntroView formData={formData}>
-            <Link to="/edit-course-intro" state={formData} key={formData._id}>
+            <Link to="/edit-course-intro" state={formData}>
               <button className="btn btn-success me-2">
                 <i className="bi bi-pencil-square"></i> Edit Intro
               </button>
             </Link>
-            <button className="btn btn-primary">
-              <i className="bi bi-pencil-square"></i> Edit Details
-            </button>
+            <Link to="/update-course-details" state={formData}>
+              <button className="btn btn-primary">
+                <i className="bi bi-pencil-square"></i> Edit Details
+              </button>
+            </Link>
           </CourseIntroView>
           <section className="p-5">
             <div className="container d-flex justify-content-center flex-wrap">
