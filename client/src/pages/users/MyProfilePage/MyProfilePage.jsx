@@ -1,19 +1,19 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Col, Container, Row, Card } from 'react-bootstrap';
-import './MyProfilePage.css';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Col, Container, Row, Card } from "react-bootstrap";
+import "./MyProfilePage.css";
 import { UserContext } from "../../../contexts/UserContext";
-import { useDropzone } from 'react-dropzone';
-import axios from 'axios';
+import { useDropzone } from "react-dropzone";
+import axios from "axios";
 import userImage from "../../../../images/user.png";
 
 const MyProfilePage = () => {
-    const { user, setUser } = useContext(UserContext);
-    const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-    const handleEditProfile = () => {
-        navigate("/my-profile/edit");
-    };
+  const handleEditProfile = () => {
+    navigate("/my-profile/edit");
+  };
 
     const handleChangePassword = () => {
         navigate("/my-profile/change-password");
@@ -35,13 +35,56 @@ const MyProfilePage = () => {
                                         style={{ width: '80px' }}
                                     />
 
-                                    <Card.Title as="h5">{user.name}</Card.Title>
-                                    <Card.Text as="h6">{user.role}</Card.Text>
+                  <Card.Title as="h5">{user.name}</Card.Title>
+                  <Card.Text as="h6">{user.role}</Card.Text>
 
-                                    <Button className='mt-5' variant="outline-light" size="sm" as="span" onClick={handleEditProfile}>
-                                        Edit Profile
-                                    </Button>
+                  <Button
+                    className="mt-5"
+                    variant="outline-light"
+                    size="sm"
+                    as="span"
+                    onClick={handleEditProfile}
+                  >
+                    Edit Profile
+                  </Button>
+                </Col>
+                <Col md="8">
+                  <Card.Body className="p-4">
+                    <Card.Title as="h4">Information</Card.Title>
+                    <hr className="mt-0 mb-4" />
+                    <Row className="pt-1">
+                      <Col size="6" className="mb-3">
+                        <Card.Title as="h6">Email</Card.Title>
+                        <Card.Text className="text-muted">
+                          {user.email}
+                        </Card.Text>
+                      </Col>
+                      <Col size="6" className="mb-3">
+                        <Card.Title as="h6">Phone</Card.Title>
+                        <Card.Text className="text-muted">
+                          {user.phone}
+                        </Card.Text>
+                      </Col>
+                    </Row>
 
+                    <Card.Title as="h5" style={{ marginTop: "10%" }}>
+                      Contact via
+                    </Card.Title>
+                    <hr className="mt-0 mb-4" />
+                    <Row className="pt-1">
+                      <Col size="6" className="mb-3">
+                        <Card.Title as="h6">Email</Card.Title>
+                        <Card.Text className="text-muted">
+                          {user.email}
+                        </Card.Text>
+                      </Col>
+                      <Col size="6" className="mb-3">
+                        <Card.Title as="h6">Phone</Card.Title>
+                        <Card.Text className="text-muted">
+                          {user.phone}
+                        </Card.Text>
+                      </Col>
+                    </Row>
 
                                 </Col>
                                 <Col md="8">
@@ -93,6 +136,7 @@ const MyProfilePage = () => {
             </Container>
         </section>
     );
+
 };
 
 export default MyProfilePage;

@@ -17,6 +17,8 @@ import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { Image, Navbar } from "react-bootstrap";
 import logo from "../../images/cookiedu_logo.png";
+import "../styles/sidebar.css";
+
 const AdminNavBar = () => {
   const { setUser } = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(false);
@@ -24,7 +26,6 @@ const AdminNavBar = () => {
   const [broken, setBroken] = useState(false);
   const [rtl, setRtl] = useState(false);
   const [hasImage, setHasImage] = useState(false);
-
   const navigate = useNavigate();
   const SidebarContainer = styled.div`
     height: 100vh;
@@ -42,7 +43,7 @@ const AdminNavBar = () => {
     <SidebarContainer>
       <div style={{ display: "flex", height: "100%", width: "100%" }}>
         <div style={{ display: "flex", height: "100%", width: "100%" }}>
-          <Sidebar backgroundColor="#212529">
+          <Sidebar backgroundColor="#212529" className="sidebar" width="300px">
             <Navbar.Brand
               href="/"
               className="d-flex justify-content-center align-items-center mb-7s mb-3"
@@ -119,6 +120,13 @@ const AdminNavBar = () => {
               >
                 {" "}
                 Revenue Statistics
+              </MenuItem>
+              <MenuItem
+                component={<Link to="/create/instructor" />}
+                icon={<BarChart />}
+              >
+                {" "}
+                Add Instructor Account
               </MenuItem>
 
               <MenuItem icon={<IoLogOut />} onClick={handleLogout}>

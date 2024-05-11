@@ -23,12 +23,15 @@ import { Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 
 import Image from "react-bootstrap/esm/Image";
+import "../../styles/dataTable.css";
+import UserDetail from "./UserDetail";
+import { useNavigate } from "react-router-dom";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setTimeout(async () => {
       const students = await getUserListByRole(Role.STUDENT);
@@ -107,7 +110,14 @@ const UserManager = () => {
       name: "",
       selector: (row) => (
         <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-primary ms-3">Detail</button>
+          <button
+            className="btn btn-outline-primary ms-3"
+            onClick={(e) => {
+              handleGotoDetail(e, row._id);
+            }}
+          >
+            Detail
+          </button>
         </div>
       ),
     },
@@ -127,6 +137,12 @@ const UserManager = () => {
     }
   };
 
+  const handleGotoDetail = async (e, id) => {
+    e.preventDefault();
+    console.log(id);
+    navigate(`/user/${id}`, { state: { userId: id } });
+  };
+
   async function handleSearch(e) {
     console.log(await getUserListByRole(Role.STUDENT));
     const newStudents = (await getUserListByRole(Role.STUDENT)).filter(
@@ -143,7 +159,7 @@ const UserManager = () => {
       </Col>
       <Col md={8}>
         <Container>
-          <h1 className=""> Students Manager</h1>
+          <h1 className="mt-3 mb-3"> Students Manager</h1>
 
           {success && <Alert msg={success} type="success" />}
           {error && <Alert msg={error} type="error" />}

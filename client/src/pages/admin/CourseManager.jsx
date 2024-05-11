@@ -171,7 +171,7 @@ const CourseManager = () => {
         <AdminNavBar />
       </Col>
       <Col md={8}>
-        <h1 className=""> Courses Manager</h1>
+        <h1 className="mt-3 mb-3"> Courses Manager</h1>
         {success && <Alert msg={success} type="success" />}
         {error && <Alert msg={error} type="error" />}
         <div className="text-end mb-3 mt-3">
