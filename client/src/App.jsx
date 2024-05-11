@@ -29,14 +29,10 @@ import EditCourseIntro from "./pages/instructors/EditCourseIntro";
 import UserDetail from "./pages/admin/UserDetail";
 
 import ChangePassword from "./pages/users/MyProfilePage/ChangePassword";
-import RevenueStatistic from "./pages/admin/RevenueStatistic";
-import EditCourseIntro from "./pages/instructors/EditCourseIntro";
 import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
 import CreateLesson from "./pages/instructors/CreateLesson";
 import CheckoutPage from "./pages/students/CheckoutPage";
 import MyCoursePage from "./pages/students/MyCoursePage";
-
-
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -112,7 +108,10 @@ const App = () => {
             <>
               <Route path="/my-profile" element={<MyProfilePage />}></Route>
               <Route path="/my-profile/edit" element={<EditProfile />}></Route>
-              <Route path="/my-profile/change-password" element={<ChangePassword />}></Route>
+              <Route
+                path="/my-profile/change-password"
+                element={<ChangePassword />}
+              ></Route>
             </>
           )}
           <Route element={<GuestRoutes />}>
