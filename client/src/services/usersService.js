@@ -28,6 +28,40 @@ const registerUser = async (name, email, password, confirmPassword) => {
   return data;
 };
 
+//***********************************************REGISTER INSSTRUCTOR************************** */
+
+const registerInstructor = async (
+  name,
+  email,
+  password,
+  confirmPassword,
+  role
+) => {
+  if (!name || !email || !password || !confirmPassword) {
+    throw Error("Please fill all the fields");
+  }
+
+  if (password !== confirmPassword) {
+    throw Error("Passwords do not match!");
+  }
+
+  const res = await fetch("/api/users/register/instructor", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({ name, email, password, role }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
 //***********************************************LOGIN USER************************** */
 
 const loginUser = async (email, password) => {
@@ -50,7 +84,7 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
-  localStorage.setItem("cartId",data.cartId);
+  localStorage.setItem("cartId", data.cartId);
 
   console.log("user:", localStorage.getItem("token", data.token));
   console.log("cart:", localStorage.getItem("cartId", data.token));
@@ -229,6 +263,7 @@ const getUserByOther = async (id) => {
 
 export {
   registerUser,
+  registerInstructor,
   loginUser,
   loginUserSocial,
   checkEmailUser,

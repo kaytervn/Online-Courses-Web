@@ -1,16 +1,59 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Row, Card } from "react-bootstrap";
-import { getUserByOther } from "../../services/usersService";
+import {
+  getUserByOther,
+  registerInstructor,
+  registerUser,
+} from "../../services/usersService";
 import userImage from "../../../images/user.png";
 import { UserDetailContext } from "../../contexts/UserDetailContext";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import AdminNavBar from "../../Components/AdminNavBar";
+import Role from "../../../../server/models/RoleEnum";
+import Alert from "../../Components/Alert";
 
 const InstructorRegister = () => {
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
-    const [error, setError] = useState(null);
-  
+  useEffect(() => {
+    setTimeout(async () => {
+      if (success || error) {
+        const timer = setTimeout(() => {
+          setSuccess("");
+          setError("");
+        }, 1500);
+
+        // Xóa timeout
+        return () => clearTimeout(timer);
+      }
+    }, 0);
+  }, [success, error]);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: Role.INSTRUCTOR,
+  });
+  //Handle Register
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      await registerInstructor(
+        formData.name,
+        formData.email,
+        formData.password,
+        formData.confirmPassword,
+        formData.role
+      );
+      setSuccess("Register successfully");
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   return (
     <Row className="ms-(-6) me-0">
       <Col md={3}>
@@ -20,8 +63,8 @@ const InstructorRegister = () => {
         <Container>
           <h1 className="mt-3"> Register Instructor</h1>
           <Container
-            className="d-flex justify-content-center align-items-center"
-            style={{ height: "100vh" }}
+            className="d-flex justify-content-center align-items-center mt-5"
+            style={{ height: "" }}
           >
             <section
               className="card shadow-lg p-5 mb-5 bg-body-tertiary rounded-4 d-flex justify-content-center align-items-center"
@@ -89,11 +132,9 @@ const InstructorRegister = () => {
                   href="#"
                   className="fs-6 fw-lighter"
                   style={{ textDecoration: "none" }}
-                >
-                  Already have an account?
-                </a>
+                ></a>
               </form>
-
+              {success && <Alert msg={success} type="success" />}
               {error && <Alert msg={error} type="error" />}
             </section>
           </Container>

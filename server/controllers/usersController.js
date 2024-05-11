@@ -7,6 +7,7 @@ import nodemailer from "nodemailer";
 import cloudinary from "../utils/cloudinary.js";
 import { createCartForUser } from "./cartsController.js";
 import Cart from "../models/CartModel.js";
+import Role from "../models/RoleEnum.js";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
@@ -43,6 +44,39 @@ const registerUser = async (req, res) => {
       const hashed = await bcrypt.hash(password, salt); //this is password after hashed
 
       const user = await User.create({ email, password: hashed, name });
+      const cart = await createCartForUser(user._id);
+      const token = createToken(user._id);
+      res.status(200).json({ success: "Register successful!", user, token });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+};
+
+const registerInstructor = async (req, res) => {
+  const { name, email, password } = req.body;
+  const userAuth = await User.findById(req.user._id);
+  if (userAuth.role != "ADMIN") {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  //check params user enter
+  if (!email || !password || !name) {
+    res.status(400).json({ error: "All fields are required!" });
+  }
+
+  // check email exist
+  const user = await User.findOne({ email });
+
+  if (user) {
+    res.status(400).json({ error: "Email already existed!" });
+  } else {
+    try {
+      //hash password
+      const salt = await bcrypt.genSalt(); //default is 10 times
+      const hashed = await bcrypt.hash(password, salt); //this is password after hashed
+
+      const user = await User.create({ email, password: hashed, name, role: Role.INSTRUCTOR});
       const cart = await createCartForUser(user._id);
       const token = createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
@@ -322,6 +356,7 @@ const getUserByOther = async (req, res) => {
 
 export {
   registerUser,
+  registerInstructor,
   loginUserSocial,
   loginUser,
   forgotPassword,

@@ -11,6 +11,7 @@ import {
   getUserListByRole,
   getUserByOther,
   changeUserStatus,
+  registerInstructor,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -20,6 +21,9 @@ const upload = multer({ storage: storage });
 
 // register user
 router.post("/register", registerUser);
+
+// register instructor
+router.post("/register/instructor", auth, registerInstructor);
 
 //login user
 router.post("/login", loginUser);
