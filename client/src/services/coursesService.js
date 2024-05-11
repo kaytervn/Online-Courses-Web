@@ -59,7 +59,7 @@ const getAllCourseAdmin = async () => {
       "Content-Type": "application/json",
     },
   });
-  const {courses} = await res.json();
+  const { courses } = await res.json();
   return courses;
 };
 
@@ -87,11 +87,39 @@ const changeCourseStatus = async (id) => {
   return data;
 };
 
-
 const createCourse = async (formData) => {
   const res = await fetch(`/api/courses/create-course`, {
     method: "POST",
     body: formData,
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
+const editCourseIntro = async ({ _id, formData }) => {
+  const res = await fetch(`/api/courses/update-course-intro/${_id}`, {
+    method: "PUT",
+    body: formData,
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
+const deleteCourse = async (_id) => {
+  const res = await fetch(`/api/courses/delete-course/${_id}`, {
+    method: "DELETE",
     headers: {
       Authorization: `Bear ${localStorage.getItem("token")}`,
     },
@@ -112,4 +140,6 @@ export {
   getCourse,
   changeCourseStatus,
   getAllCourseAdmin,
+  editCourseIntro,
+  deleteCourse,
 };

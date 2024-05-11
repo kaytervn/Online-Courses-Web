@@ -11,6 +11,7 @@ const UserProvider = ({ children }) => {
     phone: null,
     role: null,
     createdCourses: [],
+    cartId: localStorage.getItem("cartId"),
   });
 
   return (

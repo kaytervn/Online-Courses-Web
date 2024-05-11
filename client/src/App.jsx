@@ -24,6 +24,13 @@ import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
 import ChangePassword from "./pages/users/MyProfilePage/ChangePassword";
+import RevenueStatistic from "./pages/admin/RevenueStatistic";
+import EditCourseIntro from "./pages/instructors/EditCourseIntro";
+import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
+import CreateLesson from "./pages/instructors/CreateLesson";
+import CheckoutPage from "./pages/students/CheckoutPage";
+import MyCoursePage from "./pages/students/MyCoursePage";
+
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -58,6 +65,7 @@ const App = () => {
               <Route index element={<UserManager />} />
               <Route path="/instructor" element={<InstructorManager />} />
               <Route path="/course" element={<CourseManager />} />
+              <Route path="/statistics" element={<RevenueStatistic />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
@@ -69,9 +77,18 @@ const App = () => {
                 path="/update-course-intro"
                 element={<UpdateCourseIntro />}
               ></Route>
+              <Route path="/create-lesson" element={<CreateLesson />}></Route>
+              <Route
+                path="/update-course-details"
+                element={<UpdateCourseDetails />}
+              ></Route>
               <Route
                 path="/personal-revenue"
                 element={<PersonalRevenue />}
+              ></Route>
+              <Route
+                path="/edit-course-intro"
+                element={<EditCourseIntro />}
               ></Route>
             </>
           )}
@@ -80,6 +97,8 @@ const App = () => {
               <Route index element={<HomePage />} />
               <Route path="/cart" element={<CartPage />}></Route>
               <Route path="/list-courses" element={<CoursePage />}></Route>
+              <Route path="/checkout" element={<CheckoutPage />}></Route>
+              <Route path="/my-course" element={<MyCoursePage />}></Route>
             </>
           )}
           {user.token && (

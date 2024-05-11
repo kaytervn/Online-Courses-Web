@@ -50,7 +50,10 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
+  localStorage.setItem("cartId",data.cartId);
 
+  console.log("user:", localStorage.getItem("token", data.token));
+  console.log("cart:", localStorage.getItem("cartId", data.token));
   return data;
 };
 
