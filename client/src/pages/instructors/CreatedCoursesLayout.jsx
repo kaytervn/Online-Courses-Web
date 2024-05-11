@@ -119,9 +119,6 @@ const CreatedCourses = () => {
             <AnimatedProgressBar />
           ) : (
             <>
-              {alert.message != "" && (
-                <MyAlert msg={alert.message} variant={alert.variant} />
-              )}
               <div className="row">
                 <div className="col-2">
                   <div className="input-group pb-4">
