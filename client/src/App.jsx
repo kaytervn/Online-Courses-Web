@@ -99,6 +99,7 @@ const App = () => {
           </Route>
           {!loading && <Route path="*" element={<NotFoundPage />} />}
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
