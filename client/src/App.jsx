@@ -77,8 +77,8 @@ const App = () => {
           {user.role != Role.ADMIN && user.role != Role.INSTRUCTOR && (
             <>
               <Route index element={<HomePage />} />
-              <Route path="/list-courses" element={<CoursePage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
+              <Route path="/list-courses" element={<CoursePage />}></Route>
             </>
           )}
           {user.token && (
