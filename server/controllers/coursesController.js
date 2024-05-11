@@ -95,21 +95,78 @@ const searchUserCourses = async (req, res) => {
     const totalPages = Math.ceil(totalCount / limit);
     const skip = (page - 1) * limit;
 
-    let courses = await Course.find(query).skip(skip).limit(limit);
+    const courses = await Course.find(query)
+      .sort(sort === "title" ? { title: 1 } : { updatedAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    if (sort === "title") {
-      courses = await Course.find(query)
-        .sort({ title: 1 })
-        .skip(skip)
-        .limit(limit);
-    } else {
-      courses = await Course.find(query)
-        .sort({ updatedAt: -1 })
-        .skip(skip)
-        .limit(limit);
-    }
+    const newCourses = courses.map((course) => ({
+      ...course._doc,
+      instructorName: user.name,
+    }));
 
-    return res.status(200).json({ courses, totalPages });
+    return res.status(200).json({ courses: newCourses, totalPages });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const getSortOption = (sort) => {
+  switch (sort) {
+    case "newest":
+      return { createdAt: -1 };
+    case "oldest":
+      return { createdAt: 1 };
+    case "highestPrice":
+      return { price: -1 };
+    case "lowestPrice":
+      return { price: 1 };
+    default:
+      return {};
+  }
+};
+
+const searchCourses = async (req, res) => {
+  const { keyword, topic, page = 1, sort } = req.body;
+  const limit = 6;
+  const skip = (page - 1) * limit;
+
+  let query = { visibility: true, status: true };
+
+  if (keyword.trim() !== "") {
+    query.$or = [
+      { title: { $regex: keyword.trim(), $options: "i" } },
+      { description: { $regex: keyword.trim(), $options: "i" } },
+    ];
+  }
+
+  if (topic in Topic) {
+    query.topic = topic;
+  }
+
+  try {
+    const [totalCount, courses] = await Promise.all([
+      Course.countDocuments(query),
+      Course.find(query)
+        .sort(getSortOption(sort))
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+    ]);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const newCourses = await Promise.all(
+      courses.map(async (course) => {
+        const user = await User.findById(course.userId);
+        return {
+          ...course,
+          instructorName: user.name,
+        };
+      })
+    );
+
+    return res.status(200).json({ courses: newCourses, totalPages });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -239,7 +296,7 @@ const getAllCourses = async (req, res) => {
 
 const getNewestCourse = async (req, res) => {
   try {
-    const courses = await Course.find().sort({ createdAt: -1 }).limit(5);
+    const courses = await Course.find().sort({ createdAt: -1 }).limit(6);
     res.status(200).json({ courses });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -333,4 +390,5 @@ export {
   updateCourseIntro,
   deleteCourse,
   getCourse,
+  searchCourses,
 };

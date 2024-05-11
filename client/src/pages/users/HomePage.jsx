@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 const HomePage = () => {
   const { user, setUser } = useContext(UserContext);
-  console.log(user)
+  console.log(user);
   const logout = () => {
     window.open("http://localhost:5000/auth/logout", "_self");
   };
@@ -25,11 +25,7 @@ const HomePage = () => {
                 skills for our students, from basic to advanced, tailored to
                 each appropriate age group.
               </p>
-              <a
-                href="#action"
-                className="btn btn-primary btn-lg"
-                data-bs-toggle="modal"
-              >
+              <a href="/list-courses" className="btn btn-primary btn-lg">
                 Get Started
               </a>
             </div>
@@ -66,7 +62,7 @@ const HomePage = () => {
                     information about study materials, and provide support in
                     answering questions.
                   </p>
-                  <a href="#action" className="btn btn-primary">
+                  <a href="/list-courses" className="btn btn-primary">
                     Explore
                   </a>
                 </div>
@@ -84,7 +80,7 @@ const HomePage = () => {
                     opportunities. Learners can access a wide range of
                     educational materials from anywhere.
                   </p>
-                  <a href="#action" className="btn btn-dark">
+                  <a href="/list-courses" className="btn btn-dark">
                     Explore
                   </a>
                 </div>
@@ -102,7 +98,7 @@ const HomePage = () => {
                     learners will achieve the desired outcomes according to the
                     specific progression of each course.
                   </p>
-                  <a href="#action" className="btn btn-primary">
+                  <a href="/list-courses" className="btn btn-primary">
                     Explore
                   </a>
                 </div>
@@ -116,7 +112,11 @@ const HomePage = () => {
         <div className="container">
           <div className="row align-items-center justify-content-between">
             <div className="col-md">
-              <img src="/images/fundamentals.svg" className="img-fluid" alt="" />
+              <img
+                src="/images/fundamentals.svg"
+                className="img-fluid"
+                alt=""
+              />
             </div>
             <div className="col-md p-5">
               <h2>

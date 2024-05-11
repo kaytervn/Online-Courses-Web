@@ -17,6 +17,18 @@ const searchUserCourses = async ({
   return data;
 };
 
+const searchCourses = async ({ keyword, topic, page, sort }) => {
+  const res = await fetch("/api/courses/search-courses", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ keyword, topic, page, sort }),
+  });
+  const data = await res.json();
+  return data;
+};
+
 const getAllCourse = async () => {
   const res = await fetch("/api/courses/all", {
     method: "GET",
@@ -63,10 +75,28 @@ const changeCourseStatus = async (id) => {
   return data;
 };
 
+
+const createCourse = async (formData) => {
+  const res = await fetch(`/api/courses/create-course`, {
+    method: "POST",
+    body: formData,
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
 export {
   searchUserCourses,
   getAllCourse,
+  searchCourses,
   changeCourseVisibility,
+  createCourse,
   changeCourseStatus,
   getAllCourseAdmin,
 };

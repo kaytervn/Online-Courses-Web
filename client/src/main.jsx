@@ -8,14 +8,17 @@ import CoursesProvider from "./contexts/CoursesContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CartProvider>
-      <UsersProvider>
+    <CoursesProvider>
+      <CartProvider>
         <CoursesProvider>
-          <UserProvider>
-            <App />
-          </UserProvider>
+          <UsersProvider>
+            <UserProvider>
+              <App />
+            </UserProvider>
+          </UsersProvider>
         </CoursesProvider>
-      </UsersProvider>
-    </CartProvider>
+      </CartProvider>
+    </CoursesProvider>
+
   </React.StrictMode>
 );
