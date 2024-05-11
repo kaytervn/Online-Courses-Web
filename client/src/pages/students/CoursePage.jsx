@@ -6,6 +6,10 @@ import CourseCard from "../../Components/CourseCard";
 import Topic from "../../../../server/models/TopicEnum.js";
 import { CoursesContext } from "../../contexts/CoursesContext.jsx";
 import imgSample from "../../../images/course.png";
+import { useNotification } from "../../contexts/NotificationContext ";
+//import { addToCart } from "../../services/cartsService.js";
+import { Toast, ToastContainer } from "react-bootstrap";
+
 
 const CoursePage = () => {
   const { courses, setCourses } = useContext(CoursesContext);
@@ -16,7 +20,13 @@ const CoursePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pages, setPages] = useState([]);
-
+  const [show, setShow] = useState(false);
+  const [notification, setNotification] = useState({ message: "", type: "" });
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+  const [reload, setReload] = useState(false);
+  const { addNotification } = useNotification();
   const topics = [
     "ALL",
     Topic.WEB,
@@ -26,7 +36,59 @@ const CoursePage = () => {
     Topic.GAME,
     Topic.SOFTWARE,
   ];
+  const handleAddToCart = async (courseId) => {
+    const cartId = localStorage.getItem("cartId");
+    try {
+      const response = await fetch(`/api/carts/addToCart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ courseId, cartId }),
+      });
 
+      const data = await response.json();
+
+      if (response.ok) {
+        setToastMessage("Thêm vào giỏ hàng thành công!");
+        setToastType("success");
+        window.location.reload();
+      } else {
+        throw new Error(data.error || "Không thể thêm vào giỏ hàng.");
+      }
+    } catch (error) {
+      setToastMessage(error.toString());
+      setToastType("danger");
+    } finally {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 5000); 
+    }
+  };
+  // Simpler Toast Component
+  const renderToast = () => {
+    if (!showToast) return null;
+    return (
+      <ToastContainer
+        className="p-3"
+        position="top-end"
+        style={{ position: "fixed", top: 0, right: 0, zIndex: 1050 }}
+      >
+        <Toast
+          onClose={() => setShowToast(false)}
+          bg={toastType}
+          delay={10000}
+          autohide
+        >
+          <Toast.Header>
+            <strong className="me-auto">Thông Báo</strong>
+            <small>Just now</small>
+          </Toast.Header>
+          <Toast.Body>{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+    );
+  };
   const updateDisplay = async () => {
     const data = await searchCourses({
       keyword: searchValue,
@@ -46,15 +108,30 @@ const CoursePage = () => {
   };
 
   useEffect(() => {
+    if (notification.message) {
+      if (notification.type === "success") {
+        updateDisplay();
+      }
+    }
     setTimeout(async () => {
       setLoading(true);
       await updateDisplay();
       setLoading(false);
     }, 100);
-  }, [searchValue, selectedTopic, selectedSort, currentPage]);
+  }, [searchValue, selectedTopic, selectedSort, currentPage, notification]);
 
   return (
     <>
+      {/* {notification.message && (
+        <div
+          className={`alert alert-${
+            notification.type === "success" ? "success" : "danger"
+          }`}
+        >
+          {notification.message}
+        </div>
+      )}     */}
+      {renderToast()}
       <section className="bg-dark text-light p-lg-0 pt-lg-5 text-center text-sm-start">
         <div className="container">
           <div className="d-sm-flex align-items-center justify-content-between">
@@ -204,10 +281,14 @@ const CoursePage = () => {
                               </a>
                             </div>
                             <a
-                              href="#action"
+                              href="#"
                               className="btn btn-outline-warning"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleAddToCart(course._id);
+                              }}
                             >
-                              <i class="bi bi-cart4"></i>
+                              <i className="bi bi-cart4"></i>
                             </a>
                           </CourseCard>
                         </div>

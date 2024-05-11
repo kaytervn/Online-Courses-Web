@@ -10,6 +10,7 @@ const UserProvider = ({ children }) => {
     picture: null,
     role: null,
     createdCourses: [],
+    cartId: localStorage.getItem("cartId"),
   });
 
   return (

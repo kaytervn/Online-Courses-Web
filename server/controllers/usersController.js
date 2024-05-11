@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 import nodemailer from "nodemailer";
 import { createCartForUser } from "./cartsController.js";
+import Cart from "../models/CartModel.js";
 
 //***********************************************CREATE TOKEN************************** */
 const createToken = (_id) => {
@@ -87,14 +88,20 @@ const loginUser = async (req, res) => {
   //encrypt hash password
   // check password
   const match = await bcrypt.compare(password, user.password);
-
+  let cart = await Cart.findOne({ userId: user._id });
+  if (!cart) {
+    // Assuming Cart model exists and you have a logic to create a new cart
+    cart = await Cart.create({ userId: user._id });
+  }
   // const passwordCheck = await User.findOne({compare})
   if (!match) {
     return res.status(400).json({ error: "Password is incorrect!" });
   }
 
   try {
-    return res.status(200).json({ email, token, role: user.role });
+    return res
+      .status(200)
+      .json({ email, token, role: user.role, cartId: cart._id });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
