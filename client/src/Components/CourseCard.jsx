@@ -1,4 +1,4 @@
-const CourseCard = ({ course, instructorName, children }) => {
+const CourseCard = ({ course, children }) => {
   return (
     <div
       className={`card h-100 ${
@@ -9,7 +9,7 @@ const CourseCard = ({ course, instructorName, children }) => {
       <div className="card-header">
         <h5>{course.title}</h5>
         <div className="d-flex align-items-center">
-          <div className="flex-grow-1">{instructorName}</div>
+          <div className="flex-grow-1">{course.instructorName}</div>
           <i>{new Date(course.createdAt).toLocaleDateString()}</i>
         </div>
       </div>

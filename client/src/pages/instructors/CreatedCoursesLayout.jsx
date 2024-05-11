@@ -6,7 +6,7 @@ import {
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import CourseCard from "../../Components/CourseCard";
 import Topic from "../../../../server/models/TopicEnum.js";
-import { UserContext } from "../../contexts/UserContext.jsx";
+import { UserContext } from "../../contexts/UserContext";
 import "../../styles/cardHover.css";
 
 const CreatedCourses = () => {
@@ -203,11 +203,8 @@ const CreatedCourses = () => {
                     ) : (
                       <>
                         {user.createdCourses.map((course) => (
-                          <div key={course._id}>
-                            <CourseCard
-                              course={course}
-                              instructorName={user.name}
-                            >
+                          <div key={(course._id)}>
+                            <CourseCard course={course}>
                               <div className="pe-2 flex-grow-1">
                                 <a
                                   href=""
