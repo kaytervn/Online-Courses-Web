@@ -20,10 +20,9 @@ import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
+import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
-
 import CourseManager from "./pages/admin/CourseManager";
-
 import CourseIntro from "./pages/instructors/CourseIntro";
 
 
@@ -67,7 +66,10 @@ const App = () => {
             <>
               <Route index element={<CreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
-              <Route path="/course-intro" element={<CourseIntro />}></Route>
+              <Route
+                path="/update-course-intro"
+                element={<UpdateCourseIntro />}
+              ></Route>
               <Route
                 path="/personal-revenue"
                 element={<PersonalRevenue />}

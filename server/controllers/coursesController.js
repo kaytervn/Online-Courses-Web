@@ -4,6 +4,7 @@ import cloudinary from "../utils/cloudinary.js";
 import User from "../models/UserModel.js";
 import Role from "../models/RoleEnum.js";
 import Topic from "../models/TopicEnum.js";
+import Review from "../models/ReviewModel.js";
 
 const createCourse = async (req, res) => {
   if (!req.file) {
@@ -324,7 +325,7 @@ const findCourse = async (req, res) => {
 };
 
 const getCourse = async (req, res) => {
-  const courseId = req.params.id; // Lấy ID của khóa học từ params
+  const courseId = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(courseId)) {
     return res.status(400).json({ error: "Invalid course ID" });
@@ -332,10 +333,32 @@ const getCourse = async (req, res) => {
 
   try {
     const course = await Course.findById(courseId);
+
     if (!course) {
       return res.status(404).json({ message: "Khóa học không tồn tại." });
     }
-    res.status(200).json({ course });
+
+    const reviews = await Review.find({ courseId: course._id });
+    const newReviews = await Promise.all(
+      reviews.map(async (review) => {
+        const user = await User.findById(review.userId);
+        return {
+          ...review.toObject(),
+          userName: user.name,
+          userPicture: user.picture,
+        };
+      })
+    );
+
+    const totalRatings = reviews.reduce(
+      (total, review) => total + review.ratingStar,
+      0
+    );
+    const avgStars = totalRatings / reviews.length;
+
+    res
+      .status(200)
+      .json({ course, reviews: newReviews, averageStars: avgStars });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
