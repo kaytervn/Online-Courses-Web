@@ -1,24 +1,29 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { searchUserCourses } from "../../services/coursesService";
+import {
+  changeCourseVisibility,
+  searchUserCourses,
+} from "../../services/coursesService";
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import CourseCard from "../../Components/CourseCard";
-import "../../styles/cardHover.css";
 import Topic from "../../../../server/models/TopicEnum.js";
-import { MyCreatedCoursesContext } from "../../contexts/MyCreatedCoursesContext.jsx";
 import { UserContext } from "../../contexts/UserContext.jsx";
-import Pagination from "../../Components/Pagination.jsx";
+import "../../styles/cardHover.css";
 
 const CreatedCourses = () => {
-  const { createdCourses, setCreatedCourses } = useContext(
-    MyCreatedCoursesContext
-  );
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState({
+    message: "",
+    variant: "",
+  });
+
   const [searchValue, setSearchValue] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("ALL");
   const [selectedVisibility, setSelectedVisibility] = useState("ALL");
   const [selectedSort, setSelectedSort] = useState("lastUpdated");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pages, setPages] = useState([]);
 
   const topics = [
     "ALL",
@@ -31,41 +36,16 @@ const CreatedCourses = () => {
   ];
   const visibilities = ["ALL", true, false];
 
-  const handleTopicChange = (topic) => {
-    setSelectedTopic(topic);
-    setCreatedCourses({
-      ...createdCourses,
-      currentPage: 1,
-    });
-  };
-
-  const handleVisibilityChange = (visibility) => {
-    setSelectedVisibility(visibility);
-    setCreatedCourses({
-      ...createdCourses,
-      currentPage: 1,
-    });
-  };
-
-  const handleSortChange = async (e) => {
-    setSelectedSort(e.target.value);
-  };
-
-  const handleSearchInputChange = (e) => {
-    setSearchValue(e.target.value);
-    setCreatedCourses({
-      ...createdCourses,
-      currentPage: 1,
-    });
-  };
-
-  const onPageChange = async (page) => {
-    setCreatedCourses({
-      ...createdCourses,
-      currentPage: page,
-    });
-    setLoading(true);
-    await updateDisplay();
+  const handleChangeVisibility = async (courseId) => {
+    if (confirm("Confirm change visibility?")) {
+      try {
+        const data = await changeCourseVisibility(courseId);
+        setAlert({ ...alert, message: data.success, variant: "success" });
+      } catch (error) {
+        setAlert({ ...alert, message: error.message, variant: "danger" });
+      }
+      setAlert({ ...alert, message: "", variant: "" });
+    }
   };
 
   const updateDisplay = async () => {
@@ -73,30 +53,31 @@ const CreatedCourses = () => {
       keyword: searchValue,
       visibility: selectedVisibility,
       topic: selectedTopic,
-      page: createdCourses.currentPage,
+      page: currentPage,
       sort: selectedSort,
     });
-    setCreatedCourses({
-      ...createdCourses,
-      courses: data.courses,
-      totalPages: data.totalPages,
+    setUser({
+      ...user,
+      createdCourses: data.courses,
     });
-    setLoading(false);
-    console.log({
-      keyword: searchValue,
-      visibility: selectedVisibility,
-      topic: selectedTopic,
-      page: createdCourses.currentPage,
-      sort: selectedSort,
-    });
+    setPages(Array.from({ length: data.totalPages }, (_, index) => index + 1));
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
     setTimeout(async () => {
       setLoading(true);
       await updateDisplay();
+      setLoading(false);
     }, 100);
-  }, [searchValue, selectedVisibility, selectedTopic, selectedSort]);
+  }, [
+    searchValue,
+    selectedTopic,
+    selectedVisibility,
+    selectedSort,
+    currentPage,
+    alert,
+  ]);
 
   return (
     <>
@@ -119,7 +100,11 @@ const CreatedCourses = () => {
                     className="form-control"
                     placeholder="Search..."
                     value={searchValue}
-                    onChange={handleSearchInputChange}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setSearchValue(e.target.value);
+                      setCurrentPage(1);
+                    }}
                   />
                 </div>
               </div>
@@ -129,103 +114,194 @@ const CreatedCourses = () => {
       </section>
 
       <section className="p-5">
-        {loading ? (
-          <AnimatedProgressBar />
-        ) : createdCourses.length === 0 ? (
-          <p className="fs-2 text-center text-danger">Not Found.</p>
-        ) : (
-          <div className="container">
-            <div className="row">
-              <div className="col-2">
-                <div className="input-group pb-4">
-                  <span className="input-group-text bg-warning text-light">
-                    <i className="fa fa-sort" aria-hidden="true"></i>
-                  </span>
-                  <select
-                    className="form-select"
-                    aria-label="Default select example"
-                    value={selectedSort}
-                    onChange={handleSortChange}
-                  >
-                    <option value="lastUpdated">Last Updated</option>
-                    <option value="title">Title</option>
-                  </select>
-                </div>
-                <ul className="list-group pb-4">
-                  <li className="list-group-item bg-warning text-light text-center">
-                    <b>Visibility</b>
-                  </li>
-                  {visibilities.map((visibility) => (
-                    <li className="list-group-item" key={visibility}>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value={visibility}
-                          checked={selectedVisibility === visibility}
-                          onChange={(e) => handleVisibilityChange(visibility)}
-                        />
-                        <label className="form-check-label">
-                          {visibility === false
-                            ? "PRIVATE"
-                            : visibility === true
-                            ? "PUBLIC"
-                            : visibility}
-                        </label>
-                      </div>
+        <div className="container">
+          {loading ? (
+            <AnimatedProgressBar />
+          ) : (
+            <>
+              {alert.message != "" && (
+                <MyAlert msg={alert.message} variant={alert.variant} />
+              )}
+              <div className="row">
+                <div className="col-2">
+                  <div className="input-group pb-4">
+                    <span className="input-group-text bg-warning text-light">
+                      <i className="fa fa-sort" aria-hidden="true"></i>
+                    </span>
+                    <select
+                      className="form-select"
+                      value={selectedSort}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setSelectedSort(e.target.value);
+                      }}
+                    >
+                      <option value="lastUpdated">Last Updated</option>
+                      <option value="title">Title</option>
+                    </select>
+                  </div>
+                  <ul className="list-group pb-4">
+                    <li className="list-group-item bg-warning text-light text-center">
+                      <b>Visibility</b>
                     </li>
-                  ))}
-                </ul>
-                <ul className="list-group">
-                  <li className="list-group-item bg-warning text-light text-center">
-                    <b>Topic</b>
-                  </li>
-                  {topics.map((topic) => (
-                    <li className="list-group-item" key={topic}>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value={topic}
-                          checked={selectedTopic === topic}
-                          onChange={(e) => handleTopicChange(topic)}
-                          id={topic}
-                        />
-                        <label className="form-check-label" htmlFor={topic}>
-                          {topic.toUpperCase()}
-                        </label>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="col">
-                <div className="row row-cols-1 row-cols-md-3 g-4 pb-4">
-                  {createdCourses.courses.map((course) => (
-                    <div key={course._id}>
-                      <CourseCard course={course} instructorName={user.name}>
-                        <div className="pe-2 flex-grow-1">
-                          <a href="#" className="btn btn-outline-dark w-100">
-                            <i className="bi bi-pencil-square"></i> Edit
-                          </a>
+                    {visibilities.map((visibility) => (
+                      <li className="list-group-item" key={visibility}>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            value={visibility}
+                            checked={selectedVisibility === visibility}
+                            onChange={(e) => {
+                              e.preventDefault();
+                              setSelectedVisibility(visibility);
+                              setCurrentPage(1);
+                            }}
+                          />
+                          <label className="form-check-label">
+                            {visibility === false
+                              ? "PRIVATE"
+                              : visibility === true
+                              ? "PUBLIC"
+                              : visibility}
+                          </label>
                         </div>
-                        <a href="#" className="btn btn-outline-danger">
-                          <i className="bi bi-eye-slash"></i>
-                        </a>
-                      </CourseCard>
-                    </div>
-                  ))}
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="list-group">
+                    <li className="list-group-item bg-warning text-light text-center">
+                      <b>Topic</b>
+                    </li>
+                    {topics.map((topic) => (
+                      <li className="list-group-item" key={topic}>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            value={topic}
+                            checked={selectedTopic === topic}
+                            onChange={(e) => {
+                              e.preventDefault();
+                              setSelectedTopic(topic);
+                              setCurrentPage(1);
+                            }}
+                            id={`radio-${topic}`}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={`radio-${topic}`}
+                          >
+                            {topic.toUpperCase()}
+                          </label>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="col">
+                  <div className="row row-cols-1 row-cols-md-3 g-4 pb-4">
+                    {user.createdCourses.length === 0 ? (
+                      <p className="fs-2 text-center text-danger">Not Found.</p>
+                    ) : (
+                      <>
+                        {user.createdCourses.map((course) => (
+                          <div key={course._id}>
+                            <CourseCard
+                              course={course}
+                              instructorName={user.name}
+                            >
+                              <div className="pe-2 flex-grow-1">
+                                <a
+                                  href=""
+                                  className="btn btn-outline-dark w-100"
+                                >
+                                  <i className="bi bi-pencil-square"></i> Edit
+                                </a>
+                              </div>
+                              {course.visibility == false ? (
+                                <div
+                                  className="btn btn-outline-success"
+                                  onClick={() =>
+                                    handleChangeVisibility(course._id)
+                                  }
+                                >
+                                  <i className="bi bi-eye"></i>
+                                </div>
+                              ) : (
+                                <div
+                                  className="btn btn-outline-danger"
+                                  onClick={() =>
+                                    handleChangeVisibility(course._id)
+                                  }
+                                >
+                                  <i className="bi bi-eye-slash"></i>
+                                </div>
+                              )}
+                            </CourseCard>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-        <Pagination
-          currentPage={createdCourses.currentPage}
-          totalPages={createdCourses.totalPages}
-          onPageChange={onPageChange}
-        />
+            </>
+          )}
+        </div>
       </section>
+      {!loading && pages.length > 0 && (
+        <div className="d-flex justify-content-center">
+          <ul className="pagination">
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <a
+                className="page-link"
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(currentPage - 1);
+                }}
+              >
+                Previous
+              </a>
+            </li>
+            {pages.map((page) => (
+              <li
+                key={page}
+                className={`page-item ${currentPage === page ? "active" : ""}`}
+                aria-current={currentPage === page ? "page" : null}
+              >
+                <a
+                  className="page-link"
+                  href=""
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentPage(page);
+                  }}
+                >
+                  {page}
+                </a>
+              </li>
+            ))}
+            <li
+              className={`page-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+            >
+              <a
+                className="page-link"
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(currentPage + 1);
+                }}
+              >
+                Next
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
     </>
   );
 };

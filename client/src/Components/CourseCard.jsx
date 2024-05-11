@@ -1,6 +1,10 @@
 const CourseCard = ({ course, instructorName, children }) => {
   return (
-    <div className={`cart h-100 ${course.visibility ? "" : "opacity-75"}`}>
+    <div
+      className={`card h-100 ${
+        course.visibility ? "" : "text-white bg-warning opacity-50"
+      }`}
+    >
       <img src={course.picture} className="card-img-top" />
       <div className="card-header">
         <h5>{course.title}</h5>
@@ -11,7 +15,11 @@ const CourseCard = ({ course, instructorName, children }) => {
       </div>
       <div className="card-body">
         <div className="d-flex align-items-center">
-          <div className="lead text-success">
+          <div
+            className={`lead ${
+              course.visibility ? "text-success" : "text-white"
+            }`}
+          >
             <i className="bi bi-wallet2"></i> {course.price}
           </div>
           <div className="flex-grow-1">

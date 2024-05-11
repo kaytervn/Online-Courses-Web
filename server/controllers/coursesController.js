@@ -115,6 +115,53 @@ const searchUserCourses = async (req, res) => {
   }
 };
 
+const getSortOption = (sort) => {
+  switch (sort) {
+    case "newest":
+      return { createdAt: -1 };
+    case "oldest":
+      return { createdAt: 1 };
+    case "highestPrice":
+      return { price: -1 };
+    case "lowestPrice":
+      return { price: 1 };
+    default:
+      return {};
+  }
+};
+
+const searchCourses = async (req, res) => {
+  const { keyword, topic, page, sort } = req.body;
+  const limit = 6;
+  let query = { visibility: true, status: true };
+
+  if (keyword.trim() !== "") {
+    query.$or = [
+      { title: { $regex: keyword.trim(), $options: "i" } },
+      { description: { $regex: keyword.trim(), $options: "i" } },
+    ];
+  }
+
+  if (topic in Topic) {
+    query.topic = topic;
+  }
+
+  try {
+    const totalCount = await Course.countDocuments(query);
+    const totalPages = Math.ceil(totalCount / limit);
+    const skip = (page - 1) * limit;
+
+    const courses = await Course.find(query)
+      .sort(getSortOption(sort))
+      .skip(skip)
+      .limit(limit);
+
+    return res.status(200).json({ courses, totalPages });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 const changeCourseVisibility = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ error: "Incorrect ID" });
@@ -296,4 +343,5 @@ export {
   updateCourseIntro,
   deleteCourse,
   getCourse,
+  searchCourses,
 };
