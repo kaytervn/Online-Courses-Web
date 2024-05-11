@@ -33,11 +33,8 @@ import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
 import CreateLesson from "./pages/instructors/CreateLesson";
 import CheckoutPage from "./pages/students/CheckoutPage";
 import MyCoursePage from "./pages/students/MyCoursePage";
-
 import InstructorRegister from "./pages/admin/InstructorRegister";
-
 import OTPAuthentication from "./pages/users/OTPAuthentication";
-
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);

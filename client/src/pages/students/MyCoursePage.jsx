@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { getMyCourse } from "../../services/invoiceService"; // Đường dẫn này giả sử bạn đã xuất hàm getMyCourse từ một module service
 import MyCourseCard from "../../Components/MyCourseCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const MyCoursePage = () => {
@@ -41,6 +43,7 @@ const MyCoursePage = () => {
           ))}
         </div>
       )}
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
