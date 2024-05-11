@@ -23,7 +23,6 @@ import CoursePage from "./pages/students/CoursePage";
 import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
-import CourseIntro from "./pages/instructors/CourseIntro";
 import RevenueStatistic from "./pages/admin/RevenueStatistic";
 import EditCourseIntro from "./pages/instructors/EditCourseIntro";
 import CheckoutPage from "./pages/students/CheckoutPage";
