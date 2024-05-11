@@ -191,6 +191,17 @@ const changeUserStatus = async (id) => {
   return data;
 };
 
+const getUserByOther = async (id) => {
+  const res = await fetch(`/api/users/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const { user } = await res.json();
+  return user;
+};
+
 export {
   registerUser,
   loginUser,
@@ -201,4 +212,5 @@ export {
   getUser,
   getUserListByRole,
   changeUserStatus,
+  getUserByOther,
 };

@@ -85,7 +85,7 @@ const RevenueStatistic = () => {
       </Col>
       <Col md={8}>
         <Container>
-          <h1 className=""> Revenue Statistics </h1>
+          <h1 className="mt-3 mb-3"> Revenue Statistics </h1>
 
           {success && <Alert msg={success} type="success" />}
           {error && <Alert msg={error} type="error" />}
