@@ -29,6 +29,9 @@ import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
 import CreateLesson from "./pages/instructors/CreateLesson";
 import CheckoutPage from "./pages/students/CheckoutPage";
 import MyCoursePage from "./pages/students/MyCoursePage";
+import UpdateLesson from "./pages/instructors/UpdateLesson";
+import UpdateLessonDetails from "./pages/instructors/UpdateLessonDetails";
+import CreateDocument from "./pages/instructors/CreateDocument";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -76,6 +79,15 @@ const App = () => {
                 element={<UpdateCourseIntro />}
               ></Route>
               <Route path="/create-lesson" element={<CreateLesson />}></Route>
+              <Route path="/update-lesson" element={<UpdateLesson />}></Route>
+              <Route
+                path="/create-document"
+                element={<CreateDocument />}
+              ></Route>
+              <Route
+                path="/update-lesson-details"
+                element={<UpdateLessonDetails />}
+              ></Route>
               <Route
                 path="/update-course-details"
                 element={<UpdateCourseDetails />}

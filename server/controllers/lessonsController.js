@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Course from "../models/CourseModel.js";
 import Lesson from "../models/LessonModel.js";
 import Role from "../models/RoleEnum.js";

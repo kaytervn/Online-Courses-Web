@@ -11,7 +11,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const router = express.Router();
 
-router.get("/get-lesson-documents", getLessonDocuments);
+router.post("/get-lesson-documents", getLessonDocuments);
 
 router.post("/create-document", auth, upload.single("content"), createDocument);
 
