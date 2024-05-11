@@ -350,11 +350,14 @@ const getCourse = async (req, res) => {
       })
     );
 
-    const totalRatings = reviews.reduce(
-      (total, review) => total + review.ratingStar,
-      0
-    );
-    const avgStars = totalRatings / reviews.length;
+    const totalRatings = reviews.reduce((total, review) => {
+      if (review.ratingStar && typeof review.ratingStar === "number") {
+        return total + review.ratingStar;
+      }
+      return total;
+    }, 0);
+
+    const avgStars = reviews.length > 0 ? totalRatings / reviews.length : 0;
 
     res
       .status(200)
@@ -398,7 +401,6 @@ const changeCourseStatus = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
 
 export {
   createCourse,

@@ -65,12 +65,31 @@ const UpdateCourseIntro = () => {
                   <div className="d-flex justify-content-between">
                     <div className="text-warning">
                       <p className="lead">
-                        <i className="bi bi-star-fill"> </i>
-                        <i className="bi bi-star-fill"> </i>
-                        <i className="bi bi-star-fill"> </i>
-                        <i className="bi bi-star-fill"> </i>
-                        <i className="bi bi-star-half"> </i>
-                        {formData.averageStars}
+                        {[...Array(5)].map((_, index) => {
+                          if (index < Math.floor(formData.averageStars)) {
+                            return (
+                              <i key={index} className="bi bi-star-fill">
+                                {" "}
+                              </i>
+                            );
+                          } else if (
+                            index === Math.floor(formData.averageStars) &&
+                            formData.averageStars % 1 !== 0
+                          ) {
+                            return (
+                              <i key={index} className="bi bi-star-half">
+                                {" "}
+                              </i>
+                            );
+                          } else {
+                            return (
+                              <i key={index} className="bi bi-star">
+                                {" "}
+                              </i>
+                            );
+                          }
+                        })}
+                        {` ${formData.averageStars}`}
                       </p>
                     </div>
                     <p className="fs-1 text-info">💲{formData.price}</p>
@@ -89,11 +108,19 @@ const UpdateCourseIntro = () => {
           </section>
           <section className="p-5">
             <div className="container d-flex justify-content-center flex-wrap">
-              {formData.reviews.map((review) => (
-                <div key={review._id}>
-                  <ReviewCard review={review}></ReviewCard>
-                </div>
-              ))}
+              {formData.reviews.length === 0 ? (
+                <p className="fs-2 text-center text-danger">
+                  There is no review.
+                </p>
+              ) : (
+                <>
+                  {formData.reviews.map((review) => (
+                    <div key={review._id}>
+                      <ReviewCard review={review}></ReviewCard>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </section>
         </>
