@@ -113,7 +113,6 @@ const CreateDocument = () => {
                     />
                   </InputGroup>
                   <video
-                    thumbnail
                     src={formData.videoURL}
                     controls
                     className="object-fit-contain w-100"

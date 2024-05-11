@@ -29,7 +29,6 @@ const deleteDocument = async (_id) => {
   const res = await fetch(`/api/documents/delete-document/${_id}`, {
     method: "DELETE",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bear ${localStorage.getItem("token")}`,
     },
   });

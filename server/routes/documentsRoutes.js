@@ -15,6 +15,6 @@ router.post("/get-lesson-documents", getLessonDocuments);
 
 router.post("/create-document", auth, upload.single("content"), createDocument);
 
-router.delete("/delete-document", auth, deleteDocument);
+router.delete("/delete-document/:id", auth, deleteDocument);
 
 export { router as documentsRoutes };

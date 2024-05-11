@@ -5,7 +5,10 @@ import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import { MyAlert } from "../../Components/CustomAlert";
 import DocumentCard from "../../Components/DocumentCard";
 import { getCourse } from "../../services/coursesService";
-import { getLessonDocuments } from "../../services/documentService";
+import {
+  deleteDocument,
+  getLessonDocuments,
+} from "../../services/documentService";
 
 const UpdateLessonDetails = () => {
   const navigate = useNavigate();
@@ -61,6 +64,22 @@ const UpdateLessonDetails = () => {
     }, 0);
   }, []);
 
+  const handleDeleteDocument = async (_id) => {
+    if (confirm("Confirm delete document?")) {
+      try {
+        const data = await deleteDocument(_id);
+        setAlert({ ...alert, message: data.success, variant: "success" });
+        const newDocuments = formData.documents.filter(
+          (document) => document._id != _id
+        );
+        setFormData({ ...formData, documents: newDocuments });
+      } catch (error) {
+        setAlert({ ...alert, message: error.message, variant: "danger" });
+      }
+    }
+    setTimeout(() => setAlert({ ...alert, message: "", variant: "" }), 2000);
+  };
+
   return (
     <>
       {loading ? (
@@ -98,7 +117,14 @@ const UpdateLessonDetails = () => {
                   )}
                   {formData.documents.map((document) => (
                     <div key={document._id}>
-                      <DocumentCard document={document}></DocumentCard>
+                      <DocumentCard document={document}>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => handleDeleteDocument(document._id)}
+                        >
+                          <i className="bi bi-trash-fill"></i>
+                        </button>
+                      </DocumentCard>
                     </div>
                   ))}
                 </>
