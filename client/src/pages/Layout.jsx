@@ -5,7 +5,7 @@ import Image from "react-bootstrap/Image";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import userImage from "../../images/user.png";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect ,useState} from "react";
 import { UserContext } from "../contexts/UserContext";
 import Role from "../../../server/models/RoleEnum.js";
 import InstructorLayout from "../Components/InstructorLayout";
@@ -14,23 +14,32 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import logo from "../../images/cookiedu_logo.png";
 import StudentLayout from "../Components/StudentLayout.jsx";
+import { Modal } from "react-bootstrap";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
+  const [showLogoutModal, setShowLogoutModal] = useState(false);  
   useEffect(() => {
     setTimeout(async () => {}, 0);
   }, []);
 
-  const handleLogout = () => {
-    if (confirm("Confirm logout?")) {
-      setUser({ email: null, name: null, picture: null, role: null });
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      navigate("/");
-    }
-  };
+   const handleLogout = () => {
+     setShowLogoutModal(true); // Hiển thị cửa sổ xác nhận khi nhấn logout
+   };
+
+   const confirmLogout = () => {
+     // Xử lý logout
+     setUser({ email: null, name: null, picture: null, role: null });
+     localStorage.removeItem("token");
+     localStorage.removeItem("role");
+     navigate("/");
+     setShowLogoutModal(false); 
+   };
+
+   const cancelLogout = () => {
+     setShowLogoutModal(false); // Ẩn cửa sổ xác nhận khi hủy logout
+   };
 
   return (
     <>
@@ -103,6 +112,20 @@ const Layout = () => {
                 )}
               </Nav>
             </Navbar.Collapse>
+            <Modal show={showLogoutModal} onHide={cancelLogout} centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirm Logout</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>Are you sure you want to log out?</Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={cancelLogout}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={confirmLogout}>
+                  Logout
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </Container>
         </Navbar>
       )}

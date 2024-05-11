@@ -47,6 +47,27 @@ const createReview = async (req, res) => {
   }
 };
 
+const getReviewCourse = async (req, res) => {
+  const { courseId } = req.params;
 
+  try {
+    const reviews = await Review.find({ courseId }).populate({
+      path: "userId",
+      select: "name", // Giả sử bạn muốn hiển thị tên của người dùng đánh giá, điều chỉnh các trường cần lấy theo nhu cầu
+    });
 
-export { createReview };
+    if (reviews.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No reviews found for this course." });
+    }
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve reviews", error: error.message });
+  }
+};
+
+export { createReview,getReviewCourse };
