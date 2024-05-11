@@ -33,7 +33,11 @@ import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
 import CreateLesson from "./pages/instructors/CreateLesson";
 import CheckoutPage from "./pages/students/CheckoutPage";
 import MyCoursePage from "./pages/students/MyCoursePage";
+
+import InstructorRegister from "./pages/admin/InstructorRegister";
+
 import OTPAuthentication from "./pages/users/OTPAuthentication";
+
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -69,7 +73,8 @@ const App = () => {
               <Route path="/instructor" element={<InstructorManager />} />
               <Route path="/course" element={<CourseManager />} />
               <Route path="/statistics" element={<RevenueStatistic />} />
-              <Route path="/user/:userId" element={<UserDetail />} />
+              <Route path="/user" element={<UserDetail />} />
+              <Route path="/register" element={<InstructorRegister />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
