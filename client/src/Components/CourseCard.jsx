@@ -2,7 +2,7 @@ const CourseCard = ({ course, children }) => {
   return (
     <div
       className={`card h-100 ${
-        course.visibility ? "" : "text-white bg-warning opacity-50"
+        course.visibility ? "" : "opacity-50"
       }`}
     >
       <img
@@ -19,11 +19,7 @@ const CourseCard = ({ course, children }) => {
       </div>
       <div className="card-body">
         <div className="d-flex align-items-center">
-          <div
-            className={`lead ${
-              course.visibility ? "text-success" : "text-white"
-            }`}
-          >
+          <div className={`lead text-success`}>
             <i className="bi bi-wallet2"></i> {course.price}
           </div>
           <div className="flex-grow-1">
