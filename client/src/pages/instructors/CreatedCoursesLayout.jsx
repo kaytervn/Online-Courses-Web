@@ -203,11 +203,11 @@ const CreatedCourses = () => {
                     ) : (
                       <>
                         {user.createdCourses.map((course) => (
-                          <div key={(course._id)}>
+                          <div key={course._id}>
                             <CourseCard course={course}>
                               <div className="pe-2 flex-grow-1">
                                 <a
-                                  href=""
+                                  href="/course-intro"
                                   className="btn btn-outline-dark w-100"
                                 >
                                   <i className="bi bi-pencil-square"></i> Edit

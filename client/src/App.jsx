@@ -20,7 +20,7 @@ import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
-
+import CourseIntro from "./pages/instructors/CourseIntro";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -60,6 +60,7 @@ const App = () => {
             <>
               <Route index element={<CreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
+              <Route path="/course-intro" element={<CourseIntro />}></Route>
               <Route
                 path="/personal-revenue"
                 element={<PersonalRevenue />}
