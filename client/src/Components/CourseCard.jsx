@@ -1,25 +1,25 @@
-const CourseCard = ({ course, instructorName, children }) => {
+const CourseCard = ({ course, children }) => {
   return (
     <div
       className={`card h-100 ${
-        course.visibility ? "" : "text-white bg-warning opacity-50"
+        course.visibility ? "" : "opacity-50"
       }`}
     >
-      <img src={course.picture} className="card-img-top" />
+      <img
+        src={course.picture}
+        className="card-img-top object-fit-contain"
+        style={{ height: "200px" }}
+      />
       <div className="card-header">
         <h5>{course.title}</h5>
         <div className="d-flex align-items-center">
-          <div className="flex-grow-1">{instructorName}</div>
+          <div className="flex-grow-1">{course.instructorName}</div>
           <i>{new Date(course.createdAt).toLocaleDateString()}</i>
         </div>
       </div>
       <div className="card-body">
         <div className="d-flex align-items-center">
-          <div
-            className={`lead ${
-              course.visibility ? "text-success" : "text-white"
-            }`}
-          >
+          <div className={`lead text-success`}>
             <i className="bi bi-wallet2"></i> {course.price}
           </div>
           <div className="flex-grow-1">

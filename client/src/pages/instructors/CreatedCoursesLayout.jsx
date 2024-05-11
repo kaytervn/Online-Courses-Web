@@ -6,7 +6,7 @@ import {
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import CourseCard from "../../Components/CourseCard";
 import Topic from "../../../../server/models/TopicEnum.js";
-import { UserContext } from "../../contexts/UserContext.jsx";
+import { UserContext } from "../../contexts/UserContext";
 import "../../styles/cardHover.css";
 
 const CreatedCourses = () => {
@@ -119,9 +119,6 @@ const CreatedCourses = () => {
             <AnimatedProgressBar />
           ) : (
             <>
-              {alert.message != "" && (
-                <MyAlert msg={alert.message} variant={alert.variant} />
-              )}
               <div className="row">
                 <div className="col-2">
                   <div className="input-group pb-4">
@@ -207,13 +204,10 @@ const CreatedCourses = () => {
                       <>
                         {user.createdCourses.map((course) => (
                           <div key={course._id}>
-                            <CourseCard
-                              course={course}
-                              instructorName={user.name}
-                            >
+                            <CourseCard course={course}>
                               <div className="pe-2 flex-grow-1">
                                 <a
-                                  href=""
+                                  href="/course-intro"
                                   className="btn btn-outline-dark w-100"
                                 >
                                   <i className="bi bi-pencil-square"></i> Edit

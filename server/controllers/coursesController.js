@@ -95,21 +95,17 @@ const searchUserCourses = async (req, res) => {
     const totalPages = Math.ceil(totalCount / limit);
     const skip = (page - 1) * limit;
 
-    let courses = await Course.find(query).skip(skip).limit(limit);
+    const courses = await Course.find(query)
+      .sort(sort === "title" ? { title: 1 } : { updatedAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    if (sort === "title") {
-      courses = await Course.find(query)
-        .sort({ title: 1 })
-        .skip(skip)
-        .limit(limit);
-    } else {
-      courses = await Course.find(query)
-        .sort({ updatedAt: -1 })
-        .skip(skip)
-        .limit(limit);
-    }
+    const newCourses = courses.map((course) => ({
+      ...course._doc,
+      instructorName: user.name,
+    }));
 
-    return res.status(200).json({ courses, totalPages });
+    return res.status(200).json({ courses: newCourses, totalPages });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -131,8 +127,10 @@ const getSortOption = (sort) => {
 };
 
 const searchCourses = async (req, res) => {
-  const { keyword, topic, page, sort } = req.body;
+  const { keyword, topic, page = 1, sort } = req.body;
   const limit = 6;
+  const skip = (page - 1) * limit;
+
   let query = { visibility: true, status: true };
 
   if (keyword.trim() !== "") {
@@ -147,16 +145,28 @@ const searchCourses = async (req, res) => {
   }
 
   try {
-    const totalCount = await Course.countDocuments(query);
+    const [totalCount, courses] = await Promise.all([
+      Course.countDocuments(query),
+      Course.find(query)
+        .sort(getSortOption(sort))
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+    ]);
+
     const totalPages = Math.ceil(totalCount / limit);
-    const skip = (page - 1) * limit;
 
-    const courses = await Course.find(query)
-      .sort(getSortOption(sort))
-      .skip(skip)
-      .limit(limit);
+    const newCourses = await Promise.all(
+      courses.map(async (course) => {
+        const user = await User.findById(course.userId);
+        return {
+          ...course,
+          instructorName: user.name,
+        };
+      })
+    );
 
-    return res.status(200).json({ courses, totalPages });
+    return res.status(200).json({ courses: newCourses, totalPages });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -286,7 +296,7 @@ const getAllCourses = async (req, res) => {
 
 const getNewestCourse = async (req, res) => {
   try {
-    const courses = await Course.find().sort({ createdAt: -1 }).limit(5);
+    const courses = await Course.find().sort({ createdAt: -1 }).limit(6);
     res.status(200).json({ courses });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -331,6 +341,42 @@ const getCourse = async (req, res) => {
   }
 };
 
+const changeCourseStatus = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
+
+  const course = await Course.findById(req.params.id);
+  if (!course) {
+    return res.status(400).json({ error: "Course Not Found" });
+  }
+
+  const user = await User.findById(req.user._id);
+  if (
+    !(
+      (course.userId.equals(user._id) && user.role == Role.INSTRUCTOR) ||
+      user.role == Role.ADMIN
+    )
+  ) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  try {
+    if (course.status == true) {
+      await course.updateOne({ status: false });
+    } else {
+      await course.updateOne({ status: true });
+    }
+    return res.status(200).json({
+      success: "Course Status Was Updated",
+      status: course.status,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
 export {
   createCourse,
   getNewestCourse,
@@ -339,6 +385,7 @@ export {
   getUserCourses,
   searchUserCourses,
   changeCourseVisibility,
+  changeCourseStatus,
   findCourse,
   updateCourseIntro,
   deleteCourse,

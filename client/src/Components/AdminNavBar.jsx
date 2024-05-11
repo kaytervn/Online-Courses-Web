@@ -3,87 +3,44 @@
 // import { Link } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { SubMenu } from "react-pro-sidebar";
-
-import { BarChart } from "../../images/icons/BarChart";
-import { Calendar } from "../../images/icons/Calendar";
-import { ShoppingCart } from "../../images/icons/ShoppingCart";
 import { Service } from "../../images/icons/Service";
 import { menuClasses } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { FaUsersBetweenLines } from "react-icons/fa6";
+import { PiStudentBold } from "react-icons/pi";
+import { GiTeacher } from "react-icons/gi";
+import { FaBook } from "react-icons/fa6";
+import { BarChart } from "../../images/icons/BarChart";
+import styled from "styled-components";
+import { IoLogOut } from "react-icons/io5";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 const AdminNavBar = () => {
-  const theme = {
-    dark: {
-      sidebar: {
-        backgroundColor: "#0b2948",
-        color: "#8ba1b7",
-      },
-      menu: {
-        menuContent: "#082440",
-        icon: "#ffffff",
-        hover: {
-          backgroundColor: "#00458b",
-          color: "#b6c8d9",
-        },
-        disabled: {
-          color: "#3e5e7e",
-        },
-      },
-    },
+  const { setUser } = useContext(UserContext);
+  const [collapsed, setCollapsed] = useState(false);
+  const [toggled, setToggled] = useState(false);
+  const [broken, setBroken] = useState(false);
+  const [rtl, setRtl] = useState(false);
+  const [hasImage, setHasImage] = useState(false);
+
+  const navigate = useNavigate();
+  const SidebarContainer = styled.div`
+    height: 100vh;
+    width: 100%;
+  `;
+  const handleLogout = () => {
+    if (confirm("Confirm logout?")) {
+      setUser({ email: null, name: null, picture: null, role: null });
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      navigate("/");
+    }
   };
-  //   // hex to rgba converter
-  //   const hexToRgba = (hex, alpha) => {
-  //     const r = parseInt(hex.slice(1, 3), 16);
-  //     const g = parseInt(hex.slice(3, 5), 16);
-  //     const b = parseInt(hex.slice(5, 7), 16);
-
-  //     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  //   };
-  //   const menuItemStyles = {
-  //     root: {
-  //       fontSize: "13px",
-  //       fontWeight: 400,
-  //     },
-  //     icon: {
-  //       color: "#ffffff",
-  //       [`&.${menuClasses.disabled}`]: {
-  //         color: "#3e5e7e",
-  //       },
-  //     },
-  //     SubMenuExpandIcon: {
-  //       color: "#b6b7b9",
-  //     },
-  //     subMenuContent: ({ level }) => ({
-  //       backgroundColor:
-  //         level === 0
-  //           ? hexToRgba(
-  //               theme.menu.menuContent
-  //               //  hasImage && !collapsed ? 0.4 : 1
-  //             )
-  //           : "transparent",
-  //     }),
-  //     button: {
-  //       [`&.${menuClasses.disabled}`]: {
-  //         color: "#3e5e7e",
-  //       },
-  //       "&:hover": {
-  //         backgroundColor: hexToRgba(
-  //           "#00458b"
-  //           //   hasImage ? 0.8 : 1
-  //         ),
-  //         color: "#b6c8d9",
-  //       },
-  //     },
-  //     label: ({ open }) => ({
-  //       fontWeight: open ? 600 : undefined,
-  //     }),
-  //   };
-
   return (
-    <div>
-      <div style={{ display: "flex", height: "100%" }}>
-        <div style={{ display: "flex", height: "100%" }}>
-          <Sidebar backgroundColor="#212529" width="300px">
+    <SidebarContainer>
+      <div style={{ display: "flex", height: "100%", width: "100%" }}>
+        <div style={{ display: "flex", height: "100%", width: "100%" }}>
+          <Sidebar backgroundColor="#212529">
             <Menu
               closeOnClick
               menuItemStyles={{
@@ -115,23 +72,37 @@ const AdminNavBar = () => {
                 },
               }}
             >
-              <SubMenu defaultOpen label="User Manager" icon={<BarChart />}>
-                <MenuItem component={<Link to="/" />}>Student Manager</MenuItem>
-                <MenuItem component={<Link to="/instructor" />}>
+              <SubMenu
+                defaultOpen
+                label="User Manager"
+                icon={<FaUsersBetweenLines />}
+              >
+                <MenuItem icon={<PiStudentBold />} component={<Link to="/" />}>
+                  Student Manager
+                </MenuItem>
+                <MenuItem
+                  icon={<GiTeacher />}
+                  component={<Link to="/instructor" />}
+                >
                   {" "}
                   Instructor Manager
                 </MenuItem>
               </SubMenu>
-              <MenuItem suffix="🔥" active icon={<Calendar />}>
-                Calendar (active)
+              <MenuItem component={<Link to="/course" />} icon={<FaBook />}>
+                Course Manager
               </MenuItem>
 
-              <MenuItem icon={<Service />}> Examples</MenuItem>
+              <MenuItem icon={<BarChart />}> Revenue statistics</MenuItem>
+
+              <MenuItem icon={<IoLogOut />} onClick={handleLogout}>
+                {" "}
+                Logout{" "}
+              </MenuItem>
             </Menu>
           </Sidebar>
         </div>
       </div>
-    </div>
+    </SidebarContainer>
   );
 };
 

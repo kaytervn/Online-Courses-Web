@@ -37,12 +37,6 @@ const CoursePage = () => {
     setCourses({ ...courses, listCourses: data.courses });
     setPages(Array.from({ length: data.totalPages }, (_, index) => index + 1));
     setTotalPages(data.totalPages);
-    console.log({
-      keyword: searchValue,
-      topic: selectedTopic,
-      page: currentPage,
-      sort: selectedSort,
-    });
   };
 
   useEffect(() => {
@@ -200,14 +194,14 @@ const CoursePage = () => {
                                 href=""
                                 className="btn btn-outline-primary w-100"
                               >
-                                View Details
+                                View Intro
                               </a>
                             </div>
                             <a
                               href="#action"
                               className="btn btn-outline-warning"
                             >
-                              <i class="bi bi-cart4"></i>
+                              <i className="bi bi-cart4"></i>
                             </a>
                           </CourseCard>
                         </div>

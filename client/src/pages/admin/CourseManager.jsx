@@ -1,35 +1,30 @@
 import { useContext, useEffect, useState } from "react";
-import { UsersContext } from "../../contexts/UsersContext";
-import {
-  changeUserStatus,
-  getUserListByRole,
-} from "../../services/usersService";
-import Role from "../../../../server/models/RoleEnum";
-import Container from "react-bootstrap/Container";
 import Alert from "../../Components/Alert";
 
-import DataTable, {
-  Alignment,
-  createTheme,
-  defaultThemes,
-} from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
-import { Image, Table } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
+import { CoursesContext } from "../../contexts/CoursesContext";
+import {
+  changeCourseStatus,
+  changeCourseVisibility,
+  getAllCourseAdmin,
+} from "../../services/coursesService";
+import { Image } from "react-bootstrap";
+import styled from "styled-components";
 
-const InstructorManager = () => {
-  const { users, setUsers } = useContext(UsersContext);
+const CourseManager = () => {
+  const { courses, setCourses } = useContext(CoursesContext);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     setTimeout(async () => {
-      const instructors = await getUserListByRole(Role.INSTRUCTOR);
-      setUsers({ instructors });
+      const listCourses = await getAllCourseAdmin();
+      setCourses({ listCourses });
 
       if (success || error) {
         const timer = setTimeout(() => {
@@ -45,15 +40,8 @@ const InstructorManager = () => {
 
   const columns = [
     {
-      name: "Name",
-      selector: (row) => row.name,
-      sortable: true,
-      // width: "200px",
-      textAlign: "center",
-    },
-    {
-      name: "Email",
-      selector: (row) => row.email,
+      name: "Title",
+      selector: (row) => row.title,
       sortable: true,
     },
     {
@@ -69,6 +57,38 @@ const InstructorManager = () => {
             />
           ) : (
             <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
+          )}
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Description",
+      selector: (row) => row.description,
+    },
+    {
+      name: "Price",
+      selector: (row) => row.price,
+      sortable: true,
+    },
+    {
+      name: "Visibility",
+      selector: (row) => (
+        <div className="d-flex justify-content-center">
+          {row.visibility ? (
+            <button
+              className="btn  btn-success"
+              onClick={(e) => handleVisibilityChange(e, row._id)}
+            >
+              Enable
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger"
+              onClick={(e) => handleVisibilityChange(e, row._id)}
+            >
+              Disable
+            </button>
           )}
         </div>
       ),
@@ -94,11 +114,6 @@ const InstructorManager = () => {
           )}
         </div>
       ),
-      sortable: true,
-    },
-    {
-      name: "Role",
-      selector: (row) => row.role,
     },
     {
       name: "",
@@ -113,12 +128,26 @@ const InstructorManager = () => {
 
   const handleStatusChange = async (e, id) => {
     e.preventDefault();
-    if (confirm("Confirm change status for this instructor?")) {
+    if (confirm("Confirm change status for this course?")) {
       try {
-        const message = await changeUserStatus(id);
+        const message = await changeCourseStatus(id);
         setSuccess(message.success);
-        const students = await getUserListByRole(Role.STUDENT);
-        setUsers({ students });
+        const listCourses = await getAllCourseAdmin();
+        setCourses({ listCourses });
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+  };
+
+  const handleVisibilityChange = async (e, id) => {
+    e.preventDefault();
+    if (confirm("Confirm change visibility for this course?")) {
+      try {
+        const message = await changeCourseVisibility(id);
+        setSuccess(message.success);
+        const listCourses = await getAllCourseAdmin();
+        setCourses({ listCourses });
       } catch (err) {
         setError(err.message);
       }
@@ -126,12 +155,15 @@ const InstructorManager = () => {
   };
 
   async function handleSearch(e) {
-    const newInstructors = (await getUserListByRole(Role.INSTRUCTOR)).filter(
-      (instructor) =>
-        instructor.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        instructor.email.toLowerCase().includes(e.target.value.toLowerCase())
+    e.preventDefault();
+    console.log(await getAllCourseAdmin());
+    const newCourses = (await getAllCourseAdmin()).filter(
+      (course) =>
+        course.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        course.description.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    setUsers({ instructors: newInstructors });
+    console.log(newCourses);
+    setCourses({ listCourses: newCourses });
   }
 
   return (
@@ -140,7 +172,7 @@ const InstructorManager = () => {
         <AdminNavBar />
       </Col>
       <Col md={8}>
-        <h1 className=""> Instructors Manager</h1>
+        <h1 className=""> Courses Manager</h1>
         {success && <Alert msg={success} type="success" />}
         {error && <Alert msg={error} type="error" />}
         <div className="text-end mb-3 mt-3">
@@ -159,7 +191,7 @@ const InstructorManager = () => {
         </div>
         <DataTable
           columns={columns}
-          data={users.instructors}
+          data={courses.listCourses}
           fixedHeader
           pagination
           customStyles={customStyles}
@@ -169,4 +201,4 @@ const InstructorManager = () => {
   );
 };
 
-export default InstructorManager;
+export default CourseManager;

@@ -22,6 +22,10 @@ import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 
+import CourseManager from "./pages/admin/CourseManager";
+
+import CourseIntro from "./pages/instructors/CourseIntro";
+
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -55,6 +59,7 @@ const App = () => {
             <>
               <Route index element={<UserManager />} />
               <Route path="/instructor" element={<InstructorManager />} />
+              <Route path="/course" element={<CourseManager />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
@@ -62,6 +67,7 @@ const App = () => {
             <>
               <Route index element={<CreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
+              <Route path="/course-intro" element={<CourseIntro />}></Route>
               <Route
                 path="/personal-revenue"
                 element={<PersonalRevenue />}
