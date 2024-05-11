@@ -13,23 +13,21 @@ import UserDetailProvider from "./contexts/UserDetailContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <StatisticsProvider>
-
-   <NotificationProvider>
-      <UserDetailProvider>
-        <CoursesProvider>
-          <CartProvider>
-            <CoursesProvider>
-              <UsersProvider>
-                <UserProvider>
-                  <App />
-                </UserProvider>
-              </UsersProvider>
-            </CoursesProvider>
-          </CartProvider>
-        </CoursesProvider>
-   </NotificationProvider>
-      </UserDetailProvider>
-
+      <NotificationProvider>
+        <UserDetailProvider>
+          <CoursesProvider>
+            <CartProvider>
+              <CoursesProvider>
+                <UsersProvider>
+                  <UserProvider>
+                    <App />
+                  </UserProvider>
+                </UsersProvider>
+              </CoursesProvider>
+            </CartProvider>
+          </CoursesProvider>
+        </UserDetailProvider>
+      </NotificationProvider>
     </StatisticsProvider>
   </React.StrictMode>
 );
