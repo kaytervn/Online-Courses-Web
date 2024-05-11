@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 import nodemailer from "nodemailer";
+import cloudinary from "../utils/cloudinary.js";
 import { createCartForUser } from "./cartsController.js";
 
 //***********************************************CREATE TOKEN************************** */
@@ -175,19 +176,34 @@ const resetPassword = async (req, res) => {
 //***********************************************UPLOAD PROFILE IMAGE************************** */
 
 const updateProfileInformation = async (req, res) => {
+  const { name, picture, email, phone } = req.body;
+  console.log(name, picture, email, phone);
+  const userId = req.user._id;
   try {
-    const { data, picture } = req.body;
-    console.log(data, picture);
-    const userId = req.user._id;
-    const user = await User.findByIdAndUpdate(userId, {
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      picture: picture,
+    const uploadResponse = await new Promise((resolve, reject) => {
+      const bufferData = req.file.buffer;
+      cloudinary.uploader
+        .upload_stream({ resource_type: "image" }, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        })
+        .end(bufferData);
     });
 
+    const user = await User.findByIdAndUpdate(userId, {
+      name: name,
+      email: email,
+      phone: phone,
+      cloudinary: uploadResponse.public_id,
+      picture: uploadResponse.secure_url,
+    });
+    console.log("Success: Profile updated successfully");
     return res.status(200).json({ success: "Profile updated successfully" });
   } catch (error) {
+    console.log("Error:", error.message);
     return res.status(500).json({ error: "Failed to update profile" });
   }
 };

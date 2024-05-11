@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateUserProfile } from '../../../services/usersService';
 
 
+
 const EditProfile = () => {
     const { user, setUser } = useContext(UserContext);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -28,19 +29,21 @@ const EditProfile = () => {
     }, [user]);
 
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
+    // const handleImageChange = (e) => {
+    //     const file = e.target.files[0];
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            setSelectedImage(reader.result);
-        };
-        reader.onerror = (error) => {
-            console.error('Error:', error);
-        };
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onload = () => {
+    //         setSelectedImage(reader.result);
+    //     };
+    //     reader.onerror = (error) => {
+    //         console.error('Error:', error);
+    //     };
 
-    };
+    // };
+
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -51,7 +54,13 @@ const EditProfile = () => {
     const handleSave = async (e) => {
         e.preventDefault();
         try {
-            await updateUserProfile(userData, selectedImage);
+            const formData = new FormData();
+            formData.append('name', userData.name);
+            formData.append('email', userData.email);
+            formData.append('phone', userData.phone);
+            formData.append('picture', userData.picture);
+
+            await updateUserProfile(formData);
             setUser({
                 token: localStorage.getItem('token'),
                 email: userData.email,
@@ -90,7 +99,13 @@ const EditProfile = () => {
                                         accept="image/*"
                                         style={{ display: 'none' }}
                                         id="upload-image"
-                                        onChange={(e) => handleImageChange(e)}
+                                        onChange={(e) => {
+                                            e.preventDefault();
+                                            setSelectedImage(URL.createObjectURL(e.target.files[0]));
+                                            setUserData({
+                                                ...userData, picture: e.target.files[0]
+                                            })
+                                        }}
                                     />
                                     <label htmlFor="upload-image">
                                         <Button className='mt-5' variant="outline-light" size="sm" as="span">

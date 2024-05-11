@@ -126,21 +126,18 @@ const resetPasswordUser = async (id, token, password) => {
 
 //***********************************************REGISTER USER************************** */
 
-const updateUserProfile = async (userData, picture) => {
+const updateUserProfile = async (formData) => {
   try {
-    console.log(userData, picture);
+    console.log(formData);
 
     const res = await fetch("/api/users/update-profile", {
       method: "PUT",
-      crossDomain: true,
+      body: formData,
+      // crossDomain: true,
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({
-        data: userData,
-        picture: picture,
-      }),
     });
 
     const data = await res.json();
