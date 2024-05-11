@@ -21,6 +21,10 @@ import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
 import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
+import EditProfile from "./pages/users/MyProfilePage/EditProfile";
+import CourseManager from "./pages/admin/CourseManager";
+import CourseIntro from "./pages/instructors/CourseIntro";
+
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -36,6 +40,7 @@ const App = () => {
           email: dataUser.email,
           name: dataUser.name,
           picture: dataUser.picture,
+          phone: dataUser.phone,
           role: dataUser.role,
         });
         setLoading(false);
@@ -53,6 +58,7 @@ const App = () => {
             <>
               <Route index element={<UserManager />} />
               <Route path="/instructor" element={<InstructorManager />} />
+              <Route path="/course" element={<CourseManager />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
@@ -79,7 +85,9 @@ const App = () => {
           )}
           {user.token && (
             <>
-              <Route path="/my-profile" element={<MyProfilePage />}></Route>
+              <Route path="/my-profile" element={<MyProfilePage />}>
+              </Route>
+              <Route path="/my-profile/edit" element={<EditProfile />}></Route>
             </>
           )}
           <Route element={<GuestRoutes />}>

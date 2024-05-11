@@ -10,12 +10,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CoursesProvider>
       <CartProvider>
-        <UsersProvider>
-          <UserProvider>
-            <App />
-          </UserProvider>
-        </UsersProvider>
+        <CoursesProvider>
+          <UsersProvider>
+            <UserProvider>
+              <App />
+            </UserProvider>
+          </UsersProvider>
+        </CoursesProvider>
       </CartProvider>
     </CoursesProvider>
+
   </React.StrictMode>
 );
