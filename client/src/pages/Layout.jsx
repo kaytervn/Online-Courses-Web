@@ -37,14 +37,13 @@ const Layout = () => {
 
   return (
     <>
-
       {user.role == Role.ADMIN ? null : (
         <Navbar expand="lg" className="bg-dark navbar-dark">
           <Container className="py-2">
             {user.role == Role.INSTRUCTOR ? (
               <Navbar.Brand href="/">
                 <Image width="40" src={logo} />
-                My Created Courses
+                My <span className="text-warning">Created</span> Courses
               </Navbar.Brand>
             ) : (
               <Navbar.Brand href="/">
