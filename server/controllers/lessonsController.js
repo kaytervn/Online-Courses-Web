@@ -1,5 +1,6 @@
 import Course from "../models/CourseModel.js";
 import Lesson from "../models/LessonModel.js";
+import Role from "../models/RoleEnum.js";
 import User from "../models/UserModel.js";
 
 const getCourseLessons = async (req, res) => {
@@ -9,7 +10,7 @@ const getCourseLessons = async (req, res) => {
       courseId: courseId,
       status: true,
     }).sort({
-      title: "desc",
+      title: 1,
     });
     res.status(200).json({ lessons, courseId });
   } catch (error) {
@@ -46,15 +47,11 @@ const deleteLesson = async (req, res) => {
 const createLesson = async (req, res) => {
   const { title, description, courseId } = req.body;
 
-  const course = await Course.findById(courseId);
-  if (!course) {
-    return res.status(400).json({ error: "Course Not Found" });
-  }
-
   if (!title || !description) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
+  const course = await Course.findById(courseId);
   const user = await User.findById(req.user._id);
   if (!(course.userId.equals(user._id) && user.role == Role.INSTRUCTOR)) {
     return res.status(401).json({ error: "Not authorized" });
@@ -72,4 +69,36 @@ const createLesson = async (req, res) => {
   }
 };
 
-export { getCourseLessons, deleteLesson, createLesson };
+const updateLesson = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
+
+  const lesson = await Lesson.findById(req.params.id);
+  if (!lesson) {
+    return res.status(400).json({ error: "Lesson Not Found" });
+  }
+
+  const { title, description } = req.body;
+
+  if (!title || !description) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  const course = await Course.findById(lesson.courseId);
+  const user = await User.findById(req.user._id);
+  if (!(course.userId.equals(user._id) && user.role == Role.INSTRUCTOR)) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  try {
+    await lesson.updateOne({ title, description });
+    return res.status(200).json({
+      success: "Lesson updated",
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export { getCourseLessons, deleteLesson, createLesson, updateLesson };

@@ -9,7 +9,7 @@ const getLessonDocuments = async (req, res) => {
     const documents = await Document.find({
       lessonId: lessonId,
     }).sort({
-      title: "desc",
+      title: 1,
     });
     res.status(200).json({ documents, lessonId });
   } catch (error) {
