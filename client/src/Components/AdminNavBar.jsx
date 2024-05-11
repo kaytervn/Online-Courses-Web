@@ -17,16 +17,16 @@ import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 const AdminNavBar = () => {
   const { setUser } = useContext(UserContext);
-     const [collapsed, setCollapsed] = useState(false);
-     const [toggled, setToggled] = useState(false);
-     const [broken, setBroken] = useState(false);
-     const [rtl, setRtl] = useState(false);
-     const [hasImage, setHasImage] = useState(false);
-
+  const [collapsed, setCollapsed] = useState(false);
+  const [toggled, setToggled] = useState(false);
+  const [broken, setBroken] = useState(false);
+  const [rtl, setRtl] = useState(false);
+  const [hasImage, setHasImage] = useState(false);
 
   const navigate = useNavigate();
   const SidebarContainer = styled.div`
     height: 100vh;
+    width: 100%;
   `;
   const handleLogout = () => {
     if (confirm("Confirm logout?")) {
@@ -38,8 +38,8 @@ const AdminNavBar = () => {
   };
   return (
     <SidebarContainer>
-      <div style={{ display: "flex", height: "100%" }}>
-        <div style={{ display: "flex", height: "100%" }}>
+      <div style={{ display: "flex", height: "100%", width: "100%" }}>
+        <div style={{ display: "flex", height: "100%", width: "100%" }}>
           <Sidebar backgroundColor="#212529">
             <Menu
               closeOnClick

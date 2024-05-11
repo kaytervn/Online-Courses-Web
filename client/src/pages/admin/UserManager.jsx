@@ -33,8 +33,18 @@ const UserManager = () => {
     setTimeout(async () => {
       const students = await getUserListByRole(Role.STUDENT);
       setUsers({ students });
+
+      if (success || error) {
+        const timer = setTimeout(() => {
+          setSuccess("");
+          setError("");
+        }, 2000);
+
+        // Xóa timeout khi component unmount
+        return () => clearTimeout(timer);
+      }
     }, 0);
-  }, []);
+  }, [success, error]);
 
   const columns = [
     {
@@ -69,11 +79,23 @@ const UserManager = () => {
     {
       name: "Status",
       selector: (row) => (
-        <FormCheckInput
-          type="checkbox"
-          checked={row.status}
-          onChange={(e) => handleStatusChange(e, row._id)}
-        />
+        <div className="d-flex justify-content-center">
+          {row.status ? (
+            <button
+              className="btn btn-success"
+              onClick={(e) => handleStatusChange(e, row._id)}
+            >
+              Enable
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger"
+              onClick={(e) => handleStatusChange(e, row._id)}
+            >
+              Disable
+            </button>
+          )}
+        </div>
       ),
       sortable: true,
     },
@@ -81,17 +103,28 @@ const UserManager = () => {
       name: "Role",
       selector: (row) => row.role,
     },
+    {
+      name: "",
+      selector: (row) => (
+        <div className="d-flex justify-content-center">
+          <button className="btn btn-primary">Add</button>
+          <button className="btn btn-primary ms-3">Edit</button>
+        </div>
+      ),
+    },
   ];
 
   const handleStatusChange = async (e, id) => {
     e.preventDefault();
-    try {
-      const message = await changeUserStatus(id);
-      setSuccess(message.success);
-      const students = await getUserListByRole(Role.STUDENT);
-      setUsers({ students });
-    } catch (err) {
-      setError(err.message);
+    if (confirm("Confirm change status for this student?")) {
+      try {
+        const message = await changeUserStatus(id);
+        setSuccess(message.success);
+        const students = await getUserListByRole(Role.STUDENT);
+        setUsers({ students });
+      } catch (err) {
+        setError(err.message);
+      }
     }
   };
 
@@ -101,39 +134,42 @@ const UserManager = () => {
       (student) =>
         student.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
         student.email.toLowerCase().includes(e.target.value.toLowerCase())
-        
     );
     setUsers({ students: newStudents });
   }
   return (
-    <Row>
+    <Row className="ms-(-6) me-0">
       <Col md={3}>
         <AdminNavBar />
       </Col>
       <Col md={8}>
-        {success && <Alert msg={success} type="success" />}
-        {error && <Alert msg={error} type="error" />}
-        <div className="text-end mb-3 mt-3">
-          <div className="input-group news-input">
-            <span className="input-group-text">
-              <i className="fa fa-search" aria-hidden="true"></i>
-            </span>
-            <input
-              type="text"
-              className="form-control"
-              id="searchInput"
-              placeholder="Search..."
-              onChange={handleSearch}
-            />
+        <Container>
+          <h1 className=""> Students Manager</h1>
+
+          {success && <Alert msg={success} type="success" />}
+          {error && <Alert msg={error} type="error" />}
+          <div className="text-end mb-3 mt-3">
+            <div className="input-group news-input">
+              <span className="input-group-text">
+                <i className="fa fa-search" aria-hidden="true"></i>
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                id="searchInput"
+                placeholder="Search..."
+                onChange={handleSearch}
+              />
+            </div>
           </div>
-        </div>
-        <DataTable
-          columns={columns}
-          data={users.students}
-          fixedHeader
-          pagination
-          customStyles={customStyles}
-        ></DataTable>
+          <DataTable
+            columns={columns}
+            data={users.students}
+            fixedHeader
+            pagination
+            customStyles={customStyles}
+          ></DataTable>
+        </Container>
       </Col>
     </Row>
   );

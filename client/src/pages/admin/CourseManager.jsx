@@ -25,8 +25,18 @@ const CourseManager = () => {
     setTimeout(async () => {
       const listCourses = await getAllCourseAdmin();
       setCourses({ listCourses });
+
+      if (success || error) {
+        const timer = setTimeout(() => {
+          setSuccess("");
+          setError("");
+        }, 2000);
+
+        // Xóa timeout
+        return () => clearTimeout(timer);
+      }
     }, 0);
-  }, []);
+  }, [success, error]);
 
   const columns = [
     {
@@ -64,46 +74,83 @@ const CourseManager = () => {
     {
       name: "Visibility",
       selector: (row) => (
-        <FormCheckInput
-          type="checkbox"
-          checked={row.visibility}
-          onChange={(e) => handleVisibilityChange(e, row._id)}
-        />
+        <div className="d-flex justify-content-center">
+          {row.visibility ? (
+            <button
+              className="btn  btn-success"
+              onClick={(e) => handleVisibilityChange(e, row._id)}
+            >
+              Enable
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger"
+              onClick={(e) => handleVisibilityChange(e, row._id)}
+            >
+              Disable
+            </button>
+          )}
+        </div>
       ),
     },
     {
       name: "Status",
       selector: (row) => (
-        <FormCheckInput
-          type="checkbox"
-          checked={row.status}
-          onChange={(e) => handleStatusChange(e, row._id)}
-        />
+        <div className="d-flex justify-content-center">
+          {row.status ? (
+            <button
+              className="btn btn-success"
+              onClick={(e) => handleStatusChange(e, row._id)}
+            >
+              Enable
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger"
+              onClick={(e) => handleStatusChange(e, row._id)}
+            >
+              Disable
+            </button>
+          )}
+        </div>
+      ),
+    },
+    {
+      name: "",
+      selector: (row) => (
+        <div className="d-flex justify-content-center">
+          <button className="btn btn-primary">Add</button>
+          <button className="btn btn-primary ms-3">Edit</button>
+        </div>
       ),
     },
   ];
 
   const handleStatusChange = async (e, id) => {
     e.preventDefault();
-    try {
-      const message = await changeCourseStatus(id);
-      setSuccess(message.success);
-      const listCourses = await getAllCourseAdmin();
-      setCourses({ listCourses });
-    } catch (err) {
-      setError(err.message);
+    if (confirm("Confirm change status for this course?")) {
+      try {
+        const message = await changeCourseStatus(id);
+        setSuccess(message.success);
+        const listCourses = await getAllCourseAdmin();
+        setCourses({ listCourses });
+      } catch (err) {
+        setError(err.message);
+      }
     }
   };
 
   const handleVisibilityChange = async (e, id) => {
     e.preventDefault();
-    try {
-      const message = await changeCourseVisibility(id);
-      setSuccess(message.success);
-      const listCourses = await getAllCourseAdmin();
-      setCourses({ listCourses });
-    } catch (err) {
-      setError(err.message);
+    if (confirm("Confirm change visibility for this course?")) {
+      try {
+        const message = await changeCourseVisibility(id);
+        setSuccess(message.success);
+        const listCourses = await getAllCourseAdmin();
+        setCourses({ listCourses });
+      } catch (err) {
+        setError(err.message);
+      }
     }
   };
 
@@ -125,6 +172,7 @@ const CourseManager = () => {
         <AdminNavBar />
       </Col>
       <Col md={8}>
+        <h1 className=""> Courses Manager</h1>
         {success && <Alert msg={success} type="success" />}
         {error && <Alert msg={error} type="error" />}
         <div className="text-end mb-3 mt-3">

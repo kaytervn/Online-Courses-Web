@@ -30,8 +30,18 @@ const InstructorManager = () => {
     setTimeout(async () => {
       const instructors = await getUserListByRole(Role.INSTRUCTOR);
       setUsers({ instructors });
+
+      if (success || error) {
+        const timer = setTimeout(() => {
+          setSuccess("");
+          setError("");
+        }, 2000);
+
+        // Xóa timeout
+        return () => clearTimeout(timer);
+      }
     }, 0);
-  }, []);
+  }, [success, error]);
 
   const columns = [
     {
@@ -66,11 +76,23 @@ const InstructorManager = () => {
     {
       name: "Status",
       selector: (row) => (
-        <FormCheckInput
-          type="checkbox"
-          checked={row.status}
-          onChange={(e) => handleStatusChange(e, row._id)}
-        />
+        <div className="d-flex justify-content-center">
+          {row.status ? (
+            <button
+              className="btn btn-success"
+              onClick={(e) => handleStatusChange(e, row._id)}
+            >
+              Enable
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger"
+              onClick={(e) => handleStatusChange(e, row._id)}
+            >
+              Disable
+            </button>
+          )}
+        </div>
       ),
       sortable: true,
     },
@@ -78,17 +100,28 @@ const InstructorManager = () => {
       name: "Role",
       selector: (row) => row.role,
     },
+    {
+      name: "",
+      selector: (row) => (
+        <div className="d-flex justify-content-center">
+          <button className="btn btn-primary">Add</button>
+          <button className="btn btn-primary ms-3">Edit</button>
+        </div>
+      ),
+    },
   ];
 
   const handleStatusChange = async (e, id) => {
     e.preventDefault();
-    try {
-      const message = await changeUserStatus(id);
-      setSuccess(message.success);
-      const instructors = await getUserListByRole(Role.INSTRUCTOR);
-      setUsers({ instructors });
-    } catch (err) {
-      setError(err.message);
+    if (confirm("Confirm change status for this instructor?")) {
+      try {
+        const message = await changeUserStatus(id);
+        setSuccess(message.success);
+        const students = await getUserListByRole(Role.STUDENT);
+        setUsers({ students });
+      } catch (err) {
+        setError(err.message);
+      }
     }
   };
 
@@ -107,6 +140,7 @@ const InstructorManager = () => {
         <AdminNavBar />
       </Col>
       <Col md={8}>
+        <h1 className=""> Instructors Manager</h1>
         {success && <Alert msg={success} type="success" />}
         {error && <Alert msg={error} type="error" />}
         <div className="text-end mb-3 mt-3">
