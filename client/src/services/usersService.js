@@ -1,3 +1,23 @@
+//***********************************************SEND OTP************************** */
+
+const checkOTPUser = async (email, otp) => {
+  const res = await fetch("/api/users/otp-authentication", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, otp }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+
+  return data;
+};
+
 //***********************************************REGISTER USER************************** */
 
 const registerUser = async (name, email, password, confirmPassword) => {
@@ -22,8 +42,6 @@ const registerUser = async (name, email, password, confirmPassword) => {
   if (!res.ok) {
     throw Error(data.error);
   }
-
-  localStorage.setItem("token", data.token);
 
   return data;
 };
@@ -50,7 +68,7 @@ const loginUser = async (email, password) => {
   }
 
   localStorage.setItem("token", data.token);
-  localStorage.setItem("cartId",data.cartId);
+  localStorage.setItem("cartId", data.cartId);
 
   console.log("user:", localStorage.getItem("token", data.token));
   console.log("cart:", localStorage.getItem("cartId", data.token));
@@ -218,6 +236,7 @@ const changeUserStatus = async (id) => {
 
 export {
   registerUser,
+  checkOTPUser,
   loginUser,
   loginUserSocial,
   checkEmailUser,
