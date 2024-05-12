@@ -3,13 +3,16 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/esm/Container";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MyAlert } from "../../Components/CustomAlert";
 import { createComment } from "../../services/commentService";
+import { UserContext } from "../../contexts/UserContext";
+import Role from "../../../../server/models/RoleEnum";
 
 const CreateComment = () => {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
   const [alert, setAlert] = useState({
@@ -37,7 +40,11 @@ const CreateComment = () => {
         content: formData.content,
         lessonId: formData.lessonId,
       });
-      navigate("/update-lesson-details", { state: formLesson });
+      if (user.role == Role.INSTRUCTOR) {
+        navigate("/update-lesson-details", { state: formLesson });
+      } else if (user.role == Role.STUDENT) {
+        navigate("/lesson-details", { state: formLesson });
+      }
     } catch (error) {
       setAlert({ ...alert, message: error.message, variant: "danger" });
       setTimeout(() => {
