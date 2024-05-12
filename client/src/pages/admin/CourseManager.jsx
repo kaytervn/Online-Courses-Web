@@ -57,10 +57,6 @@ const CourseManager = () => {
       sortable: true,
     },
     {
-      name: "Description",
-      selector: (row) => row.description,
-    },
-    {
       name: "Price",
       selector: (row) => row.price,
       sortable: true,
@@ -114,14 +110,6 @@ const CourseManager = () => {
               Disable
             </button>
           )}
-        </div>
-      ),
-    },
-    {
-      name: "",
-      selector: (row) => (
-        <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-primary ms-3">Detail</button>
         </div>
       ),
     },
