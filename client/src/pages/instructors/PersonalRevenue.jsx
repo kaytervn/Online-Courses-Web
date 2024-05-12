@@ -63,7 +63,7 @@ const PersonalRevenue = () => {
 
   return (
     <Container>
-      <h1 className="mt-3 mb-3"> Quản lý doanh thu cá nhân </h1>
+      <h1 className="mt-3 mb-3"> Personal Revenue </h1>
 
       {success && <Alert msg={success} type="success" />}
       {error && <Alert msg={error} type="error" />}
@@ -89,9 +89,7 @@ const PersonalRevenue = () => {
       ></DataTable>
       <h2 className="text-end mt-3">
         {" "}
-        Tổng doanh thu của tôi: {
-          statisticsInstructor.totalRevenueInstructor
-        }{" "}
+        My Sum Revenue: {statisticsInstructor.totalRevenueInstructor}{" "}
       </h2>
     </Container>
   );
