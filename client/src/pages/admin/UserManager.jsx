@@ -92,12 +92,7 @@ const UserManager = () => {
       selector: (row) => (
         <div className="text-center">
           {row.picture == "" || row.picture == "false" ? (
-            <Image
-              roundedCircle
-              width={"40"}
-              height={"40"}
-              src={"../../../images/user.png"}
-            />
+            <Image roundedCircle width={"40"} height={"40"} src={userImg} />
           ) : (
             <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
           )}

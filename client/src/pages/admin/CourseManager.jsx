@@ -15,6 +15,7 @@ import {
 } from "../../services/coursesService";
 import { Button, Image, Modal, Toast, ToastContainer } from "react-bootstrap";
 import styled from "styled-components";
+import userImg from "../../../images/user.png";
 
 const CourseManager = () => {
   const { courses, setCourses } = useContext(CoursesContext);
@@ -43,12 +44,7 @@ const CourseManager = () => {
       selector: (row) => (
         <div className="text-center">
           {row.picture == "" || row.picture == "false" ? (
-            <Image
-              roundedCircle
-              width={"40"}
-              height={"40"}
-              src={"../../../images/user.png"}
-            />
+            <Image roundedCircle width={"40"} height={"40"} src={userImg} />
           ) : (
             <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
           )}

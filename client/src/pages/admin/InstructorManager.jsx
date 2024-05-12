@@ -28,6 +28,7 @@ import {
 } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 import { useNavigate } from "react-router-dom";
+import userImg from "../../../images/user.png";
 
 const InstructorManager = () => {
   const { users, setUsers } = useContext(UsersContext);
@@ -93,12 +94,7 @@ const InstructorManager = () => {
       selector: (row) => (
         <div className="text-center">
           {row.picture == "" || row.picture == "false" ? (
-            <Image
-              roundedCircle
-              width={"40"}
-              height={"40"}
-              src={"../../../images/user.png"}
-            />
+            <Image roundedCircle width={"40"} height={"40"} src={userImg} />
           ) : (
             <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
           )}

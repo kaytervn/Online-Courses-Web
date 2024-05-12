@@ -22,7 +22,7 @@ import {
   getCoursesByInstructorId,
   getCoursesByStudentId,
 } from "../../services/coursesService";
-
+import userImg from "../../../images/user.png";
 import DataTable from "react-data-table-component";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 import { CoursesByUserContext } from "../../contexts/CoursesByUserContext";
@@ -122,12 +122,7 @@ const UserDetail = () => {
       selector: (row) => (
         <div className="text-center">
           {row.picture == "" || row.picture == "false" ? (
-            <Image
-              roundedCircle
-              width={"40"}
-              height={"40"}
-              src={"../../../images/user.png"}
-            />
+            <Image roundedCircle width={"40"} height={"40"} src={userImg} />
           ) : (
             <Image roundedCircle width={"40"} height={"40"} src={row.picture} />
           )}

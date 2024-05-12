@@ -15,7 +15,7 @@ import { checkOTPUser } from "../../services/usersService";
 import Alert from "../../Components/Alert";
 import { Modal } from "react-bootstrap";
 import logo from "../../../images/cookiedu_logo.png";
-import success from "../../../images/success.png";
+import successImg from "../../../images/success.png";
 
 const OTPInput = () => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const OTPInput = () => {
           <h1 className="my-5 display-3 fw-bold ls-tight text-info-emphasis px-3">
             Verify Your Account <br />
             <span className="text-dark-emphasis h4">
-              The OTP code sent through{" "}
+              The OTP code sent through
               <span className="text-warning fw-bold">{user.email}</span>
             </span>
           </h1>
@@ -113,7 +113,7 @@ const OTPInput = () => {
         <Modal.Body>
           <div style={{ textAlign: "center" }}>
             <img
-              src={success}
+              src={successImg}
               alt="Successfully updated"
               style={{ maxWidth: "30%", maxHeight: "300px" }}
             />
