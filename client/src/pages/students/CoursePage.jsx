@@ -38,23 +38,27 @@ const CoursePage = () => {
     Topic.GAME,
     Topic.SOFTWARE,
   ];
-  
+
   const handleAddToCart = async (courseId) => {
     try {
-      
-      const result = await addToCart(courseId); 
+      const result = await addToCart(courseId);
       setToastMessage("Thêm vào giỏ hàng thành công!");
       setToastType("success");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 5000);
       fetchData();
-      setItemCount(cartItems.length +1 );     
+      setItemCount(cartItems.length + 1);
     } catch (error) {
       setToastMessage(error.toString());
       setToastType("danger");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 5000);
     }
+  };
+
+  const handleSearch = async () => {
+    setCurrentPage(1);
+    await updateDisplay();
   };
 
   // Simpler Toast Component
@@ -82,6 +86,7 @@ const CoursePage = () => {
     );
   };
   const updateDisplay = async () => {
+    setLoading(true);
     const data = await searchCourses({
       keyword: searchValue,
       topic: selectedTopic,
@@ -91,6 +96,7 @@ const CoursePage = () => {
     setCourses({ ...courses, listCourses: data.courses });
     setPages(Array.from({ length: data.totalPages }, (_, index) => index + 1));
     setTotalPages(data.totalPages);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -101,21 +107,19 @@ const CoursePage = () => {
       }
     }
     setTimeout(async () => {
-      setLoading(true);
       await updateDisplay();
-      setLoading(false);
     }, 100);
-  }, [searchValue, selectedTopic, selectedSort, currentPage, notification]);
-const fetchData = async () => {
-  try {
-    const data = await getCart();
-    if (data) {
-      setCartItems(data.courseDetails);
+  }, [selectedTopic, selectedSort, currentPage, notification]);
+  const fetchData = async () => {
+    try {
+      const data = await getCart();
+      if (data) {
+        setCartItems(data.courseDetails);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
     }
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  }
-};
+  };
   return (
     <>
       {/* {notification.message && (
@@ -194,9 +198,11 @@ const fetchData = async () => {
                     onChange={(e) => {
                       e.preventDefault();
                       setSearchValue(e.target.value);
-                      setCurrentPage(1);
                     }}
                   />
+                  <div className="btn btn-success" onClick={handleSearch}>
+                    Search
+                  </div>
                 </div>
               </div>
             </div>
@@ -270,10 +276,8 @@ const fetchData = async () => {
                           <CourseCard course={course}>
                             <div className="pe-2 flex-grow-1">
                               <Link
-                                to={{
-                                  pathname: "/course-intro",
-                                  state:{course}
-                                }}
+                                to="/course-intro"
+                                state={course}
                                 className="btn btn-outline-primary w-100"
                               >
                                 View Intro
