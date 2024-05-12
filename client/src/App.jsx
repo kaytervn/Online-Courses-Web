@@ -36,6 +36,7 @@ import MyCoursePage from "./pages/students/MyCoursePage";
 import UpdateLesson from "./pages/instructors/UpdateLesson";
 import UpdateLessonDetails from "./pages/instructors/UpdateLessonDetails";
 import CreateDocument from "./pages/instructors/CreateDocument";
+import CreateComment from "./pages/instructors/CreateComment.jsx";
 import InstructorRegister from "./pages/admin/InstructorRegister";
 import OTPAuthentication from "./pages/users/OTPAuthentication";
 
@@ -92,6 +93,7 @@ const App = () => {
                 path="/create-document"
                 element={<CreateDocument />}
               ></Route>
+              <Route path="/create-comment" element={<CreateComment />}></Route>
               <Route
                 path="/update-lesson-details"
                 element={<UpdateLessonDetails />}

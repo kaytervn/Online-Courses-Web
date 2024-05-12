@@ -102,4 +102,20 @@ const updateLesson = async (req, res) => {
   }
 };
 
-export { getCourseLessons, deleteLesson, createLesson, updateLesson };
+const getLesson = async (req, res) => {
+  try {
+    const lesson = await Lesson.findById(req.params.id);
+
+    res.status(200).json({ lesson });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export {
+  getCourseLessons,
+  deleteLesson,
+  createLesson,
+  updateLesson,
+  getLesson,
+};

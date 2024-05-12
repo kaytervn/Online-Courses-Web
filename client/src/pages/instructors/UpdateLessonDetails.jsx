@@ -9,6 +9,8 @@ import {
   deleteDocument,
   getLessonDocuments,
 } from "../../services/documentService";
+import { getLessonComments } from "../../services/commentService";
+import CommentCard from "../../Components/CommentCard";
 
 const UpdateLessonDetails = () => {
   const navigate = useNavigate();
@@ -29,9 +31,10 @@ const UpdateLessonDetails = () => {
     instructorName: "",
     averageStars: "",
     documents: [],
+    commnets: [],
   });
 
-  const [formLesson, setFormLesson] = useState({
+  const [formLesson] = useState({
     _id: state._id,
     courseId: state.courseId,
     title: state.title,
@@ -44,6 +47,7 @@ const UpdateLessonDetails = () => {
       try {
         const { course, averageStars } = await getCourse(state.courseId);
         const documents = await getLessonDocuments(state._id);
+        const comments = await getLessonComments(state._id);
         setFormData({
           ...formData,
           _id: course._id,
@@ -56,6 +60,7 @@ const UpdateLessonDetails = () => {
           instructorName: course.instructorName,
           averageStars: averageStars,
           documents,
+          comments,
         });
       } catch (error) {
         console.log(error.message);
@@ -90,45 +95,80 @@ const UpdateLessonDetails = () => {
         <>
           <CourseIntroView formData={formData}>
             <Link to="/create-document" state={formLesson}>
-              <button className="btn btn-success">​📑​​ Create Document</button>
+              <button className="btn btn-success me-2">
+                ​📑​​ Create Document
+              </button>
+            </Link>
+            <Link to="/create-comment" state={formLesson}>
+              <button className="btn btn-primary">
+                <i className="bi bi-chat-left-dots-fill"></i> Leave Comment
+              </button>
             </Link>
           </CourseIntroView>
           <section className="bg-primary text-light p-5">
             <div className="container">
               <div className="d-flex justify-content-between">
                 <p className="fs-3">{formLesson.title}</p>
-                <p>{new Date(formLesson.createdAt).toLocaleDateString()}</p>
+                <p className="fs-5">
+                  {new Date(formLesson.createdAt).toLocaleDateString()}
+                </p>
               </div>
               {formLesson.description}
             </div>
           </section>
           <section className="p-5">
-            <div className="container d-flex justify-content-center flex-wrap">
-              {formData.documents.length === 0 ? (
-                <p className="fs-2 text-center text-danger">
-                  No documents created.
-                </p>
-              ) : (
-                <>
-                  {alert.message != "" && (
-                    <div style={{ width: "1000px" }}>
-                      <MyAlert msg={alert.message} variant={alert.variant} />
-                    </div>
+            <div className="container">
+              <div className="row">
+                <div className="col-8">
+                  {formData.documents.length === 0 ? (
+                    <p className="fs-2 text-center text-danger">
+                      No document created.
+                    </p>
+                  ) : (
+                    <>
+                      {alert.message != "" && (
+                        <MyAlert msg={alert.message} variant={alert.variant} />
+                      )}
+                      {formData.documents.map((document) => (
+                        <div key={document._id}>
+                          <DocumentCard document={document}>
+                            <button
+                              className="btn btn-danger"
+                              onClick={() => handleDeleteDocument(document._id)}
+                            >
+                              <i className="bi bi-trash-fill"></i>
+                            </button>
+                          </DocumentCard>
+                        </div>
+                      ))}
+                    </>
                   )}
-                  {formData.documents.map((document) => (
-                    <div key={document._id}>
-                      <DocumentCard document={document}>
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => handleDeleteDocument(document._id)}
-                        >
-                          <i className="bi bi-trash-fill"></i>
-                        </button>
-                      </DocumentCard>
-                    </div>
-                  ))}
-                </>
-              )}
+                </div>
+                <div className="col-4">
+                  {formData.comments.length === 0 ? (
+                    <p className="fs-2 text-center text-danger">No comment.</p>
+                  ) : (
+                    <>
+                      {alert.message != "" && (
+                        <MyAlert msg={alert.message} variant={alert.variant} />
+                      )}
+                      {formData.comments.map((comment) => (
+                        <div key={comment._id}>
+                          <CommentCard comment={comment}>
+                            <div className="text-end">
+                              <Link to="/create-reply-comment" state={comment}>
+                                <button className="btn btn-primary">
+                                  Reply <i className="bi bi-reply-fill"></i>
+                                </button>
+                              </Link>
+                            </div>
+                          </CommentCard>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
           </section>
         </>
