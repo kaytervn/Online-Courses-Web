@@ -49,7 +49,13 @@ const CreatedCourses = () => {
     }
   };
 
+  const handleSearch = async () => {
+    setCurrentPage(1);
+    await updateDisplay();
+  };
+
   const updateDisplay = async () => {
+    setLoading(true);
     const data = await searchUserCourses({
       keyword: searchValue,
       visibility: selectedVisibility,
@@ -63,22 +69,14 @@ const CreatedCourses = () => {
     });
     setPages(Array.from({ length: data.totalPages }, (_, index) => index + 1));
     setTotalPages(data.totalPages);
+    setLoading(false);
   };
 
   useEffect(() => {
     setTimeout(async () => {
-      setLoading(true);
       await updateDisplay();
-      setLoading(false);
     }, 100);
-  }, [
-    searchValue,
-    selectedTopic,
-    selectedVisibility,
-    selectedSort,
-    currentPage,
-    alert,
-  ]);
+  }, [selectedTopic, selectedVisibility, selectedSort, currentPage, alert]);
 
   return (
     <>
@@ -104,9 +102,11 @@ const CreatedCourses = () => {
                     onChange={(e) => {
                       e.preventDefault();
                       setSearchValue(e.target.value);
-                      setCurrentPage(1);
                     }}
                   />
+                  <div className="btn btn-success" onClick={handleSearch}>
+                    Search
+                  </div>
                 </div>
               </div>
             </div>

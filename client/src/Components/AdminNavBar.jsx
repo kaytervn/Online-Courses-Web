@@ -34,7 +34,7 @@ const AdminNavBar = () => {
   `;
 
   const handleLogout = () => {
-    setShowLogoutModal(true); // Hiển thị cửa sổ xác nhận khi nhấn logout
+    setShowLogoutModal(true);
   };
 
   const confirmLogout = () => {
@@ -47,8 +47,9 @@ const AdminNavBar = () => {
   };
 
   const cancelLogout = () => {
-    setShowLogoutModal(false); // Ẩn cửa sổ xác nhận khi hủy logout
+    setShowLogoutModal(false);
   };
+
   return (
     <SidebarContainer
       style={{
@@ -145,23 +146,21 @@ const AdminNavBar = () => {
               <MenuItem icon={<IoLogOut />} onClick={handleLogout}>
                 {" "}
                 Logout{" "}
-                <div>
-                  <Modal show={showLogoutModal} onHide={cancelLogout} centered>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Confirm Change</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Are you sure you want to log out?</Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={cancelLogout}>
-                        Cancel
-                      </Button>
-                      <Button variant="primary" onClick={confirmLogout}>
-                        Confirm
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-                </div>
               </MenuItem>
+              <Modal show={showLogoutModal} onHide={cancelLogout} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Confirm Change</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to log out?</Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={cancelLogout}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" onClick={confirmLogout}>
+                    Confirm
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </Menu>
           </Sidebar>
         </div>

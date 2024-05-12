@@ -151,7 +151,7 @@ const InstructorManager = () => {
 
   const handleGotoDetail = async (e, id) => {
     e.preventDefault();
-    console.log(id);
+    // console.log(id);
     navigate(`/user`, { state: { userId: id } });
   };
 
