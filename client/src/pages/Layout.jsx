@@ -7,7 +7,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import userImage from "../../images/user.png";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import Role from "../../../server/models/RoleEnum.js";
+import Role from "../../../models/RoleEnum.js";
 import InstructorLayout from "../Components/InstructorLayout";
 import AdminLayout from "../Components/AdminLayout.jsx";
 import NavDropdown from "react-bootstrap/NavDropdown";

@@ -16,6 +16,7 @@
     "cloudinary-video-player": "^2.0.2",
     "install": "^0.13.0",
     "mdb-react-ui-kit": "^8.0.0",
+    "mongoose": "^8.3.4",
     "npm": "^10.7.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
@@ -28,6 +29,7 @@
     "react-pro-sidebar": "^1.1.0",
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.5",
+    "server": "file:..",
     "styled-components": "^6.1.10"
   },
   "devDependencies": {

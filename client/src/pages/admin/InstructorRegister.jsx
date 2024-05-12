@@ -10,7 +10,7 @@ import { UserDetailContext } from "../../contexts/UserDetailContext";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import AdminNavBar from "../../Components/AdminNavBar";
-import Role from "../../../../server/models/RoleEnum";
+import Role from "../../../../models/RoleEnum";
 import Alert from "../../Components/Alert";
 
 const InstructorRegister = () => {

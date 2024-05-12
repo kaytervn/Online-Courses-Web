@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { searchCourses } from "../../services/coursesService";
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import CourseCard from "../../Components/CourseCard";
-import Topic from "../../../../server/models/TopicEnum.js";
+import Topic from "../../../../models/TopicEnum.js";
 import { CoursesContext } from "../../contexts/CoursesContext.jsx";
 import imgSample from "../../../images/course.png";
 import { useNotification } from "../../contexts/NotificationContext ";

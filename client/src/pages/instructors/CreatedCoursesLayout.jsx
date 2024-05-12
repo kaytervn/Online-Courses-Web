@@ -5,7 +5,7 @@ import {
 } from "../../services/coursesService";
 import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import CourseCard from "../../Components/CourseCard";
-import Topic from "../../../../server/models/TopicEnum.js";
+import Topic from "../../../../models/TopicEnum";
 import { UserContext } from "../../contexts/UserContext";
 import "../../styles/cardHover.css";
 import { Link } from "react-router-dom";

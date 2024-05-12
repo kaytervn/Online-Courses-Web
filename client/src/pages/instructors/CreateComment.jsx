@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MyAlert } from "../../Components/CustomAlert";
 import { createComment } from "../../services/commentService";
 import { UserContext } from "../../contexts/UserContext";
-import Role from "../../../../server/models/RoleEnum";
+import Role from "../../../../models/RoleEnum";
 
 const CreateComment = () => {
   const navigate = useNavigate();

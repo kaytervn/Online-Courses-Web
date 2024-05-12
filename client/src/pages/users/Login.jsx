@@ -11,8 +11,7 @@ import {
 } from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
-
-import Role from "../../../../server/models/RoleEnum";
+import Role from '../../../../models/RoleEnum';
 
 const Login = () => {
   const { setUser } = useContext(UserContext);

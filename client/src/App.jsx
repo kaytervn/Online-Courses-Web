@@ -11,7 +11,7 @@ import Register from "./pages/users/Register";
 import UserManager from "./pages/admin/UserManager";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
-import Role from "../../server/models/RoleEnum";
+import Role from "../../models/RoleEnum.js";
 import { getUser } from "./services/usersService";
 import CreatedCourses from "./pages/instructors/CreatedCoursesLayout";
 import Loading from "./pages/Loading";

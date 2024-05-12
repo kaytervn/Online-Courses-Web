@@ -7,7 +7,7 @@ import Image from "react-bootstrap/Image";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Topic from "../../../../server/models/TopicEnum";
+import Topic from "../../../../models/TopicEnum";
 import blankImg from "../../../images/blank.png";
 import { MyAlert } from "../../Components/CustomAlert";
 import { editCourseIntro } from "../../services/coursesService";

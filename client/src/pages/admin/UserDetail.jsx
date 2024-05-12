@@ -15,7 +15,7 @@ import userImage from "../../../images/user.png";
 import { UserDetailContext } from "../../contexts/UserDetailContext";
 import { useLocation, useParams } from "react-router-dom";
 import AdminNavBar from "../../Components/AdminNavBar";
-import Role from "../../../../server/models/RoleEnum";
+import Role from "../../../../models/RoleEnum";
 import {
   changeCourseStatus,
   changeCourseVisibility,

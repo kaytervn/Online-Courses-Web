@@ -4,7 +4,7 @@ import {
   changeUserStatus,
   getUserListByRole,
 } from "../../services/usersService";
-import Role from "../../../../server/models/RoleEnum";
+import Role from "../../../../models/RoleEnum";
 import Container from "react-bootstrap/Container";
 import Alert from "../../Components/Alert";
 

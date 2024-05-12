@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import OtpInput from 'react-otp-input';
 import { Container, Row, Col, Card, Form, Button, InputGroup } from 'react-bootstrap';
-import User from '../../../../server/models/UserModel';
 import { useNavigate } from 'react-router-dom';
 import { checkOTPUser } from '../../services/usersService';
 import Alert from '../../Components/Alert';
