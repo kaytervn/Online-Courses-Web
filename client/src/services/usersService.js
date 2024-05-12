@@ -1,6 +1,7 @@
 //***********************************************SEND OTP************************** */
 
 const checkOTPUser = async (email, otp) => {
+  console.log(email, otp);
   const res = await fetch("/api/users/otp-authentication", {
     method: "POST",
     headers: {
@@ -183,7 +184,7 @@ const resetPasswordUser = async (id, token, password) => {
 
 const updateUserProfile = async (formData) => {
   try {
-    console.log(formData);
+    console.log(formData.picture);
 
     const res = await fetch("/api/users/update-profile", {
       method: "PUT",

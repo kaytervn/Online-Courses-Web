@@ -37,7 +37,9 @@ const MyCourseCard = ({ course }) => {
         content,
       };
       const data = await createReview(course._id, reviewData);
-
+      console.log("id course", course._id)
+      console.log("noi dung: ", reviewData);
+      console.log("data", data)
       if (data.message) {
         setShowModal(false);
         if (data.message === "You have already reviewed this course.") {
@@ -85,6 +87,7 @@ const MyCourseCard = ({ course }) => {
         <div className="col-md-8">
           <div className="card-body">
             <h5 className="card-title">{course.title}</h5>
+            <p className="card-text">🎓​{course.instructorName}</p>
             <p className="card-text">{course.description}</p>
             <p className="card-text">
               <strong>My Review:</strong>{" "}
