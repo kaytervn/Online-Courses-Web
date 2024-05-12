@@ -129,7 +129,8 @@ const registerInstructor = async (req, res) => {
 const checkEmailOTPUser = async (req, res) => {
   const { email, otp } = req.body;
   const user = await User.findOne({ email });
-
+  console.log("OTP:", otp);
+  console.log("User OTP:", user.otp);
   if (otp == user.otp) {
     await user.updateOne({ status: true });
     return res.status(200).json({ success: "Email verified!" });
