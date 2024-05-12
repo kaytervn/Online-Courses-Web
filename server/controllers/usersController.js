@@ -63,8 +63,13 @@ const registerUser = async (req, res) => {
         from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`,
         to: `${email}`,
         subject: "Your OTP to verify your email",
-        text: `<h1>Using the OTP: ${otp} to verify your email</h1><br>
-        <h2>The OTP is valid in 5 minutes</h2>`,
+        html: `
+    <h1>Hello ${name}!</h1>
+    <p>Thank you for registering with COOKIEDU! To verify your email address, please use the OTP code below:</p>
+    <h2>OTP: ${otp}</h2>
+    <p>This OTP is valid for 5 minutes. If you did not request this verification, please ignore this email.</p>
+    <p>Best regards,<br>COOKIEDU Team</p>
+  `,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -230,7 +235,15 @@ const forgotPassword = async (req, res) => {
         from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
         to: `${email}`,
         subject: "Reset Your Password",
-        text: `http://localhost:3000/reset-password/${user._id}/${token}`,
+        html: `
+          <p>Hello,</p>
+          <p>You have requested to reset your password. Please click on the button below to reset your password:</p>
+          <button style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;">
+            <a href="http://localhost:3000/reset-password/${user._id}/${token}" style="color: white; text-decoration: none;">Reset Password</a>
+          </button>
+          <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+          <p>Best regards,<br>COOKIEDU Team</p>
+        `,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
