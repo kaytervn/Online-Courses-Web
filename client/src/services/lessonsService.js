@@ -57,4 +57,21 @@ const deleteLesson = async (_id) => {
   return data;
 };
 
-export { getCourseLessons, createLesson, updateLesson, deleteLesson };
+const getLesson = async (_id) => {
+  const res = await fetch(`/api/lessons/get-lesson/${_id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const { lesson } = await res.json();
+  return lesson;
+};
+
+export {
+  getCourseLessons,
+  createLesson,
+  updateLesson,
+  deleteLesson,
+  getLesson,
+};
