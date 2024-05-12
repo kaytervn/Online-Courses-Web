@@ -34,11 +34,7 @@ const ReviewCard = ({ review }) => {
                 ) {
                   return <i key={index} className="bi bi-star-half"></i>;
                 } else {
-                  return (
-                    <i key={index} className="bi bi-star">
-                      {" "}
-                    </i>
-                  );
+                  return <i key={index} className="bi bi-star"></i>;
                 }
               })}
             </p>
