@@ -42,7 +42,7 @@ const MyProfilePage = () => {
                         : user.picture
                     }
                     alt="Avatar"
-                    style={{ width: "80px" }}
+                    style={{ width: "80px", height: "80px" }}
                   />
 
                   <Card.Title as="h5">{user.name}</Card.Title>

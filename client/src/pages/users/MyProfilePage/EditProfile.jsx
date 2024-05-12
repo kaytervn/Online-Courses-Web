@@ -20,6 +20,7 @@ const EditProfile = () => {
         picture: user.picture || '',
         email: user.email || '',
         phone: user.phone || '',
+        role: user.role,
     });
 
     useEffect(() => {
@@ -49,12 +50,13 @@ const EditProfile = () => {
             // formData.append('email', userData.email);
             formData.append('phone', userData.phone);
             formData.append('picture', userData.picture);
-
+            console.log(userData.picture)
             await updateUserProfile(formData);
             setUser({
                 token: localStorage.getItem('token'),
                 email: userData.email,
                 name: userData.name,
+                role: user.role,
                 picture: selectedImage || user.picture,
                 phone: userData.phone,
             })
@@ -92,7 +94,7 @@ const EditProfile = () => {
                                         className="rounded-circle my-5"
                                         src={selectedImage || (user.picture === null || user.picture === "" ? userImage : user.picture)}
                                         alt="Avatar"
-                                        style={{ width: '80px' }}
+                                        style={{ width: '80px', height: "80px " }}
                                     />
 
                                     <Card.Title as="h5">{user.name}</Card.Title>

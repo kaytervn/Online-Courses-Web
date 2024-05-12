@@ -270,7 +270,7 @@ const resetPassword = async (req, res) => {
 
 const updateProfileInformation = async (req, res) => {
   const { name, picture, phone } = req.body;
-  console.log(name, picture, phone);
+  console.log(name, req.file, phone);
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -293,8 +293,24 @@ const updateProfileInformation = async (req, res) => {
         picture: uploadResponse.secure_url,
         cloudinary: uploadResponse.public_id,
       });
+    } else if (req.file && !user.cloudinary) {
+      const uploadResponse = await new Promise((resolve, reject) => {
+        const bufferData = req.file.buffer;
+        cloudinary.uploader
+          .upload_stream({ resource_type: "image" }, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          })
+          .end(bufferData);
+      });
+      await user.updateOne({
+        picture: uploadResponse.secure_url,
+        cloudinary: uploadResponse.public_id,
+      });
     }
-
     await user.updateOne({
       name: name,
       phone: phone,
