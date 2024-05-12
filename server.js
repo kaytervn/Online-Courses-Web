@@ -15,7 +15,7 @@ import { reviewsRoutes } from "./routes/reviewsRoutes.js";
 import { invoiceItemsRoutes } from "./routes/invoiceItemsRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import job from "./utils/cron.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -57,6 +57,8 @@ app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/client/dist/index.html"))
 );
+
+job.start();
 
 // Connect to the MongoDB database
 mongoose

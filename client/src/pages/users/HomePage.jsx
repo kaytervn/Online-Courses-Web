@@ -1,6 +1,15 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import leaning from "../../../images/learning.png";
+import fundamentals from "../../../images/fundamentals.svg";
+import ins1 from "../../../images/ins1.svg";
+import ins2 from "../../../images/ins2.svg";
+import ins3 from "../../../images/ins3.svg";
+import ins4 from "../../../images/ins4.svg";
+import stu1 from "../../../images/stu1.png";
+import stu2 from "../../../images/stu2.png";
+import stu3 from "../../../images/stu3.png";
 
 const HomePage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -31,7 +40,7 @@ const HomePage = () => {
             </div>
             <img
               className="img-fluid w-50 d-none d-sm-block d-md-block"
-              src="/images/learning.png"
+              src={leaning}
               alt=""
             />
           </div>
@@ -113,7 +122,7 @@ const HomePage = () => {
           <div className="row align-items-center justify-content-between">
             <div className="col-md">
               <img
-                src="/images/fundamentals.svg"
+                src={fundamentals}
                 className="img-fluid"
                 alt=""
               />
@@ -151,7 +160,7 @@ const HomePage = () => {
               <div className="card bg-light h-100">
                 <div className="card-body text-center">
                   <img
-                    src="/images/ins1.svg"
+                    src={ins1}
                     className="rounded-circle mb-3"
                     alt=""
                   />
@@ -168,7 +177,7 @@ const HomePage = () => {
               <div className="card bg-light h-100">
                 <div className="card-body text-center">
                   <img
-                    src="/images/ins2.svg"
+                    src={ins2}
                     className="rounded-circle mb-3"
                     alt=""
                   />
@@ -185,7 +194,7 @@ const HomePage = () => {
               <div className="card bg-light h-100">
                 <div className="card-body text-center">
                   <img
-                    src="/images/ins3.svg"
+                    src={ins3}
                     className="rounded-circle mb-3"
                     alt=""
                   />
@@ -202,7 +211,7 @@ const HomePage = () => {
               <div className="card bg-light h-100">
                 <div className="card-body text-center">
                   <img
-                    src="/images/ins4.svg"
+                    src={ins4}
                     className="rounded-circle mb-3"
                     alt=""
                   />
@@ -254,7 +263,7 @@ const HomePage = () => {
                   <div className="col-1"></div>
                   <div className="col-6">
                     <img
-                      src="/images/stu1.png"
+                      src={stu1}
                       className="d-block w-100"
                       alt="..."
                     />
@@ -291,7 +300,7 @@ const HomePage = () => {
                   <div className="col-1"></div>
                   <div className="col-6">
                     <img
-                      src="/images/stu2.png"
+                      src={stu2}
                       className="d-block w-100"
                       alt="..."
                     />
@@ -327,7 +336,7 @@ const HomePage = () => {
                   <div className="col-1"></div>
                   <div className="col-6">
                     <img
-                      src="/images/stu3.png"
+                      src={stu3}
                       className="d-block w-100"
                       alt="..."
                     />

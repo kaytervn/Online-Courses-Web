@@ -13,6 +13,7 @@ import {
   Button,
   InputGroup,
 } from "react-bootstrap";
+import logo from "../../../images/cookiedu_logo.png";
 
 const Register = () => {
   const [error, setError] = useState(null);
@@ -55,7 +56,7 @@ const Register = () => {
 
           <div style={{ textAlign: "center" }}>
             <img
-              src="../../../images/cookiedu_logo.png"
+              src={logo}
               alt="Logo"
               style={{ maxWidth: "50%", maxHeight: "300px" }}
             />

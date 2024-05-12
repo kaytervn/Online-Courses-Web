@@ -1,4 +1,12 @@
-import { Container, Row, Col, Card, Form, Button, InputGroup } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  InputGroup,
+} from "react-bootstrap";
 import Alert from "../../Components/Alert";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +19,8 @@ import {
 } from "../../services/usersService";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
-import Role from '../../../../models/RoleEnum';
+import Role from "../../../../models/RoleEnum";
+import logo from "../../../images/cookiedu_logo.png";
 
 const Login = () => {
   const { setUser } = useContext(UserContext);
@@ -50,8 +59,6 @@ const Login = () => {
       setError(err.message);
     }
   };
-
-
 
   const handleGoogleLogin = async (e) => {
     window.open("http://localhost:5000/auth/google", "_self");
@@ -135,47 +142,49 @@ const Login = () => {
     }
   };
   return (
-    <Container className='p-4 shadow'>
+    <Container className="p-4 shadow">
       <Row>
-        <Col md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
-
+        <Col
+          md="6"
+          className="text-center text-md-start d-flex flex-column justify-content-center"
+        >
           <h1 className="my-5 display-3 fw-bold ls-tight text-info-emphasis px-3">
             Login Page <br />
-            <span className="text-dark-emphasis">for accessing the <span className="text-warning fw-bold">CookiEdu</span> website</span>
+            <span className="text-dark-emphasis">
+              for accessing the{" "}
+              <span className="text-warning fw-bold">CookiEdu</span> website
+            </span>
           </h1>
 
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center" }}>
             <img
-              src="../../../images/cookiedu_logo.png"
+              src={logo}
               alt="Logo"
-              style={{ maxWidth: '50%', maxHeight: '300px' }}
+              style={{ maxWidth: "50%", maxHeight: "300px" }}
             />
           </div>
-
         </Col>
 
-        <Col md='6'>
-
-          <Card className='my-5'>
-            <Card.Body className='p-5 shadow'>
-
+        <Col md="6">
+          <Card className="my-5">
+            <Card.Body className="p-5 shadow">
               <Row>
                 <Col>
-                  <Form.Group className='mb-4'>
+                  <Form.Group className="mb-4">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email"
+                    <Form.Control
+                      type="email"
                       className="input p-1"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       autoFocus
-
                     />
                   </Form.Group>
                 </Col>
               </Row>
 
               <Row>
-                <Form.Group className='mb-4'>
+                <Form.Group className="mb-4">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
@@ -186,12 +195,19 @@ const Login = () => {
                 </Form.Group>
               </Row>
 
-              <Row className='d-flex justify-content-center mt-4 '>
-                <Button className='mb-4 col-3' size='md' onClick={handleLogin}>Login</Button>
+              <Row className="d-flex justify-content-center mt-4 ">
+                <Button className="mb-4 col-3" size="md" onClick={handleLogin}>
+                  Login
+                </Button>
               </Row>
 
               <div className="text-center">
-                <a href="/forgot-password" style={{ textDecoration: 'none', fontStyle: 'italic' }}>Forgot password?</a>
+                <a
+                  href="/forgot-password"
+                  style={{ textDecoration: "none", fontStyle: "italic" }}
+                >
+                  Forgot password?
+                </a>
               </div>
               <div className="other-login mt-5 border-top border-info-subtle">
                 <p className="text-center mt-2"> or sign up with</p>
@@ -226,13 +242,9 @@ const Login = () => {
               {error && <Alert msg={error} type="error" />}
             </Card.Body>
           </Card>
-
         </Col>
-
       </Row>
-
     </Container>
-
   );
 };
 

@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import AdminNavBar from "../../Components/AdminNavBar";
 import Role from "../../../../models/RoleEnum";
 import Alert from "../../Components/Alert";
+import logo from "../../../images/cookiedu_logo.png";
 
 const InstructorRegister = () => {
   const [success, setSuccess] = useState(null);
@@ -76,7 +77,7 @@ const InstructorRegister = () => {
 
                   <div style={{ textAlign: "center" }}>
                     <img
-                      src="../../../images/cookiedu_logo.png"
+                      src={logo}
                       alt="Logo"
                       style={{ maxWidth: "50%", maxHeight: "300px" }}
                     />
