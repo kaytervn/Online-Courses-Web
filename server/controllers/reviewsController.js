@@ -53,7 +53,7 @@ const getReviewCourse = async (req, res) => {
   try {
     const reviews = await Review.find({ courseId }).populate({
       path: "userId",
-      select: "name", // Giả sử bạn muốn hiển thị tên của người dùng đánh giá, điều chỉnh các trường cần lấy theo nhu cầu
+      select: "name", 
     });
 
     if (reviews.length === 0) {
@@ -69,5 +69,29 @@ const getReviewCourse = async (req, res) => {
       .json({ message: "Failed to retrieve reviews", error: error.message });
   }
 };
+const getMyReviewForCourse = async (req, res) => {
+  const { courseId } = req.params;
+  const userId = req.user._id;
 
-export { createReview,getReviewCourse };
+  try {
+    const review = await Review.findOne({ userId, courseId }).populate({
+      path: "userId",
+      select: "name",
+    });
+
+    if (!review) {
+      return res
+        .status(404)
+        .json({ message: "Review not found for this course." });
+    }
+
+    res.status(200).json(review);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve review", error: error.message });
+  }
+};
+
+
+export { createReview, getReviewCourse, getMyReviewForCourse };

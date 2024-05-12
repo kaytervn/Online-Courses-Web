@@ -270,11 +270,9 @@ const fetchData = async () => {
                           <CourseCard course={course}>
                             <div className="pe-2 flex-grow-1">
                               <Link
-                                to={{
-                                  pathname: "/course-intro",
-                                  state:{course}
-                                }}
-                                className="btn btn-outline-primary w-100"
+                                to= "/course-intro"
+                                state={course}
+                                className="btn btn-outline-primary w-100"                               
                               >
                                 View Intro
                               </Link>
