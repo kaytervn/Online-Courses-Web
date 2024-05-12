@@ -128,7 +128,7 @@ const ChangePassword = () => {
                 </Row>
                 <Modal show={showChangePassword} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title className='text-primary'>Change password status</Modal.Title>
+                        <Modal.Title className='text-primary'>Change password is successfully</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div style={{ textAlign: 'center' }}>

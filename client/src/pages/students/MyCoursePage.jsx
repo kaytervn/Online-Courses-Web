@@ -24,7 +24,7 @@ const MyCoursePage = () => {
         const coursesWithReviews = await Promise.all(
           fetchedCourses.map(async (course) => {
             const reviewData = await getMyReviewForCourse(course._id);
-            console.log("review trong page", reviewData)
+            console.log("review trong page", reviewData);
             return { ...course, review: reviewData || "Chưa review" };
           })
         );
@@ -38,7 +38,6 @@ const MyCoursePage = () => {
     fetchCoursesAndReviews();
   }, []);
 
-
   const lastCourseIndex = currentPage * coursesPerPage;
   const firstCourseIndex = lastCourseIndex - coursesPerPage;
   const currentCourses = courses.slice(firstCourseIndex, lastCourseIndex);
@@ -50,19 +49,19 @@ const MyCoursePage = () => {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-3">
-          <h4>Lọc Khóa Học</h4>
+          <h4>Filter Courses</h4>
           <Form>
             <Form.Group>
-              <Form.Label>Sắp xếp theo thời gian</Form.Label>
+              <Form.Label>Sort by Time</Form.Label>
               <Form.Control as="select">
-                <option>Mới nhất</option>
-                <option>Cũ nhất</option>
+                <option>Newest</option>
+                <option>Oldest</option>
               </Form.Control>
             </Form.Group>
           </Form>
         </div>
         <div className="col-md-9">
-          <h1>Các Khóa Học Của Tôi</h1>
+          <h1>My Courses</h1>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -73,10 +72,7 @@ const MyCoursePage = () => {
             <>
               <div className="d-flex flex-column">
                 {currentCourses.map((course) => (
-                  <MyCourseCard
-                    key={course._id}
-                    course={course}
-                  />
+                  <MyCourseCard key={course._id} course={course} />
                 ))}
               </div>
               <div className="pagination">
@@ -100,5 +96,6 @@ const MyCoursePage = () => {
     </div>
   );
 };
+
 
 export default MyCoursePage;

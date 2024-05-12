@@ -11,11 +11,12 @@ export const customStyles = {
       borderTopStyle: "solid",
       borderTopWidth: "1px",
       borderTopColor: defaultThemes.default.divider.default,
+      // backgroundColor: defaultThemes.default.background.paper,
+      // zIndex: 0,
     },
   },
   headCells: {
     style: {
-      
       justifyContent: "center",
       alignItems: "center",
       display: "flex",
