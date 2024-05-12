@@ -43,22 +43,23 @@ const CourseIntroPage = () => {
   const reviewsPerPage = 5;
   const handleAddToCart = async (courseId) => {
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate("/login");
     } else {
-    try {
-      const result = await addToCart(courseId);
-      setToastMessage("Thêm vào giỏ hàng thành công!");
-      setToastType("success");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 5000);
-      fetchData();
-      setItemCount(cartItems.length + 1);
-    } catch (error) {
-      setToastMessage(error.toString());
-      setToastType("danger");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 5000);
-    }}
+      try {
+        const result = await addToCart(courseId);
+        setToastMessage("Thêm vào giỏ hàng thành công!");
+        setToastType("success");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 5000);
+        fetchData();
+        setItemCount(cartItems.length + 1);
+      } catch (error) {
+        setToastMessage(error.toString());
+        setToastType("danger");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 5000);
+      }
+    }
   };
   const checkLoginStatus = () => {
     const token = localStorage.getItem("token");
@@ -109,23 +110,24 @@ const CourseIntroPage = () => {
         averageStars,
         reviews,
       });
+
       setLoading(false);
     }, 0);
-     const fetchMyCourses = async () => {
-       try {
-         const data = await getMyCourse();
-         setMyCourses(data.courses || []);
-         setIsCoursePurchased(
-           data.courses.some((course) => course._id === location.state._id)
-         );
-         setLoading(false);
-       } catch (error) {
-         console.error("Error fetching my courses: ", error);
-         setLoading(false);
-       }
-     };
+    const fetchMyCourses = async () => {
+      try {
+        const data = await getMyCourse();
+        setMyCourses(data.courses || []);
+        setIsCoursePurchased(
+          data.courses.some((course) => course._id === location.state._id)
+        );
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching my courses: ", error);
+        setLoading(false);
+      }
+    };
 
-     fetchMyCourses();
+    fetchMyCourses();
   }, [location.state._id]);
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -137,10 +139,8 @@ const CourseIntroPage = () => {
     handlePageChange,
     reviews,
   }) => {
-    // Tính toán số trang dựa trên số lượng review và số lượng review trên mỗi trang
     const totalPages = Math.ceil(totalReviews / reviewsPerPage);
 
-    // Tạo danh sách review cho trang hiện tại
     const indexOfLastReview = currentPage * reviewsPerPage;
     const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
     const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
@@ -160,7 +160,7 @@ const CourseIntroPage = () => {
             </>
           )}
 
-          {/* Phần trang */}
+          {}
           {totalPages > 1 && (
             <div className="d-flex justify-content-center mt-4">
               <Pagination>
@@ -198,7 +198,7 @@ const CourseIntroPage = () => {
         </div>
       ) : (
         <>
-          <CourseIntroViewStudent formData={location.state}>
+          <CourseIntroViewStudent formData={formData}>
             {isLoggedIn ? (
               isCoursePurchased ? (
                 <Link to="/course-details" state={location.state}>

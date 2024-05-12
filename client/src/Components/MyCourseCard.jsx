@@ -137,10 +137,10 @@ const MyCourseCard = ({ course }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Đóng
+            Cancel
           </Button>
           <Button variant="primary" onClick={handleReviewSubmit}>
-            Gửi đánh giá
+            Submit
           </Button>
         </Modal.Footer>
       </Modal>
