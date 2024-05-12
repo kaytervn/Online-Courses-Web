@@ -63,7 +63,7 @@ mongoose
   .connect(process.env.MONGODB_URI, { dbName: "cookiedu_db" })
   .then(() => {
     console.log("Connected to the database");
-    app.listen(process.env.PORT, "localhost", () => {
+    app.listen(process.env.PORT, () => {
       console.log("Listening on port 5000");
     });
   })
