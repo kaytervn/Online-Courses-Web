@@ -6,13 +6,13 @@ import userImage from "../../../../images/user.png";
 import { useNavigate } from 'react-router-dom';
 import { changePassword, updateUserProfile } from '../../../services/usersService';
 import Alert from '../../../Components/Alert';
-
+import { Modal } from "react-bootstrap";
 
 
 const ChangePassword = () => {
     const { user, setUser } = useContext(UserContext);
     const [error, setError] = useState(null);
-
+    const [showChangePassword, setShowChangePassword] = useState(false);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         password: '',
@@ -31,12 +31,17 @@ const ChangePassword = () => {
         e.preventDefault();
         try {
             await changePassword(formData.password, formData.new_password, formData.confirm_password);
-            navigate('/my-profile');
+            setShowChangePassword(true);
         }
         catch (error) {
             setError(error.message);
         }
     };
+
+    const confirm = () => {
+        navigate('/my-profile');
+        setShowChangePassword(false);
+    }
 
     const handleCancel = (e) => {
         e.preventDefault();
@@ -121,6 +126,25 @@ const ChangePassword = () => {
                         </Card>
                     </Col>
                 </Row>
+                <Modal show={showChangePassword} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title className='text-primary'>Change password status</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div style={{ textAlign: 'center' }}>
+                            <img
+                                src="../../../../images/success.png"
+                                alt="Successfully change password"
+                                style={{ maxWidth: '30%', maxHeight: '300px' }}
+                            />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer className='d-flex justify-content-center text-align-center'>
+                        <Button variant="success" onClick={confirm}>
+                            Continue
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Container>
         </section>
     );
