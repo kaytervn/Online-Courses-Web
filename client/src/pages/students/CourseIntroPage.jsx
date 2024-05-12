@@ -183,7 +183,7 @@ const CourseIntroPage = () => {
                 <i className="bi bi-cart4"></i> Add To Cart
               </button>
             </Link>
-            <Link to="/update-course-details" state={formData}>
+            <Link to="/course-details" state={formData}>
               <button className="btn btn-primary">
                 <i className="bi bi-eye-fill"></i> Course Detail
               </button>

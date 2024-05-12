@@ -12,7 +12,7 @@ import {
 import { getLessonComments } from "../../services/commentService";
 import CommentCard from "../../Components/CommentCard";
 
-const UpdateLessonDetails = () => {
+const LessonDetailsPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const { state } = useLocation();
@@ -69,22 +69,6 @@ const UpdateLessonDetails = () => {
     }, 0);
   }, []);
 
-  const handleDeleteDocument = async (_id) => {
-    if (confirm("Confirm delete document?")) {
-      try {
-        const data = await deleteDocument(_id);
-        setAlert({ ...alert, message: data.success, variant: "success" });
-        const newDocuments = formData.documents.filter(
-          (document) => document._id != _id
-        );
-        setFormData({ ...formData, documents: newDocuments });
-      } catch (error) {
-        setAlert({ ...alert, message: error.message, variant: "danger" });
-      }
-    }
-    setTimeout(() => setAlert({ ...alert, message: "", variant: "" }), 2000);
-  };
-
   return (
     <>
       {loading ? (
@@ -94,11 +78,6 @@ const UpdateLessonDetails = () => {
       ) : (
         <>
           <CourseIntroView formData={formData}>
-            <Link to="/create-document" state={formLesson}>
-              <button className="btn btn-success me-2">
-                ​📑​​ Create Document
-              </button>
-            </Link>
             <Link to="/create-comment" state={formLesson}>
               <button className="btn btn-primary">
                 <i className="bi bi-chat-left-dots-fill"></i> Leave Comment
@@ -131,14 +110,7 @@ const UpdateLessonDetails = () => {
                       )}
                       {formData.documents.map((document) => (
                         <div key={document._id}>
-                          <DocumentCard document={document}>
-                            <button
-                              className="btn btn-danger"
-                              onClick={() => handleDeleteDocument(document._id)}
-                            >
-                              <i className="bi bi-trash-fill"></i>
-                            </button>
-                          </DocumentCard>
+                          <DocumentCard document={document}></DocumentCard>
                         </div>
                       ))}
                     </>
@@ -169,4 +141,4 @@ const UpdateLessonDetails = () => {
   );
 };
 
-export default UpdateLessonDetails;
+export default LessonDetailsPage;

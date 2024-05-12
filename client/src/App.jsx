@@ -40,6 +40,8 @@ import CreateComment from "./pages/instructors/CreateComment.jsx";
 import InstructorRegister from "./pages/admin/InstructorRegister";
 import OTPAuthentication from "./pages/users/OTPAuthentication";
 import CourseIntroPage from "./pages/students/CourseIntroPage";
+import CourseDetails from "./pages/students/CourseDetails.jsx";
+import LessonDetailsPage from "./pages/students/LessonDetailsPage.jsx";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -121,6 +123,12 @@ const App = () => {
               <Route path="/checkout" element={<CheckoutPage />}></Route>
               <Route path="/my-course" element={<MyCoursePage />}></Route>
               <Route path="/course-intro" element={<CourseIntroPage />}></Route>
+              <Route path="/course-details" element={<CourseDetails />}></Route>
+              <Route
+                path="/lesson-details"
+                element={<LessonDetailsPage />}
+              ></Route>
+              <Route path="/create-comment" element={<CreateComment />}></Route>
             </>
           )}
           {user.token && (
