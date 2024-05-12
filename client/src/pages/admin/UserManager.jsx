@@ -19,35 +19,60 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import AdminNavBar from "../../Components/AdminNavBar";
-import { Table } from "react-bootstrap";
+import { Button, Modal, Table, Toast, ToastContainer } from "react-bootstrap";
 import { customStyles } from "../../Components/customStyles/datatableCustom";
 
 import Image from "react-bootstrap/esm/Image";
 import "../../styles/dataTable.css";
-import UserDetail from "./UserDetail";
+import "../../styles/customBackdrop.css";
 import { useNavigate } from "react-router-dom";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+
   const navigate = useNavigate();
   useEffect(() => {
     setTimeout(async () => {
       const students = await getUserListByRole(Role.STUDENT);
       setUsers({ students });
-
-      if (success || error) {
-        const timer = setTimeout(() => {
-          setSuccess("");
-          setError("");
-        }, 2000);
-
-        // Xóa timeout khi component unmount
-        return () => clearTimeout(timer);
-      }
     }, 0);
-  }, [success, error]);
+  }, []);
+
+  const cancelPopupStatus = () => {
+    setShowPopup(false);
+  };
+
+  const confirmChangeStatus = async (e) => {
+    e.preventDefault();
+    // Xử lý confirm change status
+    try {
+      const message = await changeUserStatus(userId);
+      const students = await getUserListByRole(Role.STUDENT);
+      setUsers({ students });
+      setShowPopup(false);
+      setToastMessage(message.success);
+      setToastType("success");
+      if (showToast) setShowToast(false);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3004);
+    } catch (err) {
+      setToastMessage(err.toString());
+      setToastType("danger");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3004);
+    }
+  };
+
+  const handleShowPopup = (e, id) => {
+    e.preventDefault();
+    setUserId(id);
+    setShowPopup(true);
+  };
 
   const columns = [
     {
@@ -82,21 +107,25 @@ const UserManager = () => {
     {
       name: "Status",
       selector: (row) => (
-        <div className="d-flex justify-content-center">
+        <div>
           {row.status ? (
-            <button
-              className="btn btn-success"
-              onClick={(e) => handleStatusChange(e, row._id)}
-            >
-              Enable
-            </button>
+            <div>
+              <button
+                className="btn btn-success"
+                onClick={(e) => handleShowPopup(e, row._id)}
+              >
+                Enable
+              </button>
+            </div>
           ) : (
-            <button
-              className="btn btn-danger"
-              onClick={(e) => handleStatusChange(e, row._id)}
-            >
-              Disable
-            </button>
+            <div>
+              <button
+                className="btn btn-danger"
+                onClick={(e) => handleShowPopup(e, row._id)}
+              >
+                Disable
+              </button>
+            </div>
           )}
         </div>
       ),
@@ -123,20 +152,6 @@ const UserManager = () => {
     },
   ];
 
-  const handleStatusChange = async (e, id) => {
-    e.preventDefault();
-    if (confirm("Confirm change status for this student?")) {
-      try {
-        const message = await changeUserStatus(id);
-        setSuccess(message.success);
-        const students = await getUserListByRole(Role.STUDENT);
-        setUsers({ students });
-      } catch (err) {
-        setError(err.message);
-      }
-    }
-  };
-
   const handleGotoDetail = async (e, id) => {
     e.preventDefault();
     console.log(id);
@@ -152,6 +167,31 @@ const UserManager = () => {
     );
     setUsers({ students: newStudents });
   }
+
+  // Simpler Toast Component
+  const renderToast = () => {
+    if (!showToast) return null;
+    return (
+      <ToastContainer
+        className="p-3"
+        position="top-end"
+        style={{ position: "fixed", top: 0, right: 0, zIndex: 1050 }}
+      >
+        <Toast
+          onClose={() => setShowToast(false)}
+          bg={toastType}
+          delay={10000}
+          autohide
+        >
+          <Toast.Header>
+            <strong className="me-auto">Thông Báo</strong>
+            <small>Just now</small>
+          </Toast.Header>
+          <Toast.Body style={{ color: "white" }}>{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+    );
+  };
   return (
     <Row className="ms-(-6) me-0">
       <Col md={3}>
@@ -159,10 +199,30 @@ const UserManager = () => {
       </Col>
       <Col md={8}>
         <Container>
+          {renderToast()}
+          <Modal show={showPopup} onHide={cancelPopupStatus} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Change</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Are you sure you want to change status this student?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={cancelPopupStatus}>
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={(e) => {
+                  confirmChangeStatus(e, userId);
+                }}
+              >
+                Confirm
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <h1 className="mt-3 mb-3"> Students Manager</h1>
 
-          {success && <Alert msg={success} type="success" />}
-          {error && <Alert msg={error} type="error" />}
           <div className="text-end mb-3 mt-3">
             <div className="input-group news-input">
               <span className="input-group-text">

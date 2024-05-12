@@ -15,6 +15,7 @@ export const customStyles = {
   },
   headCells: {
     style: {
+      
       justifyContent: "center",
       alignItems: "center",
       display: "flex",

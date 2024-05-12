@@ -36,8 +36,10 @@ import MyCoursePage from "./pages/students/MyCoursePage";
 import UpdateLesson from "./pages/instructors/UpdateLesson";
 import UpdateLessonDetails from "./pages/instructors/UpdateLessonDetails";
 import CreateDocument from "./pages/instructors/CreateDocument";
+import CreateComment from "./pages/instructors/CreateComment.jsx";
 import InstructorRegister from "./pages/admin/InstructorRegister";
 import OTPAuthentication from "./pages/users/OTPAuthentication";
+import CourseIntroPage from "./pages/students/CourseIntroPage";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -92,6 +94,7 @@ const App = () => {
                 path="/create-document"
                 element={<CreateDocument />}
               ></Route>
+              <Route path="/create-comment" element={<CreateComment />}></Route>
               <Route
                 path="/update-lesson-details"
                 element={<UpdateLessonDetails />}
@@ -117,6 +120,7 @@ const App = () => {
               <Route path="/list-courses" element={<CoursePage />}></Route>
               <Route path="/checkout" element={<CheckoutPage />}></Route>
               <Route path="/my-course" element={<MyCoursePage />}></Route>
+              <Route path="/course-intro" element={<CourseIntroPage />}></Route>
             </>
           )}
           {user.token && (

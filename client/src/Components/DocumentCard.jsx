@@ -2,10 +2,7 @@ const DocumentCard = ({ document, children }) => {
   return (
     <>
       <div className="mb-5">
-        <div
-          className={`card h-100 bg-danger-subtle`}
-          style={{ width: "1000px" }}
-        >
+        <div className={`card h-100 bg-danger-subtle`}>
           <iframe
             src={`https://player.cloudinary.com/embed/?cloud_name=dinyrr5ad&public_id=${document.cloudinary}`}
             width="640"

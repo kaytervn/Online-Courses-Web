@@ -29,6 +29,9 @@ const StudentLayout = () => {
         <Nav.Link href="/list-courses">List Courses</Nav.Link>
       </Nav.Item>
       <Nav.Item>
+        <Nav.Link href="/my-course">My Course</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
         <Button className="btn-light me-2" href="/cart">
           <i className="fa fa-shopping-cart me-1" aria-hidden="true"></i>
           Cart

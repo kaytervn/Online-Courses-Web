@@ -53,7 +53,7 @@ const CourseIntroView = ({ formData, children }) => {
                       className="badge text-bg-secondary text-wrap"
                       style={{ height: "30px" }}
                     >
-                      <p className="lead">​​🏷️​​{formData.topic}</p>
+                      <p className="lead">​​​{formData.topic}</p>
                     </div>
                   </div>
                 </div>

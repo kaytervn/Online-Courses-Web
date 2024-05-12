@@ -13,30 +13,24 @@ import {
   changeCourseVisibility,
   getAllCourseAdmin,
 } from "../../services/coursesService";
-import { Image } from "react-bootstrap";
+import { Button, Image, Modal, Toast, ToastContainer } from "react-bootstrap";
 import styled from "styled-components";
 
 const CourseManager = () => {
   const { courses, setCourses } = useContext(CoursesContext);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [courseId, setCourseId] = useState(null);
+  const [visibilityOrStatus, setVisibilityOrStatus] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
 
   useEffect(() => {
     setTimeout(async () => {
       const listCourses = await getAllCourseAdmin();
       setCourses({ listCourses });
-
-      if (success || error) {
-        const timer = setTimeout(() => {
-          setSuccess("");
-          setError("");
-        }, 2000);
-
-        // Xóa timeout
-        return () => clearTimeout(timer);
-      }
     }, 0);
-  }, [success, error]);
+  }, []);
 
   const columns = [
     {
@@ -74,18 +68,22 @@ const CourseManager = () => {
     {
       name: "Visibility",
       selector: (row) => (
-        <div className="d-flex justify-content-center">
+        <div>
           {row.visibility ? (
             <button
-              className="btn  btn-success"
-              onClick={(e) => handleVisibilityChange(e, row._id)}
+              className="btn btn-success"
+              onClick={(e) => {
+                handleShowPopup(e, row._id), setVisibilityOrStatus(false);
+              }}
             >
               Enable
             </button>
           ) : (
             <button
               className="btn btn-danger"
-              onClick={(e) => handleVisibilityChange(e, row._id)}
+              onClick={(e) => {
+                handleShowPopup(e, row._id), setVisibilityOrStatus(false);
+              }}
             >
               Disable
             </button>
@@ -96,18 +94,22 @@ const CourseManager = () => {
     {
       name: "Status",
       selector: (row) => (
-        <div className="d-flex justify-content-center">
+        <div>
           {row.status ? (
             <button
               className="btn btn-success"
-              onClick={(e) => handleStatusChange(e, row._id)}
+              onClick={(e) => {
+                handleShowPopup(e, row._id), setVisibilityOrStatus(true);
+              }}
             >
               Enable
             </button>
           ) : (
             <button
               className="btn btn-danger"
-              onClick={(e) => handleStatusChange(e, row._id)}
+              onClick={(e) => {
+                handleShowPopup(e, row._id), setVisibilityOrStatus(true);
+              }}
             >
               Disable
             </button>
@@ -125,32 +127,41 @@ const CourseManager = () => {
     },
   ];
 
-  const handleStatusChange = async (e, id) => {
+  const cancelPopupStatus = () => {
+    setShowPopup(false);
+  };
+
+  const confirmChangeVisibilityOrStatus = async (e) => {
     e.preventDefault();
-    if (confirm("Confirm change status for this course?")) {
-      try {
-        const message = await changeCourseStatus(id);
-        setSuccess(message.success);
-        const listCourses = await getAllCourseAdmin();
-        setCourses({ listCourses });
-      } catch (err) {
-        setError(err.message);
+    // Xử lý confirm change visibility or status
+    try {
+      var message;
+      if (visibilityOrStatus) {
+        message = await changeCourseStatus(courseId);
+      } else {
+        message = await changeCourseVisibility(courseId);
       }
+
+      const courses2 = await getAllCourseAdmin();
+      setCourses({ listCourses: courses2 });
+      setShowPopup(false);
+      setToastMessage(message.success);
+      setToastType("success");
+      if (showToast) setShowToast(false);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3004);
+    } catch (err) {
+      setToastMessage(err.toString());
+      setToastType("danger");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3004);
     }
   };
 
-  const handleVisibilityChange = async (e, id) => {
+  const handleShowPopup = (e, id) => {
     e.preventDefault();
-    if (confirm("Confirm change visibility for this course?")) {
-      try {
-        const message = await changeCourseVisibility(id);
-        setSuccess(message.success);
-        const listCourses = await getAllCourseAdmin();
-        setCourses({ listCourses });
-      } catch (err) {
-        setError(err.message);
-      }
-    }
+    setCourseId(id);
+    setShowPopup(true);
   };
 
   async function handleSearch(e) {
@@ -164,16 +175,65 @@ const CourseManager = () => {
     console.log(newCourses);
     setCourses({ listCourses: newCourses });
   }
-
+  const renderToast = () => {
+    if (!showToast) return null;
+    return (
+      <ToastContainer
+        className="p-3"
+        position="top-end"
+        style={{ position: "fixed", top: 0, right: 0, zIndex: 1050 }}
+      >
+        <Toast
+          onClose={() => setShowToast(false)}
+          bg={toastType}
+          delay={10000}
+          autohide
+        >
+          <Toast.Header>
+            <strong className="me-auto">Thông Báo</strong>
+            <small>Just now</small>
+          </Toast.Header>
+          <Toast.Body style={{ color: "white" }}>{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+    );
+  };
   return (
     <Row className="ms-(-6) me-0">
       <Col md={3}>
         <AdminNavBar />
       </Col>
       <Col md={8}>
+        {renderToast()}
+        <Modal show={showPopup} onHide={cancelPopupStatus} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Change</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {visibilityOrStatus ? (
+              <div>Are you sure you want to change status this student?</div>
+            ) : (
+              <div>
+                Are you sure you want to change visibility this student?
+              </div>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={cancelPopupStatus}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={(e) => {
+                confirmChangeVisibilityOrStatus(e, courseId);
+              }}
+            >
+              Confirm
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <h1 className="mt-3 mb-3"> Courses Manager</h1>
-        {success && <Alert msg={success} type="success" />}
-        {error && <Alert msg={error} type="error" />}
+
         <div className="text-end mb-3 mt-3">
           <div className="input-group news-input">
             <span className="input-group-text">
