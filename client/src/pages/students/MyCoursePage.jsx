@@ -38,7 +38,7 @@ const MyCoursePage = () => {
     fetchCoursesAndReviews();
   }, []);
 
-  // Calculate total pages
+
   const lastCourseIndex = currentPage * coursesPerPage;
   const firstCourseIndex = lastCourseIndex - coursesPerPage;
   const currentCourses = courses.slice(firstCourseIndex, lastCourseIndex);
@@ -76,7 +76,6 @@ const MyCoursePage = () => {
                   <MyCourseCard
                     key={course._id}
                     course={course}
-                    //review={course.review}
                   />
                 ))}
               </div>

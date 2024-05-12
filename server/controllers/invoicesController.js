@@ -8,6 +8,7 @@ import auth from "../middlewares/auth.js";
 import PaymentMethod from "../models/PaymentMethodEnum.js";
 import Course from "../models/CourseModel.js";
 import Topic from "../models/TopicEnum.js";
+import User from "../models/UserModel.js";
 
 const router = express.Router();
 
@@ -47,7 +48,6 @@ const checkout = async (req, res) => {
       const invoiceItem = new InvoiceItem({
         invoiceId: invoice._id,
         courseId: item.courseId,
-        
       });
       await invoiceItem.save({ session });
     }
@@ -129,8 +129,18 @@ const getMyCourses = async (req, res) => {
       _id: { $in: Array.from(courseIds) },
     });
 
+    const newCourses = await Promise.all(
+      courses.map(async (course) => {
+        const user = await User.findById(course.userId);
+        return {
+          ...course.toObject(),
+          instructorName: user.name,
+        };
+      })
+    );
+
     // Gửi chi tiết các khóa học về cho client
-    res.status(200).json({ courses });
+    res.status(200).json({ courses: newCourses });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
