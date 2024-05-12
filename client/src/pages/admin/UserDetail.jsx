@@ -53,12 +53,13 @@ const UserDetail = () => {
           userId.userId
         );
         setCourses({ listCoursesByInstructor });
-        console.log(courses.listCoursesByInstructor );
+        console.log(courses.listCoursesByInstructor);
       } else {
         const listCoursesByStudent = await getCoursesByStudentId(userId.userId);
-
-        setCourses({ listCoursesByStudent });
-        console.log(courses.listCoursesByStudent);
+        setCourses({
+          listCoursesByStudent: listCoursesByStudent.courses,
+          totalPurchased: listCoursesByStudent.totalPurchased,
+        });
       }
     }, 0);
   }, []);
@@ -79,15 +80,16 @@ const UserDetail = () => {
       }
 
       if (user.role == Role.INSTRUCTOR) {
-        const listCoursesByStudent = await getCoursesByInstructorId(
-          userId.userId
-        );
-        setCourses({ listCoursesByStudent });
+        const listCoursesByStudent = await getCoursesByStudentId(userId.userId);
+        setCourses({
+          listCoursesByStudent: listCoursesByStudent.courses,
+          totalPurchased: listCoursesByStudent.totalPurchased,
+        });
       } else {
         const listCoursesByInstructor = await getCoursesByStudentId(
           userId.userId
         );
-        setCourseId({ listCoursesByInstructor });
+        setCourses({ listCoursesByInstructor });
       }
       setShowPopup(false);
       setToastMessage(message.success);
@@ -418,6 +420,10 @@ const UserDetail = () => {
                 pagination
                 customStyles={customStyles}
               ></DataTable>
+              <h2 className="text-end mt-3">
+                {" "}
+                Total Purchased: {courses.totalPurchased}{" "}
+              </h2>
             </div>
           ) : null}
         </Container>
