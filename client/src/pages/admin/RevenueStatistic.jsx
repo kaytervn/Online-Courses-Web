@@ -117,7 +117,7 @@ const RevenueStatistic = () => {
           ></DataTable>
           <h2 className="text-end mt-3">
             {" "}
-            Sum Revenue: {statistics.totalRevenuePage}{" "}
+            Sum Revenue: {statistics.totalRevenuePage}💲{" "}
           </h2>
         </Container>
       </Col>

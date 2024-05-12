@@ -135,10 +135,7 @@ const UserDetail = () => {
       ),
       sortable: true,
     },
-    {
-      name: "Description",
-      selector: (row) => row.description,
-    },
+
     {
       name: "Price",
       selector: (row) => row.price,
@@ -193,14 +190,6 @@ const UserDetail = () => {
               Disable
             </button>
           )}
-        </div>
-      ),
-    },
-    {
-      name: "",
-      selector: (row) => (
-        <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-primary ms-3">Detail</button>
         </div>
       ),
     },
@@ -421,8 +410,7 @@ const UserDetail = () => {
                 customStyles={customStyles}
               ></DataTable>
               <h2 className="text-end mt-3">
-                {" "}
-                Total Purchased: {courses.totalPurchased}{" "}
+                Total Purchased: {courses.totalPurchased}💲
               </h2>
             </div>
           ) : null}
