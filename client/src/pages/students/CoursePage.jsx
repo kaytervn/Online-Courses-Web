@@ -42,11 +42,10 @@ const CoursePage = () => {
   const navigate = useNavigate();
   const handleAddToCart = async (courseId) => {
     const token = localStorage.getItem("token");
-  if (!token) {
-    
-    navigate("/login");
-    return;
-  }
+    if (!token) {
+      navigate("/login");
+      return;
+    }
     try {
       const result = await addToCart(courseId);
       setToastMessage("Thêm vào giỏ hàng thành công!");
@@ -233,6 +232,7 @@ const CoursePage = () => {
                     value={selectedSort}
                     onChange={(e) => {
                       e.preventDefault();
+                      setCurrentPage(1);
                       setSelectedSort(e.target.value);
                     }}
                   >

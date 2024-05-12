@@ -131,6 +131,7 @@ const CreatedCourses = () => {
                       value={selectedSort}
                       onChange={(e) => {
                         e.preventDefault();
+                        setCurrentPage(1);
                         setSelectedSort(e.target.value);
                       }}
                     >
