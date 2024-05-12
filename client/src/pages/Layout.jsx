@@ -77,7 +77,8 @@ const Layout = () => {
                             ? userImage
                             : user.picture
                         }
-                        width="30"
+                        width="30px"
+                        height="30px"
                         className="rounded-circle"
                       />
                     </div>

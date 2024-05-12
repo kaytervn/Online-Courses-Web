@@ -183,7 +183,7 @@ const resetPasswordUser = async (id, token, password) => {
 
 const updateUserProfile = async (formData) => {
   try {
-    console.log(formData);
+    console.log(formData.picture);
 
     const res = await fetch("/api/users/update-profile", {
       method: "PUT",
