@@ -28,7 +28,6 @@ const getUser = async (req, res) => {
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
-  //check params user enter
   if (!email || !password || !name) {
     res.status(400).json({ error: "All fields are required!" });
   }
@@ -41,8 +40,8 @@ const registerUser = async (req, res) => {
   } else {
     try {
       //hash password
-      const salt = await bcrypt.genSalt(); //default is 10 times
-      const hashed = await bcrypt.hash(password, salt); //this is password after hashed
+      const salt = await bcrypt.genSalt();
+      const hashed = await bcrypt.hash(password, salt);
 
       //generate otp
       const otp = OTP.generate(6, {
@@ -61,10 +60,11 @@ const registerUser = async (req, res) => {
       });
 
       var mailOptions = {
-        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
+        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`,
         to: `${email}`,
         subject: "Your OTP to verify your email",
-        text: `${otp}`,
+        text: `<h1>Using the OTP: ${otp} to verify your email</h1><br>
+        <h2>The OTP is valid in 5 minutes</h2>`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -86,6 +86,7 @@ const registerUser = async (req, res) => {
   }
 };
 
+//***********************************************REGISTER INSTRUCTOR************************** */
 const registerInstructor = async (req, res) => {
   const { name, email, password } = req.body;
   const userAuth = await User.findById(req.user._id);
@@ -93,12 +94,10 @@ const registerInstructor = async (req, res) => {
     return res.status(401).json({ error: "Not authorized" });
   }
 
-  //check params user enter
   if (!email || !password || !name) {
     res.status(400).json({ error: "All fields are required!" });
   }
 
-  // check email exist
   const user = await User.findOne({ email });
 
   if (user) {
@@ -106,8 +105,8 @@ const registerInstructor = async (req, res) => {
   } else {
     try {
       //hash password
-      const salt = await bcrypt.genSalt(); //default is 10 times
-      const hashed = await bcrypt.hash(password, salt); //this is password after hashed
+      const salt = await bcrypt.genSalt();
+      const hashed = await bcrypt.hash(password, salt);
 
       const user = await User.create({
         email,
@@ -129,7 +128,8 @@ const registerInstructor = async (req, res) => {
 const checkEmailOTPUser = async (req, res) => {
   const { email, otp } = req.body;
   const user = await User.findOne({ email });
-
+  console.log("OTP:", otp);
+  console.log("User OTP:", user.otp);
   if (otp == user.otp) {
     await user.updateOne({ status: true });
     return res.status(200).json({ success: "Email verified!" });
@@ -169,28 +169,32 @@ const loginUser = async (req, res) => {
 
   if (!user) {
     return res.status(400).json({ error: "Incorrect email!" });
-  }
+  } else {
+    if (user.status == false) {
+      return res.status(400).json({ error: "Account is blocked!" });
+    } else {
+      const token = createToken(user._id);
+      //encrypt hash password
+      // check password
+      const match = await bcrypt.compare(password, user.password);
+      let cart = await Cart.findOne({ userId: user._id });
+      if (!cart) {
+        // Assuming Cart model exists and you have a logic to create a new cart
+        cart = await Cart.create({ userId: user._id });
+      }
+      // const passwordCheck = await User.findOne({compare})
+      if (!match) {
+        return res.status(400).json({ error: "Password is incorrect!" });
+      }
 
-  const token = createToken(user._id);
-  //encrypt hash password
-  // check password
-  const match = await bcrypt.compare(password, user.password);
-  let cart = await Cart.findOne({ userId: user._id });
-  if (!cart) {
-    // Assuming Cart model exists and you have a logic to create a new cart
-    cart = await Cart.create({ userId: user._id });
-  }
-  // const passwordCheck = await User.findOne({compare})
-  if (!match) {
-    return res.status(400).json({ error: "Password is incorrect!" });
-  }
-
-  try {
-    return res
-      .status(200)
-      .json({ email, token, role: user.role, cartId: cart._id });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+      try {
+        return res
+          .status(200)
+          .json({ email, token, role: user.role, cartId: cart._id });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    }
   }
 };
 

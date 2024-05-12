@@ -4,48 +4,44 @@ import mongoose from "mongoose";
 
 
 const createReview = async (req, res) => {
-  const { courseId } = req.params;
+  const { courseId, reviewData } = req.body; // Trích xuất reviewData từ req.body
   const userId = req.user._id;
-  const { ratingStar, content } = req.body;
-
   try {
-    // Check if the user has purchased the course
-    const hasPurchased = await InvoiceItem.findOne({ courseId }).populate({
-      path: "invoiceId",
-      match: { userId: new mongoose.Types.ObjectId(userId) },
-    });
+    const invoiceRecord = await InvoiceItem.findOne({ courseId });
 
-    if (!hasPurchased || !hasPurchased.invoiceId) {
+    if (!invoiceRecord || !invoiceRecord.invoiceId) {
+      console.log("Invoice record not found or no invoiceId.");
       return res
         .status(403)
         .json({ message: "You must purchase the course to review it." });
     }
 
-    // Check if the user has already reviewed this course
     const alreadyReviewed = await Review.findOne({ userId, courseId });
     if (alreadyReviewed) {
+      console.log("Already reviewed.");
       return res
         .status(400)
         .json({ message: "You have already reviewed this course." });
     }
 
-    // Create the review
     const review = new Review({
       userId,
       courseId,
-      ratingStar,
-      content,
+      ratingStar: reviewData.ratingStar,
+      content: reviewData.content, // Sử dụng content từ reviewData
     });
-
     await review.save();
+    console.log("Review data", review);
 
     res.status(201).json({ message: "Review added successfully", review });
   } catch (error) {
+    console.error("Error creating review", error);
     res
       .status(500)
       .json({ message: "Failed to add review", error: error.message });
   }
 };
+
 
 const getReviewCourse = async (req, res) => {
   const { courseId } = req.params;

@@ -1,6 +1,7 @@
 //***********************************************SEND OTP************************** */
 
 const checkOTPUser = async (email, otp) => {
+  console.log(email, otp);
   const res = await fetch("/api/users/otp-authentication", {
     method: "POST",
     headers: {
