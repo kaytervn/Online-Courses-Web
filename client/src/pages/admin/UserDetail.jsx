@@ -410,8 +410,7 @@ const UserDetail = () => {
                 customStyles={customStyles}
               ></DataTable>
               <h2 className="text-end mt-3">
-                {" "}
-                Total Purchased: {courses.totalPurchased}{" "}
+                Total Purchased: {courses.totalPurchased}💲
               </h2>
             </div>
           ) : null}
