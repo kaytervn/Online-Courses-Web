@@ -26,6 +26,7 @@ import Image from "react-bootstrap/esm/Image";
 import "../../styles/dataTable.css";
 import "../../styles/customBackdrop.css";
 import { useNavigate } from "react-router-dom";
+import userImg from "../../../images/user.png";
 
 const UserManager = () => {
   const { users, setUsers } = useContext(UsersContext);

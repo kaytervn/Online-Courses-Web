@@ -52,7 +52,7 @@ const OTPInput = () => {
           <h1 className="my-5 display-3 fw-bold ls-tight text-info-emphasis px-3">
             Verify Your Account <br />
             <span className="text-dark-emphasis h4">
-              The OTP code sent through
+              The OTP code sent through{" "}
               <span className="text-warning fw-bold">{user.email}</span>
             </span>
           </h1>
