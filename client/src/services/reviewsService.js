@@ -20,7 +20,7 @@ const getMyReviewForCourse = async (courseId) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }
+    } 
   );
 
   const data = await response.json();

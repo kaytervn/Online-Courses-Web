@@ -9,14 +9,19 @@ import "react-toastify/dist/ReactToastify.css";
 import { CartContext } from "../../contexts/CartContext";
 import { addToCart, getCart } from "../../services/cartsService.js";
 import { Card, Container, Row, Col, Pagination } from "react-bootstrap";
+import { getMyCourse } from "../../services/invoiceService.js";
+import { useNavigate } from "react-router-dom";
 
 const CourseIntroPage = () => {
   const location = useLocation();
   console.log("Received state:", location.state);
-
+  const [myCourses, setMyCourses] = useState([]);
+  const [isCoursePurchased, setIsCoursePurchased] = useState(false);
   const { state } = useLocation();
   console.log("du lieu 2: ", state);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [formData, setFormData] = useState({
     _id: state._id,
     userId: state.userId,
@@ -37,6 +42,9 @@ const CourseIntroPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 5;
   const handleAddToCart = async (courseId) => {
+    if (!isLoggedIn) {
+      navigate('/login');
+    } else {
     try {
       const result = await addToCart(courseId);
       setToastMessage("Thêm vào giỏ hàng thành công!");
@@ -50,9 +58,12 @@ const CourseIntroPage = () => {
       setToastType("danger");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 5000);
-    }
+    }}
   };
-
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  };
   const renderToast = () => {
     if (!showToast) return null;
     return (
@@ -89,6 +100,7 @@ const CourseIntroPage = () => {
   };
 
   useEffect(() => {
+    checkLoginStatus();
     fetchData();
     setTimeout(async () => {
       const { reviews, averageStars } = await getCourse(formData._id);
@@ -99,7 +111,22 @@ const CourseIntroPage = () => {
       });
       setLoading(false);
     }, 0);
-  }, []);
+     const fetchMyCourses = async () => {
+       try {
+         const data = await getMyCourse();
+         setMyCourses(data.courses || []);
+         setIsCoursePurchased(
+           data.courses.some((course) => course._id === location.state._id)
+         );
+         setLoading(false);
+       } catch (error) {
+         console.error("Error fetching my courses: ", error);
+         setLoading(false);
+       }
+     };
+
+     fetchMyCourses();
+  }, [location.state._id]);
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -171,23 +198,30 @@ const CourseIntroPage = () => {
         </div>
       ) : (
         <>
-          <CourseIntroViewStudent formData={formData}>
-            <Link to="" state={formData}>
+          <CourseIntroViewStudent formData={location.state}>
+            {isLoggedIn ? (
+              isCoursePurchased ? (
+                <Link to="/course-details" state={location.state}>
+                  <button className="btn btn-primary">
+                    <i className="bi bi-eye-fill"></i> Course Detail
+                  </button>
+                </Link>
+              ) : (
+                <button
+                  className="btn btn-success"
+                  onClick={() => handleAddToCart(location.state._id)}
+                >
+                  <i className="bi bi-cart4"></i> Add To Cart
+                </button>
+              )
+            ) : (
               <button
-                className="btn btn-success me-2"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleAddToCart(state._id);
-                }}
+                className="btn btn-success"
+                onClick={() => handleAddToCart(location.state._id)}
               >
                 <i className="bi bi-cart4"></i> Add To Cart
               </button>
-            </Link>
-            <Link to="/course-details" state={formData}>
-              <button className="btn btn-primary">
-                <i className="bi bi-eye-fill"></i> Course Detail
-              </button>
-            </Link>
+            )}
           </CourseIntroViewStudent>
           <ReviewsSection
             reviewsPerPage={reviewsPerPage}

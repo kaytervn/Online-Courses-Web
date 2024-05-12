@@ -12,6 +12,7 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import { addToCart, getCart } from "../../services/cartsService.js";
 import { CartContext } from "../../contexts/CartContext";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CoursePage = () => {
   const { courses, setCourses } = useContext(CoursesContext);
@@ -38,8 +39,14 @@ const CoursePage = () => {
     Topic.GAME,
     Topic.SOFTWARE,
   ];
-
+  const navigate = useNavigate();
   const handleAddToCart = async (courseId) => {
+    const token = localStorage.getItem("token");
+  if (!token) {
+    
+    navigate("/login");
+    return;
+  }
     try {
       const result = await addToCart(courseId);
       setToastMessage("Thêm vào giỏ hàng thành công!");
