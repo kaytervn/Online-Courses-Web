@@ -14,7 +14,7 @@ const EditProfile = () => {
     const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
-    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [showChangeInform, setShowChangeModal] = useState(false);
     const [userData, setUserData] = useState({
         name: user.name || '',
         picture: user.picture || '',
@@ -58,7 +58,7 @@ const EditProfile = () => {
                 picture: selectedImage || user.picture,
                 phone: userData.phone,
             })
-            setShowLogoutModal(true);
+            setShowChangeModal(true);
             // navigate('/my-profile')
         }
         catch (error) {
@@ -68,9 +68,9 @@ const EditProfile = () => {
 
 
 
-    const confirmLogout = () => {
+    const confirm = () => {
         navigate("/my-profile");
-        setShowLogoutModal(false);
+        setShowChangeModal(false);
     };
 
 
@@ -178,13 +178,21 @@ const EditProfile = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Modal show={showLogoutModal} centered>
+                <Modal show={showChangeInform} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>Information Update</Modal.Title>
+                        <Modal.Title className='text-primary'>Update status</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Update successfully</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="success" onClick={confirmLogout}>
+                    <Modal.Body>
+                        <div style={{ textAlign: 'center' }}>
+                            <img
+                                src="../../../../images/success.png"
+                                alt="Successfully updated"
+                                style={{ maxWidth: '30%', maxHeight: '300px' }}
+                            />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer className='d-flex justify-content-center text-align-center'>
+                        <Button variant="success" onClick={confirm}>
                             Continue
                         </Button>
                     </Modal.Footer>

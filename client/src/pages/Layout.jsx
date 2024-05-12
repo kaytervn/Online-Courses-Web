@@ -5,7 +5,7 @@ import Image from "react-bootstrap/Image";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import userImage from "../../images/user.png";
-import { useContext, useEffect ,useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import Role from "../../../server/models/RoleEnum.js";
 import InstructorLayout from "../Components/InstructorLayout";
@@ -19,27 +19,28 @@ import { Modal } from "react-bootstrap";
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);  
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   useEffect(() => {
-    setTimeout(async () => {}, 0);
+    setTimeout(async () => { }, 0);
   }, []);
 
-   const handleLogout = () => {
-     setShowLogoutModal(true); // Hiển thị cửa sổ xác nhận khi nhấn logout
-   };
+  const handleLogout = () => {
+    setShowLogoutModal(true); // Hiển thị cửa sổ xác nhận khi nhấn logout
+  };
 
-   const confirmLogout = () => {
-     // Xử lý logout
-     setUser({ email: null, name: null, picture: null, role: null });
-     localStorage.removeItem("token");
-     localStorage.removeItem("role");
-     navigate("/");
-     setShowLogoutModal(false); 
-   };
+  const confirmLogout = () => {
+    // Xử lý logout
+    setUser({ email: null, name: null, picture: null, role: null });
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("cartId");
+    navigate("/");
+    setShowLogoutModal(false);
+  };
 
-   const cancelLogout = () => {
-     setShowLogoutModal(false); // Ẩn cửa sổ xác nhận khi hủy logout
-   };
+  const cancelLogout = () => {
+    setShowLogoutModal(false); // Ẩn cửa sổ xác nhận khi hủy logout
+  };
 
   return (
     <>
