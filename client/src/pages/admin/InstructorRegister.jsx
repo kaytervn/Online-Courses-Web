@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Col, Container, Row, Card } from "react-bootstrap";
+import { Button, Col, Container, Row, Card, Form } from "react-bootstrap";
 import {
   getUserByOther,
   registerInstructor,
@@ -55,88 +55,121 @@ const InstructorRegister = () => {
     }
   };
   return (
-    <Row className="ms-(-6) me-0">
+    <Row className="ms-(-6) me-0" style={{ height: "100%" }}>
       <Col md={3}>
         <AdminNavBar />
       </Col>
       <Col md={8}>
         <Container>
           <h1 className="mt-3"> Register Instructor</h1>
-          <Container
-            className="d-flex justify-content-center align-items-center mt-5"
-            style={{ height: "" }}
-          >
-            <section
-              className="card shadow-lg p-5 mb-5 bg-body-tertiary rounded-4 d-flex justify-content-center align-items-center"
-              style={{ width: "500px" }}
-            >
-              <h3 className="title fw-medium mb-5"> Register</h3>
-              <form onSubmit={handleRegister}>
-                <div className="mb-5 row">
-                  <input
-                    type="input"
-                    placeholder="Your Name"
-                    className="input p-1"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    autoFocus
-                  />
-                </div>
-                <div className="mb-5 row">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="input p-1"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    autoFocus
-                  />
-                </div>
-                <div className="mb-5 row ">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="input p-1"
-                    value={formData.password}
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
-                    autoFocus
-                  />
-                </div>
+          <Container className="d-flex justify-content-center align-items-center mt-5">
+            <Container className="p-4 shadow">
+              <Row>
+                <Col
+                  md="6"
+                  className="text-center text-md-start d-flex flex-column justify-content-center"
+                >
+                  <h1 className="my-5 display-3 fw-bold ls-tight text-info-emphasis px-3">
+                    Register Page <br />
+                    <span className="text-dark-emphasis">for your account</span>
+                  </h1>
 
-                <div className="mb-5 row ">
-                  <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    className="input p-1"
-                    value={formData.confirmPassword}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        confirmPassword: e.target.value,
-                      })
-                    }
-                    autoFocus
-                  />
-                </div>
+                  <div style={{ textAlign: "center" }}>
+                    <img
+                      src="../../../images/cookiedu_logo.png"
+                      alt="Logo"
+                      style={{ maxWidth: "50%", maxHeight: "300px" }}
+                    />
+                  </div>
+                </Col>
 
-                <button className="btn btn-success mb-4 ms-5"> Register</button>
-                <br />
+                <Col md="6">
+                  <Card className="my-5">
+                    <Card.Body className="p-5 shadow">
+                      <Row>
+                        <Col>
+                          <Form.Group className="mb-4">
+                            <Form.Label>Your name</Form.Label>
+                            <Form.Control
+                              type="input"
+                              className="input p-1"
+                              value={formData.name}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  name: e.target.value,
+                                })
+                              }
+                              autoFocus
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
 
-                <a
-                  href="#"
-                  className="fs-6 fw-lighter"
-                  style={{ textDecoration: "none" }}
-                ></a>
-              </form>
-              {success && <Alert msg={success} type="success" />}
-              {error && <Alert msg={error} type="error" />}
-            </section>
+                      <Row>
+                        <Form.Group className="mb-4">
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control
+                            type="email"
+                            className="input p-1"
+                            value={formData.email}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                email: e.target.value,
+                              })
+                            }
+                            autoFocus
+                          />
+                        </Form.Group>
+                      </Row>
+
+                      <Form.Group className="mb-4">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          className="input p-1"
+                          value={formData.password}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              password: e.target.value,
+                            })
+                          }
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-4">
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          className="input p-1"
+                          value={formData.confirmPassword}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              confirmPassword: e.target.value,
+                            })
+                          }
+                        />
+                      </Form.Group>
+
+                      <Row className="d-flex justify-content-center ">
+                        <Button
+                          className="mb-4 col-3"
+                          size="md"
+                          onClick={handleRegister}
+                        >
+                          Register
+                        </Button>
+                      </Row>
+                      {success && <Alert msg={success} type="success" />}
+                      {error && <Alert msg={error} type="error" />}
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
           </Container>
         </Container>
       </Col>
