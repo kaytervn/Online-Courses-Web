@@ -1,0 +1,13 @@
+{
+  "name": "my-mern-project",
+  "version": "1.0.0",
+  "scripts": {
+    "install:client": "cd client && npm install",
+    "build:client": "cd client && npm run build",
+    "install:server": "cd server && npm install",
+    "start:server": "cd server && npm start",
+    "postinstall": "npm run install:client && npm run install:server",
+    "start": "npm run start:server",
+    "build": "npm run build:client && npm run install:server"
+  }
+}
