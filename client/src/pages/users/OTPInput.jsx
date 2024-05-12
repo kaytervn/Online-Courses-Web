@@ -83,7 +83,7 @@ const OTPInput = () => {
             </Row>
             <Modal show={showSuccessVerify} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title className='text-primary'>Account verify Successfully</Modal.Title>
+                    <Modal.Title className='text-primary'>Verify account is successfully</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ textAlign: 'center' }}>

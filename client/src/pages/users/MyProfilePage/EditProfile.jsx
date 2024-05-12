@@ -182,7 +182,7 @@ const EditProfile = () => {
                 </Row>
                 <Modal show={showChangeInform} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title className='text-primary'>Update status</Modal.Title>
+                        <Modal.Title className='text-primary'>Update status is successfully</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div style={{ textAlign: 'center' }}>
