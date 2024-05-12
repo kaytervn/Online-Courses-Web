@@ -6,6 +6,7 @@ const CoursesByUserProvider = ({ children }) => {
   const [courses, setCourses] = useState({
     listCoursesByStudent: [],
     listCoursesByInstructor: [],
+    totalPurchased: 0,
   });
 
   return (

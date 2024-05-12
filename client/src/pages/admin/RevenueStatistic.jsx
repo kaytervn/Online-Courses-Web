@@ -26,10 +26,10 @@ import Image from "react-bootstrap/esm/Image";
 import { StatisticsContext } from "../../contexts/StatisticsContext";
 import { getAllInvoiceItemsAdmin } from "../../services/InvoiceItemService";
 
+import "react-datepicker/dist/react-datepicker.css";
+import { getAllCourseAdmin } from "../../services/coursesService";
 const RevenueStatistic = () => {
   const { statistics, setStatistics } = useContext(StatisticsContext);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -68,15 +68,22 @@ const RevenueStatistic = () => {
     },
   ];
 
-  //   async function handleSearch(e) {
-  //     console.log(await getUserListByRole(Role.STUDENT));
-  //     const newStudents = (await getUserListByRole(Role.STUDENT)).filter(
-  //       (student) =>
-  //         student.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-  //         student.email.toLowerCase().includes(e.target.value.toLowerCase())
-  //     );
-  //     setUsers({ students: newStudents });
-  //   }
+  async function handleSearch(e) {
+    var total = 0;
+    const newStatics = (await getAllInvoiceItemsAdmin()).statistics.filter(
+      (course) =>
+        course.courseName
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase()) ||
+        course.instructorName
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
+    );
+    newStatics.forEach((course) => {
+      total += course.totalRevenue;
+    });
+    setStatistics({ listStatistics: newStatics, totalRevenuePage: total });
+  }
 
   return (
     <Row className="ms-(-6) me-0">
@@ -87,8 +94,6 @@ const RevenueStatistic = () => {
         <Container>
           <h1 className="mt-3 mb-3"> Revenue Statistics </h1>
 
-          {success && <Alert msg={success} type="success" />}
-          {error && <Alert msg={error} type="error" />}
           <div className="text-end mb-3 mt-3">
             <div className="input-group news-input">
               <span className="input-group-text">
@@ -99,7 +104,7 @@ const RevenueStatistic = () => {
                 className="form-control"
                 id="searchInput"
                 placeholder="Search..."
-                // onChange={handleSearch}
+                onChange={handleSearch}
               />
             </div>
           </div>
@@ -112,7 +117,7 @@ const RevenueStatistic = () => {
           ></DataTable>
           <h2 className="text-end mt-3">
             {" "}
-            Tổng doanh thu hệ thống: {statistics.totalRevenuePage}{" "}
+            Sum Revenue: {statistics.totalRevenuePage}{" "}
           </h2>
         </Container>
       </Col>

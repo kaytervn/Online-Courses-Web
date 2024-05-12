@@ -1,4 +1,5 @@
 const CourseIntroViewStudent = ({ formData, children }) => {
+  console.log("trung binhf", formData.averageStars)
   return (
     <>
       <section className="bg-dark text-light">
@@ -40,7 +41,8 @@ const CourseIntroViewStudent = ({ formData, children }) => {
                           return <i key={index} className="bi bi-star"></i>;
                         }
                       })}
-                      {` ${formData.averageStars}`}
+                      
+                      {`${formData.averageStars}`}
                     </p>
                   </div>
                 </div>
