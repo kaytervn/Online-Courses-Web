@@ -4,8 +4,13 @@ import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import { getCourse } from "../../services/coursesService";
 import ReviewCard from "../../Components/ReviewCard";
 import CourseIntroView from "../../Components/CourseIntroView";
-const UpdateCourseIntro = () => {
+
+const CourseIntroPage = () => {
+    const location = useLocation();
+    console.log("Received state:", location.state);
+
   const { state } = useLocation();
+  console.log("du lieu 2: ", state)
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     _id: state._id,
@@ -19,7 +24,7 @@ const UpdateCourseIntro = () => {
     averageStars: 0,
     reviews: [],
   });
-  console.log("du lieu: ", formData)
+
   useEffect(() => {
     setTimeout(async () => {
       const { reviews, averageStars } = await getCourse(formData._id);
@@ -74,4 +79,4 @@ const UpdateCourseIntro = () => {
     </>
   );
 };
-export default UpdateCourseIntro;
+export default CourseIntroPage;
