@@ -37,7 +37,9 @@ const MyCourseCard = ({ course }) => {
         content,
       };
       const data = await createReview(course._id, reviewData);
-
+      console.log("id course", course._id)
+      console.log("noi dung: ", reviewData);
+      console.log("data", data)
       if (data.message) {
         setShowModal(false);
         if (data.message === "You have already reviewed this course.") {

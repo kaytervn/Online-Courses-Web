@@ -5,7 +5,7 @@ const createReview = async (courseId, reviewData) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify(reviewData),
+    body: JSON.stringify({courseId, reviewData}),
   });
   const data = await response.json();
   return data;
@@ -26,6 +26,5 @@ const getMyReviewForCourse = async (courseId) => {
   const data = await response.json();
   return data;
 };
-
 
 export { createReview, getMyReviewForCourse };

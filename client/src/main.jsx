@@ -10,27 +10,32 @@ import StatisticsProvider from "./contexts/StatisticsContext.jsx";
 import UserDetail from "./pages/admin/UserDetail.jsx";
 import UserDetailProvider from "./contexts/UserDetailContext.jsx";
 import StatisticsInstructorProvider from "./contexts/StatisticsIntructorContext.jsx";
+import CoursesByUserProvider, {
+  CoursesByUserContext,
+} from "./contexts/CoursesByUserContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <StatisticsProvider>
-      <StatisticsInstructorProvider>
-        <NotificationProvider>
-          <UserDetailProvider>
-            <CoursesProvider>
-              <CartProvider>
-                <CoursesProvider>
-                  <UsersProvider>
-                    <UserProvider>
-                      <App />
-                    </UserProvider>
-                  </UsersProvider>
-                </CoursesProvider>
-              </CartProvider>
-            </CoursesProvider>
-          </UserDetailProvider>
-        </NotificationProvider>
-      </StatisticsInstructorProvider>
-    </StatisticsProvider>
+    <CoursesByUserProvider>
+      <StatisticsProvider>
+        <StatisticsInstructorProvider>
+          <NotificationProvider>
+            <UserDetailProvider>
+              <CoursesProvider>
+                <CartProvider>
+                  <CoursesProvider>
+                    <UsersProvider>
+                      <UserProvider>
+                        <App />
+                      </UserProvider>
+                    </UsersProvider>
+                  </CoursesProvider>
+                </CartProvider>
+              </CoursesProvider>
+            </UserDetailProvider>
+          </NotificationProvider>
+        </StatisticsInstructorProvider>
+      </StatisticsProvider>
+    </CoursesByUserProvider>
   </React.StrictMode>
 );

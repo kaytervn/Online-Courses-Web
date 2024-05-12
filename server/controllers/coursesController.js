@@ -5,6 +5,8 @@ import User from "../models/UserModel.js";
 import Role from "../models/RoleEnum.js";
 import Topic from "../models/TopicEnum.js";
 import Review from "../models/ReviewModel.js";
+import Invoice from "../models/InvoiceModel.js";
+import InvoiceItem from "../models/InvoiceItemModel.js";
 
 const createCourse = async (req, res) => {
   if (!req.file) {
@@ -406,6 +408,66 @@ const changeCourseStatus = async (req, res) => {
   }
 };
 
+const getCoursesByInstructorId = async (req, res) => {
+  const userAuth = await User.findById(req.user._id);
+
+  if (!(userAuth.role !== Role.ADMIN || userAuth.role !== Role.INSTRUCTOR)) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+  const id = req.params.id;
+  console.log(id);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Incorrect Instructor ID" });
+  }
+
+  try {
+    const courses = await Course.find({ userId: id });
+    return res.status(200).json({ courses });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const getCoursesByStudentId = async (req, res) => {
+  const userAuth = await User.findById(req.user._id);
+
+  if (!(userAuth.role == Role.ADMIN)) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  const id = req.params.id;
+  console.log(id);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Incorrect Student ID" });
+  }
+
+  try {
+    var courses = [];
+    const invoices = await Invoice.find({ userId: id });
+    if (invoices.length == 0) {
+      return res.status(404).json({ message: "Don't have any courses" });
+    }
+
+    var totalPurchased = 0;
+    await Promise.all(
+      invoices.map(async (invoice) => {
+        const invoiceItems = await InvoiceItem.find({ invoiceId: invoice._id });
+        await Promise.all(
+          invoiceItems.map(async (invoiceItem) => {
+            const course = await Course.findById(invoiceItem.courseId);
+            totalPurchased += course.price;
+            courses.push({ ...course._doc });
+          })
+        );
+      })
+    );
+
+    return res.status(200).json({ courses, totalPurchased });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export {
   createCourse,
   getNewestCourse,
@@ -420,4 +482,6 @@ export {
   deleteCourse,
   getCourse,
   searchCourses,
+  getCoursesByInstructorId,
+  getCoursesByStudentId,
 };
