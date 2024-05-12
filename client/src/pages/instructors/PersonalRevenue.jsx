@@ -89,7 +89,7 @@ const PersonalRevenue = () => {
       ></DataTable>
       <h2 className="text-end mt-3">
         {" "}
-        My Sum Revenue: {statisticsInstructor.totalRevenueInstructor}{" "}
+        My Sum Revenue: {statisticsInstructor.totalRevenueInstructor} 💲{" "}
       </h2>
     </Container>
   );
