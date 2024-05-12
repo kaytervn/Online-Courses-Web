@@ -6,6 +6,7 @@ import AnimatedProgressBar from "../../Components/AnimatedProgressBar";
 import LessonCard from "../../Components/LessonCard";
 import { deleteCourse } from "../../services/coursesService";
 import { MyAlert } from "../../Components/CustomAlert";
+import { getCourse } from "../../services/coursesService";
 
 const CourseDetails = () => {
   const navigate = useNavigate();
@@ -29,10 +30,13 @@ const CourseDetails = () => {
   });
 
   useEffect(() => {
+    console.log("form data", formData)
     setTimeout(async () => {
+      const { reviews, averageStars } = await getCourse(formData._id);
       const lessons = await getCourseLessons(formData._id);
       setFormData({
         ...formData,
+        averageStars,
         lessons,
       });
       setLoading(false);

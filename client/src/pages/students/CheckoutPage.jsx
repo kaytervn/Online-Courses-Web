@@ -10,7 +10,7 @@ import {
   Card,
 } from "react-bootstrap";
 import CartItemCheckout from "../../Components/CartItemCheckout";
-import "./styles/CheckoutPage.css"; // Import CSS file for custom styling
+import "./styles/CheckoutPage.css"; 
 import { checkout } from "../../services/invoiceService";
 import { getCart } from "../../services/cartsService";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const CheckoutPage = () => {
     const { cartItems } = useContext(CartContext);
     const { setCartItems } = useContext(CartContext);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [paymentMethod, setPaymentMethod] = useState("MoMo");
+    const [paymentMethod, setPaymentMethod] = useState(0);
     const { setItemCount } = useContext(CartContext);
     const navigate = useNavigate();
     const PaymentMethod = {
@@ -30,68 +30,53 @@ const CheckoutPage = () => {
       PAYPAL: "PayPal",
     };
     useEffect(() => {
-      // Gọi hàm fetchData khi component được mount
       fetchData();
     }, []);
 
     const fetchData = async () => {
       try {
-        const updatedCart = await getCart(); // Giả sử hàm này trả về danh sách các mặt hàng trong giỏ hàng
-        setCartItems(updatedCart.courseDetails); // Cập nhật cartItems trong context
+        const updatedCart = await getCart(); 
+        setCartItems(updatedCart.courseDetails);
         const total = updatedCart.courseDetails.reduce(
           (acc, item) => acc + item.course.price,
           0
         );
-        setTotalPrice(total); // Tính toán tổng tiền
+        setTotalPrice(total); 
       } catch (error) {
         console.error("Failed to fetch cart data: ", error);
       }
     };
     const handlePaymentMethodChange = (method) => {
-    setPaymentMethod(method); // Cập nhật phương thức thanh toán
+    setPaymentMethod(method); 
     };
     const handleCheckout = async () => {
       
       try {
         if (!paymentMethod) {
-          toast.error("Vui lòng chọn phương thức thanh toán");
+          toast.error("Please select payment method");
           return;
-        }
-        //  if (
-        //    paymentMethod != PaymentMethod.MOMO &&
-        //    paymentMethod != PaymentMethod.PAYPAL
-        //  ) {
-        //    //setPaymentMethodError(true);
-        //    toast.error("Phương thức thanh toán không hợp lệ");
-        //    return;
-        //  }
-        // Tải lại dữ liệu giỏ hàng từ server để đảm bảo dữ liệu mới nhất
+        }      
         const updatedCart = await getCart();
-        setCartItems(updatedCart.courseDetails); // Cập nhật lại danh sách trong trang
+        setCartItems(updatedCart.courseDetails); 
         const data = await checkout(updatedCart.courseDetails, paymentMethod);
-        //clearCart();
-        toast.success("Thanh toán thành công. Mã hóa đơn: " + data.invoiceId);
+        toast.success("Payment successfully");
         setItemCount(0);
         navigate("/my-course");
       } catch (error) {
-        toast.error("Thanh toán thất bại: " + error.message);
+        toast.error("Payment failed " + error.message);
       }
     };
 
   return (
     <Container className="center-content" style={{ minHeight: "80vh" }}>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <Row className="justify-content-md-center">
         <Col md={12}>
           <h2
             className="header"
             style={{ fontSize: "40px", fontWeight: "bold" }}
           >
-            Thanh toán
+            Checkout
           </h2>
         </Col>
       </Row>
@@ -101,7 +86,7 @@ const CheckoutPage = () => {
             <Card.Body>
               <Card.Title>
                 <h2 style={{ fontSize: "30px", fontWeight: "bold" }}>
-                  Phương thức thanh toán
+                  Payment Method
                 </h2>
               </Card.Title>
               <Form>
@@ -148,7 +133,7 @@ const CheckoutPage = () => {
             <Card.Body>
               <Card.Title>
                 <h2 style={{ fontSize: "30px", fontWeight: "bold" }}>
-                  Thông tin đặt hàng
+                  Order Details
                 </h2>
               </Card.Title>
               <Form>
@@ -169,7 +154,7 @@ const CheckoutPage = () => {
                   className="total-price-label"
                   style={{ fontSize: "40px", fontWeight: "bold" }}
                 >
-                  <span>Tổng tiền</span>
+                  <span>Total Price</span>
                 </div>
                 <div
                   className="total-price-value"
@@ -183,7 +168,7 @@ const CheckoutPage = () => {
                   onClick={handleCheckout}
                   className="w-100"
                 >
-                  Hoàn tất thanh toán
+                  Complete Payment
                 </Button>
               </div>
             </Card.Body>
