@@ -8,6 +8,7 @@ import CourseCard from "../../Components/CourseCard";
 import Topic from "../../../../server/models/TopicEnum.js";
 import { UserContext } from "../../contexts/UserContext";
 import "../../styles/cardHover.css";
+import { Link } from "react-router-dom";
 
 const CreatedCourses = () => {
   const { user, setUser } = useContext(UserContext);
@@ -48,7 +49,13 @@ const CreatedCourses = () => {
     }
   };
 
+  const handleSearch = async () => {
+    setCurrentPage(1);
+    await updateDisplay();
+  };
+
   const updateDisplay = async () => {
+    setLoading(true);
     const data = await searchUserCourses({
       keyword: searchValue,
       visibility: selectedVisibility,
@@ -62,22 +69,14 @@ const CreatedCourses = () => {
     });
     setPages(Array.from({ length: data.totalPages }, (_, index) => index + 1));
     setTotalPages(data.totalPages);
+    setLoading(false);
   };
 
   useEffect(() => {
     setTimeout(async () => {
-      setLoading(true);
       await updateDisplay();
-      setLoading(false);
     }, 100);
-  }, [
-    searchValue,
-    selectedTopic,
-    selectedVisibility,
-    selectedSort,
-    currentPage,
-    alert,
-  ]);
+  }, [selectedTopic, selectedVisibility, selectedSort, currentPage, alert]);
 
   return (
     <>
@@ -103,9 +102,11 @@ const CreatedCourses = () => {
                     onChange={(e) => {
                       e.preventDefault();
                       setSearchValue(e.target.value);
-                      setCurrentPage(1);
                     }}
                   />
+                  <div className="btn btn-success" onClick={handleSearch}>
+                    Search
+                  </div>
                 </div>
               </div>
             </div>
@@ -206,12 +207,14 @@ const CreatedCourses = () => {
                           <div key={course._id}>
                             <CourseCard course={course}>
                               <div className="pe-2 flex-grow-1">
-                                <a
-                                  href="/course-intro"
+                                <Link
+                                  to="/update-course-intro"
+                                  title="Edit"
+                                  state={course}
                                   className="btn btn-outline-dark w-100"
                                 >
                                   <i className="bi bi-pencil-square"></i> Edit
-                                </a>
+                                </Link>
                               </div>
                               {course.visibility == false ? (
                                 <div

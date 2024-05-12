@@ -7,8 +7,8 @@ import {
 
 const router = express.Router();
 
-router.get("/get-lesson-comments", getLessonComments);
+router.post("/get-lesson-comments", getLessonComments);
 
-router.delete("/create-comment", auth, createComment);
+router.post("/create-comment", auth, createComment);
 
 export { router as commentsRoutes };

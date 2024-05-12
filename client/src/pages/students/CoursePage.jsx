@@ -6,6 +6,12 @@ import CourseCard from "../../Components/CourseCard";
 import Topic from "../../../../server/models/TopicEnum.js";
 import { CoursesContext } from "../../contexts/CoursesContext.jsx";
 import imgSample from "../../../images/course.png";
+import { useNotification } from "../../contexts/NotificationContext ";
+//import { addToCart } from "../../services/cartsService.js";
+import { Toast, ToastContainer } from "react-bootstrap";
+import { addToCart, getCart } from "../../services/cartsService.js";
+import { CartContext } from "../../contexts/CartContext";
+import { Link, useLocation } from "react-router-dom";
 
 const CoursePage = () => {
   const { courses, setCourses } = useContext(CoursesContext);
@@ -16,6 +22,12 @@ const CoursePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pages, setPages] = useState([]);
+  const [notification, setNotification] = useState({ message: "", type: "" });
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+  const { setItemCount } = useContext(CartContext);
+  const [cartItems, setCartItems] = useState([]);
 
   const topics = [
     "ALL",
@@ -27,7 +39,54 @@ const CoursePage = () => {
     Topic.SOFTWARE,
   ];
 
+  const handleAddToCart = async (courseId) => {
+    try {
+      const result = await addToCart(courseId);
+      setToastMessage("Thêm vào giỏ hàng thành công!");
+      setToastType("success");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 5000);
+      fetchData();
+      setItemCount(cartItems.length + 1);
+    } catch (error) {
+      setToastMessage(error.toString());
+      setToastType("danger");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 5000);
+    }
+  };
+
+  const handleSearch = async () => {
+    setCurrentPage(1);
+    await updateDisplay();
+  };
+
+  // Simpler Toast Component
+  const renderToast = () => {
+    if (!showToast) return null;
+    return (
+      <ToastContainer
+        className="p-3"
+        position="top-end"
+        style={{ position: "fixed", top: 0, right: 0, zIndex: 1050 }}
+      >
+        <Toast
+          onClose={() => setShowToast(false)}
+          bg={toastType}
+          delay={10000}
+          autohide
+        >
+          <Toast.Header>
+            <strong className="me-auto">Thông Báo</strong>
+            <small>Just now</small>
+          </Toast.Header>
+          <Toast.Body>{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+    );
+  };
   const updateDisplay = async () => {
+    setLoading(true);
     const data = await searchCourses({
       keyword: searchValue,
       topic: selectedTopic,
@@ -37,18 +96,42 @@ const CoursePage = () => {
     setCourses({ ...courses, listCourses: data.courses });
     setPages(Array.from({ length: data.totalPages }, (_, index) => index + 1));
     setTotalPages(data.totalPages);
+    setLoading(false);
   };
 
   useEffect(() => {
+    fetchData();
+    if (notification.message) {
+      if (notification.type === "success") {
+        updateDisplay();
+      }
+    }
     setTimeout(async () => {
-      setLoading(true);
       await updateDisplay();
-      setLoading(false);
     }, 100);
-  }, [searchValue, selectedTopic, selectedSort, currentPage]);
-
+  }, [selectedTopic, selectedSort, currentPage, notification]);
+  const fetchData = async () => {
+    try {
+      const data = await getCart();
+      if (data) {
+        setCartItems(data.courseDetails);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
   return (
     <>
+      {/* {notification.message && (
+        <div
+          className={`alert alert-${
+            notification.type === "success" ? "success" : "danger"
+          }`}
+        >
+          {notification.message}
+        </div>
+      )}     */}
+      {renderToast()}
       <section className="bg-dark text-light p-lg-0 pt-lg-5 text-center text-sm-start">
         <div className="container">
           <div className="d-sm-flex align-items-center justify-content-between">
@@ -115,9 +198,11 @@ const CoursePage = () => {
                     onChange={(e) => {
                       e.preventDefault();
                       setSearchValue(e.target.value);
-                      setCurrentPage(1);
                     }}
                   />
+                  <div className="btn btn-success" onClick={handleSearch}>
+                    Search
+                  </div>
                 </div>
               </div>
             </div>
@@ -190,16 +275,21 @@ const CoursePage = () => {
                         <div key={course._id}>
                           <CourseCard course={course}>
                             <div className="pe-2 flex-grow-1">
-                              <a
-                                href=""
+                              <Link
+                                to="/course-intro"
+                                state={course}
                                 className="btn btn-outline-primary w-100"
                               >
                                 View Intro
-                              </a>
+                              </Link>
                             </div>
                             <a
-                              href="#action"
+                              href="#"
                               className="btn btn-outline-warning"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleAddToCart(course._id);
+                              }}
                             >
                               <i className="bi bi-cart4"></i>
                             </a>

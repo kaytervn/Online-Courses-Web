@@ -15,8 +15,10 @@ import styled from "styled-components";
 import { IoLogOut } from "react-icons/io5";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { Image, Navbar } from "react-bootstrap";
+import { Button, Image, Modal, Navbar } from "react-bootstrap";
 import logo from "../../images/cookiedu_logo.png";
+import "../styles/sidebar.css";
+
 const AdminNavBar = () => {
   const { setUser } = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(false);
@@ -24,25 +26,35 @@ const AdminNavBar = () => {
   const [broken, setBroken] = useState(false);
   const [rtl, setRtl] = useState(false);
   const [hasImage, setHasImage] = useState(false);
-
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   const SidebarContainer = styled.div`
     height: 100vh;
     width: 100%;
   `;
+
   const handleLogout = () => {
-    if (confirm("Confirm logout?")) {
-      setUser({ email: null, name: null, picture: null, role: null });
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      navigate("/");
-    }
+    setShowLogoutModal(true);
   };
+
+  const confirmLogout = () => {
+    // Xử lý logout
+    setUser({ email: null, name: null, picture: null, role: null });
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/");
+    setShowLogoutModal(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
+  };
+
   return (
     <SidebarContainer>
       <div style={{ display: "flex", height: "100%", width: "100%" }}>
         <div style={{ display: "flex", height: "100%", width: "100%" }}>
-          <Sidebar backgroundColor="#212529">
+          <Sidebar backgroundColor="#212529" className="sidebar" width="300px">
             <Navbar.Brand
               href="/"
               className="d-flex justify-content-center align-items-center mb-7s mb-3"
@@ -113,12 +125,36 @@ const AdminNavBar = () => {
                 Course Manager
               </MenuItem>
 
-              <MenuItem icon={<BarChart />}> Revenue statistics</MenuItem>
+              <MenuItem
+                component={<Link to="/statistics" />}
+                icon={<BarChart />}
+              >
+                {" "}
+                Revenue Statistics
+              </MenuItem>
+              <MenuItem component={<Link to="/register" />} icon={<BarChart />}>
+                {" "}
+                Add Instructor Account
+              </MenuItem>
 
               <MenuItem icon={<IoLogOut />} onClick={handleLogout}>
                 {" "}
                 Logout{" "}
               </MenuItem>
+              <Modal show={showLogoutModal} onHide={cancelLogout} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Confirm Change</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to log out?</Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={cancelLogout}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" onClick={confirmLogout}>
+                    Confirm
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </Menu>
           </Sidebar>
         </div>

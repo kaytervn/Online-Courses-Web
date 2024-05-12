@@ -29,6 +29,18 @@ const searchCourses = async ({ keyword, topic, page, sort }) => {
   return data;
 };
 
+const getCourse = async (_id) => {
+  const res = await fetch(`/api/courses/get_course/${_id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const { course, reviews, averageStars } = await res.json();
+  return { course, reviews, averageStars };
+};
+
 const getAllCourse = async () => {
   const res = await fetch("/api/courses/all", {
     method: "GET",
@@ -47,7 +59,7 @@ const getAllCourseAdmin = async () => {
       "Content-Type": "application/json",
     },
   });
-  const {courses} = await res.json();
+  const { courses } = await res.json();
   return courses;
 };
 
@@ -75,11 +87,39 @@ const changeCourseStatus = async (id) => {
   return data;
 };
 
-
 const createCourse = async (formData) => {
   const res = await fetch(`/api/courses/create-course`, {
     method: "POST",
     body: formData,
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
+const editCourseIntro = async ({ _id, formData }) => {
+  const res = await fetch(`/api/courses/update-course-intro/${_id}`, {
+    method: "PUT",
+    body: formData,
+    headers: {
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw Error(data.error);
+  }
+  return data;
+};
+
+const deleteCourse = async (_id) => {
+  const res = await fetch(`/api/courses/delete-course/${_id}`, {
+    method: "DELETE",
     headers: {
       Authorization: `Bear ${localStorage.getItem("token")}`,
     },
@@ -97,6 +137,9 @@ export {
   searchCourses,
   changeCourseVisibility,
   createCourse,
+  getCourse,
   changeCourseStatus,
   getAllCourseAdmin,
+  editCourseIntro,
+  deleteCourse,
 };

@@ -20,11 +20,28 @@ import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
-
+import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
+import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
 
-import CourseIntro from "./pages/instructors/CourseIntro";
+import RevenueStatistic from "./pages/admin/RevenueStatistic";
+import EditCourseIntro from "./pages/instructors/EditCourseIntro";
+import UserDetail from "./pages/admin/UserDetail";
 
+import ChangePassword from "./pages/users/MyProfilePage/ChangePassword";
+import UpdateCourseDetails from "./pages/instructors/UpdateCourseDetails";
+import CreateLesson from "./pages/instructors/CreateLesson";
+import CheckoutPage from "./pages/students/CheckoutPage";
+import MyCoursePage from "./pages/students/MyCoursePage";
+import UpdateLesson from "./pages/instructors/UpdateLesson";
+import UpdateLessonDetails from "./pages/instructors/UpdateLessonDetails";
+import CreateDocument from "./pages/instructors/CreateDocument";
+import CreateComment from "./pages/instructors/CreateComment.jsx";
+import InstructorRegister from "./pages/admin/InstructorRegister";
+import OTPAuthentication from "./pages/users/OTPAuthentication";
+import CourseIntroPage from "./pages/students/CourseIntroPage";
+import CourseDetails from "./pages/students/CourseDetails.jsx";
+import LessonDetailsPage from "./pages/students/LessonDetailsPage.jsx";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -40,6 +57,7 @@ const App = () => {
           email: dataUser.email,
           name: dataUser.name,
           picture: dataUser.picture,
+          phone: dataUser.phone,
           role: dataUser.role,
         });
         setLoading(false);
@@ -58,6 +76,9 @@ const App = () => {
               <Route index element={<UserManager />} />
               <Route path="/instructor" element={<InstructorManager />} />
               <Route path="/course" element={<CourseManager />} />
+              <Route path="/statistics" element={<RevenueStatistic />} />
+              <Route path="/user" element={<UserDetail />} />
+              <Route path="/register" element={<InstructorRegister />} />
               {/* <Route path="/course-manager" element={<CourseManager />}></Route> */}
             </>
           )}
@@ -65,29 +86,66 @@ const App = () => {
             <>
               <Route index element={<CreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
-              <Route path="/course-intro" element={<CourseIntro />}></Route>
+              <Route
+                path="/update-course-intro"
+                element={<UpdateCourseIntro />}
+              ></Route>
+              <Route path="/create-lesson" element={<CreateLesson />}></Route>
+              <Route path="/update-lesson" element={<UpdateLesson />}></Route>
+              <Route
+                path="/create-document"
+                element={<CreateDocument />}
+              ></Route>
+              <Route path="/create-comment" element={<CreateComment />}></Route>
+              <Route
+                path="/update-lesson-details"
+                element={<UpdateLessonDetails />}
+              ></Route>
+              <Route
+                path="/update-course-details"
+                element={<UpdateCourseDetails />}
+              ></Route>
               <Route
                 path="/personal-revenue"
                 element={<PersonalRevenue />}
+              ></Route>
+              <Route
+                path="/edit-course-intro"
+                element={<EditCourseIntro />}
               ></Route>
             </>
           )}
           {user.role != Role.ADMIN && user.role != Role.INSTRUCTOR && (
             <>
               <Route index element={<HomePage />} />
-              <Route path="/list-courses" element={<CoursePage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
+              <Route path="/list-courses" element={<CoursePage />}></Route>
+              <Route path="/checkout" element={<CheckoutPage />}></Route>
+              <Route path="/my-course" element={<MyCoursePage />}></Route>
+              <Route path="/course-intro" element={<CourseIntroPage />}></Route>
+              <Route path="/course-details" element={<CourseDetails />}></Route>
+              <Route
+                path="/lesson-details"
+                element={<LessonDetailsPage />}
+              ></Route>
+              <Route path="/create-comment" element={<CreateComment />}></Route>
             </>
           )}
           {user.token && (
             <>
               <Route path="/my-profile" element={<MyProfilePage />}></Route>
+              <Route path="/my-profile/edit" element={<EditProfile />}></Route>
+              <Route
+                path="/my-profile/change-password"
+                element={<ChangePassword />}
+              ></Route>
             </>
           )}
           <Route element={<GuestRoutes />}>
             <Route path="/list-courses" element={<CoursePage />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/otp-authentication" element={<OTPAuthentication />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route
               path="/reset-password/:id/:token"
@@ -96,6 +154,7 @@ const App = () => {
           </Route>
           {!loading && <Route path="*" element={<NotFoundPage />} />}
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

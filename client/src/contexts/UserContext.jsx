@@ -8,8 +8,10 @@ const UserProvider = ({ children }) => {
     email: null,
     name: null,
     picture: null,
+    phone: null,
     role: null,
     createdCourses: [],
+    cartId: localStorage.getItem("cartId"),
   });
 
   return (

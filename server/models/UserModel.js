@@ -24,6 +24,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      default: "",
+    },
+    otp: {
+      type: Number,
+      default: "",
+    },
     role: {
       type: String,
       enum: Object.values(Role),
@@ -31,7 +39,7 @@ const UserSchema = new mongoose.Schema(
     },
     status: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     description: {
       type: String,
