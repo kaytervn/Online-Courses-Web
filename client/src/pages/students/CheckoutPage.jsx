@@ -14,6 +14,9 @@ import "./styles/CheckoutPage.css"; // Import CSS file for custom styling
 import { checkout } from "../../services/invoiceService";
 import { getCart } from "../../services/cartsService";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const CheckoutPage = () => {
     const { cartItems } = useContext(CartContext);
@@ -22,6 +25,10 @@ const CheckoutPage = () => {
     const [paymentMethod, setPaymentMethod] = useState("MoMo");
     const { setItemCount } = useContext(CartContext);
     const navigate = useNavigate();
+    const PaymentMethod = {
+      MOMO: "MoMo",
+      PAYPAL: "PayPal",
+    };
     useEffect(() => {
       // Gọi hàm fetchData khi component được mount
       fetchData();
@@ -44,22 +51,40 @@ const CheckoutPage = () => {
     setPaymentMethod(method); // Cập nhật phương thức thanh toán
     };
     const handleCheckout = async () => {
+      
       try {
+        if (!paymentMethod) {
+          toast.error("Vui lòng chọn phương thức thanh toán");
+          return;
+        }
+        //  if (
+        //    paymentMethod != PaymentMethod.MOMO &&
+        //    paymentMethod != PaymentMethod.PAYPAL
+        //  ) {
+        //    //setPaymentMethodError(true);
+        //    toast.error("Phương thức thanh toán không hợp lệ");
+        //    return;
+        //  }
         // Tải lại dữ liệu giỏ hàng từ server để đảm bảo dữ liệu mới nhất
         const updatedCart = await getCart();
         setCartItems(updatedCart.courseDetails); // Cập nhật lại danh sách trong trang
         const data = await checkout(updatedCart.courseDetails, paymentMethod);
         //clearCart();
-        alert("Thanh toán thành công. Mã hóa đơn: " + data.invoiceId);
+        toast.success("Thanh toán thành công. Mã hóa đơn: " + data.invoiceId);
         setItemCount(0);
         navigate("/my-course");
       } catch (error) {
-        alert("Thanh toán thất bại: " + error.message);
+        toast.error("Thanh toán thất bại: " + error.message);
       }
     };
 
   return (
     <Container className="center-content" style={{ minHeight: "80vh" }}>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+      />
       <Row className="justify-content-md-center">
         <Col md={12}>
           <h2

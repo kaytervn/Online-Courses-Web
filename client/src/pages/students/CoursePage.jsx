@@ -11,6 +11,7 @@ import { useNotification } from "../../contexts/NotificationContext ";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { addToCart, getCart } from "../../services/cartsService.js";
 import { CartContext } from "../../contexts/CartContext";
+import { Link, useLocation } from "react-router-dom";
 
 const CoursePage = () => {
   const { courses, setCourses } = useContext(CoursesContext);
@@ -268,12 +269,15 @@ const fetchData = async () => {
                         <div key={course._id}>
                           <CourseCard course={course}>
                             <div className="pe-2 flex-grow-1">
-                              <a
-                                href=""
+                              <Link
+                                to={{
+                                  pathname: "/course-intro",
+                                  state:{course}
+                                }}
                                 className="btn btn-outline-primary w-100"
                               >
                                 View Intro
-                              </a>
+                              </Link>
                             </div>
                             <a
                               href="#"
