@@ -131,6 +131,30 @@ const deleteCourse = async (_id) => {
   return data;
 };
 
+const getCoursesByInstructorId = async (userId) => {
+  const res = await fetch(`/api/courses/get-courses-by-instructor/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const { courses } = await res.json();
+  return courses;
+};
+
+const getCoursesByStudentId = async (userId) => {
+  const res = await fetch(`/api/courses/get-courses-by-student/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bear ${localStorage.getItem("token")}`,
+    },
+  });
+  const { courses } = await res.json();
+  return courses;
+};
+
 export {
   searchUserCourses,
   getAllCourse,
@@ -142,4 +166,6 @@ export {
   getAllCourseAdmin,
   editCourseIntro,
   deleteCourse,
+  getCoursesByInstructorId,
+  getCoursesByStudentId,
 };

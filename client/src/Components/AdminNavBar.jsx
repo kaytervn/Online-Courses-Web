@@ -50,17 +50,22 @@ const AdminNavBar = () => {
     setShowLogoutModal(false); // Ẩn cửa sổ xác nhận khi hủy logout
   };
   return (
-    <SidebarContainer>
+    <SidebarContainer
+      style={{
+        position: "sticky",
+        top: "0",
+      }}
+    >
       <div style={{ display: "flex", height: "100%", width: "100%" }}>
         <div style={{ display: "flex", height: "100%", width: "100%" }}>
           <Sidebar backgroundColor="#212529" className="sidebar" width="300px">
             <Navbar.Brand
               href="/"
-              className="d-flex justify-content-center align-items-center mb-7s mb-3"
+              className="d-flex justify-content-center align-items-center mb-7s mb-3 mt-3"
             >
               <Image width={"40px"} height={"40px"} src={logo} />
               <span
-                className="text-warning text-center text-lg-start"
+                className="text-warning text-center text-lg-start "
                 style={{ fontSize: "30px" }}
               >
                 COOKI
@@ -108,6 +113,7 @@ const AdminNavBar = () => {
                 defaultOpen
                 label="User Manager"
                 icon={<FaUsersBetweenLines />}
+                className="mt-3"
               >
                 <MenuItem icon={<PiStudentBold />} component={<Link to="/" />}>
                   Student Manager

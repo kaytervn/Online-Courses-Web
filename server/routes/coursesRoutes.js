@@ -16,6 +16,8 @@ import {
   getCourse,
   changeCourseStatus,
   searchCourses,
+  getCoursesByInstructorId,
+  getCoursesByStudentId,
 } from "../controllers/coursesController.js";
 
 const storage = multer.memoryStorage();
@@ -59,4 +61,9 @@ router.get("/getBestSellerCourse", getBestSellerCourse);
 router.get("/find_course/:str", findCourse);
 
 router.get("/get_course/:id", getCourse);
+
+router.get("/get-courses-by-instructor/:id", auth, getCoursesByInstructorId);
+
+router.get("/get-courses-by-student/:id", auth, getCoursesByStudentId);
+
 export { router as coursesRoutes };
