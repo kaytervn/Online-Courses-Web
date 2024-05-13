@@ -38,7 +38,6 @@ const AdminNavBar = () => {
   };
 
   const confirmLogout = () => {
-    // Xử lý logout
     setUser({ email: null, name: null, picture: null, role: null });
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -83,7 +82,7 @@ const AdminNavBar = () => {
               closeOnClick
               menuItemStyles={{
                 button: ({ level, active, disabled }) => {
-                  // only apply styles on first level elements of the tree
+                 
                   if (level === 0)
                     return {
                       color: disabled ? "#000000" : "#ffffff",

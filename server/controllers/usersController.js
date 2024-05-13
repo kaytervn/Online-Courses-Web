@@ -32,18 +32,15 @@ const registerUser = async (req, res) => {
     res.status(400).json({ error: "All fields are required!" });
   }
 
-  // check email exist
   const user = await User.findOne({ email });
 
   if (user) {
     res.status(400).json({ error: "Email already existed!" });
   } else {
     try {
-      //hash password
       const salt = await bcrypt.genSalt();
       const hashed = await bcrypt.hash(password, salt);
 
-      //generate otp
       const otp = OTP.generate(6, {
         digit: true,
         lowerCaseAlphabets: false,
@@ -155,7 +152,6 @@ const loginUserSocial = async (req, res) => {
       user: user,
       token,
       role: user.role,
-      //   cookies: req.cookies
     });
   }
 };
@@ -164,7 +160,6 @@ const loginUserSocial = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  //check email, password fields
   if (!email || !password) {
     return res.status(400).json({ error: "All fields are required!" });
   }
@@ -179,15 +174,13 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ error: "Account is blocked!" });
     } else {
       const token = createToken(user._id);
-      //encrypt hash password
-      // check password
+
       const match = await bcrypt.compare(password, user.password);
       let cart = await Cart.findOne({ userId: user._id });
       if (!cart) {
-        // Assuming Cart model exists and you have a logic to create a new cart
         cart = await Cart.create({ userId: user._id });
       }
-      // const passwordCheck = await User.findOne({compare})
+
       if (!match) {
         return res.status(400).json({ error: "Password is incorrect!" });
       }
@@ -207,12 +200,10 @@ const loginUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
-  //check email, password fields
   if (!email) {
     return res.status(400).json({ error: "All fields are required!" });
   }
 
-  //check email exist in DB
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -232,7 +223,7 @@ const forgotPassword = async (req, res) => {
       });
 
       var mailOptions = {
-        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
+        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`,
         to: `${email}`,
         subject: "Reset Your Password",
         html: `

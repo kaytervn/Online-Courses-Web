@@ -67,7 +67,7 @@ const CoursePage = () => {
     await updateDisplay();
   };
 
-  // Simpler Toast Component
+
   const renderToast = () => {
     if (!showToast) return null;
     return (
@@ -106,7 +106,6 @@ const CoursePage = () => {
   };
 
   useEffect(() => {
-    fetchData();
     if (notification.message) {
       if (notification.type === "success") {
         updateDisplay();

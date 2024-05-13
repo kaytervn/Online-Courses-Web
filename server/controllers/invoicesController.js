@@ -17,7 +17,7 @@ const checkout = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const userId = req.user._id; // ID người dùng từ middleware xác thực
+    const userId = req.user._id; 
 
     // Tìm giỏ hàng của người dùng
     const userCart = await Cart.findOne({ userId: userId }).session(session);
@@ -36,14 +36,12 @@ const checkout = async (req, res) => {
         .json({ error: "Không có sản phẩm nào trong giỏ hàng để thanh toán." });
     }
 
-    // Tạo hóa đơn mới
     const invoice = new Invoice({
       userId: userId,
-      paymentMethod: req.body.paymentMethod || PaymentMethod.PAYPAL, // Thiết lập mặc định nếu không được cung cấp
+      paymentMethod: req.body.paymentMethod || PaymentMethod.PAYPAL, 
     });
     await invoice.save({ session });
 
-    // Tạo các mục hóa đơn dựa trên các mục trong giỏ hàng
     for (let item of cartItems) {
       const invoiceItem = new InvoiceItem({
         invoiceId: invoice._id,
@@ -111,7 +109,7 @@ const myInvoice = async (req, res) => {
 const getMyCourses = async (req, res) => {
   const userId = req.user._id;
   try {
-    // Lấy tất cả hóa đơn của người dùng
+    
     const invoices = await Invoice.find({ userId: userId });
     if (invoices.length === 0) {
       return res.status(404).json({ message: "Không có hóa đơn nào" });
@@ -160,11 +158,9 @@ const searchByName = async (req, res) => {
       const items = await InvoiceItem.find({ invoiceId: invoice._id });
       items.forEach((item) => courseIds.add(item.courseId.toString()));
     }
-
-    // Tìm kiếm khóa học theo tên và chỉ trong số các khóa học của người dùng
     const courses = await Course.find({
       _id: { $in: Array.from(courseIds) },
-      title: { $regex: new RegExp(name, "i") }, // Tìm kiếm không phân biệt hoa thường
+      title: { $regex: new RegExp(name, "i") }, 
     });
 
     if (courses.length === 0) {
