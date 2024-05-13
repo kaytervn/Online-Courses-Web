@@ -404,10 +404,6 @@ const changeUserStatus = async (req, res) => {
   }
 
   const user = await User.findById(req.params.id);
-  if (!user) {
-    return res.status(400).json({ error: "User Not Found" });
-  }
-
   const userAuth = await User.findById(req.user._id);
   if (!(userAuth.role == "ADMIN") || user.role == "ADMIN") {
     return res.status(401).json({ error: "Not authorized" });
