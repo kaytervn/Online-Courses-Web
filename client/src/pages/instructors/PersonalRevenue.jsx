@@ -36,30 +36,19 @@ const PersonalRevenue = () => {
       name: "Course Name",
       selector: (row) => row.courseName,
       sortable: true,
-      // width: "200px",
       textAlign: "center",
     },
     {
-      name: "Total Buyers",
+      name: "Enrollments",
       selector: (row) => row.totalBuyers,
       sortable: true,
     },
     {
-      name: "Total Revenue",
+      name: "Subtotal Revenue",
       selector: (row) => row.totalRevenue,
       sortable: true,
     },
   ];
-
-  //   async function handleSearch(e) {
-  //     console.log(await getUserListByRole(Role.STUDENT));
-  //     const newStudents = (await getUserListByRole(Role.STUDENT)).filter(
-  //       (student) =>
-  //         student.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-  //         student.email.toLowerCase().includes(e.target.value.toLowerCase())
-  //     );
-  //     setUsers({ students: newStudents });
-  //   }
 
   return (
     <Container>
@@ -88,8 +77,7 @@ const PersonalRevenue = () => {
         customStyles={customStyles}
       ></DataTable>
       <h2 className="text-end mt-3">
-        {" "}
-        My Sum Revenue: {statisticsInstructor.totalRevenueInstructor} 💲{" "}
+        My Total Revenue: 💲{statisticsInstructor.totalRevenueInstructor}
       </h2>
     </Container>
   );
