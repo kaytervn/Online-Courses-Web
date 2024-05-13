@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 
 const createReview = async (req, res) => {
-  const { courseId, reviewData } = req.body; // Trích xuất reviewData từ req.body
+  const { courseId, reviewData } = req.body; 
   const userId = req.user._id;
   try {
     const invoiceRecord = await InvoiceItem.findOne({ courseId });
@@ -28,7 +28,7 @@ const createReview = async (req, res) => {
       userId,
       courseId,
       ratingStar: reviewData.ratingStar,
-      content: reviewData.content, // Sử dụng content từ reviewData
+      content: reviewData.content, 
     });
     await review.save();
     console.log("Review data", review);
