@@ -13,19 +13,19 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
 import Role from "../../models/RoleEnum.js";
 import { getUser } from "./services/usersService";
-import CreatedCourses from "./pages/instructors/CreatedCoursesLayout";
+import MyCreatedCourses from "./pages/instructors/MyCreatedCourses.jsx";
 import Loading from "./pages/Loading";
 import CreateCourse from "./pages/instructors/CreateCourse";
 import CartPage from "./pages/students/CartPage";
 import PersonalRevenue from "./pages/instructors/PersonalRevenue";
 import InstructorManager from "./pages/admin/InstructorManager";
 import CoursePage from "./pages/students/CoursePage";
-import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro";
+import EditCourse from "./pages/instructors/EditCourse.jsx";
 import EditProfile from "./pages/users/MyProfilePage/EditProfile";
 import CourseManager from "./pages/admin/CourseManager";
 
 import RevenueStatistic from "./pages/admin/RevenueStatistic";
-import EditCourseIntro from "./pages/instructors/EditCourseIntro";
+import UpdateCourseIntro from "./pages/instructors/UpdateCourseIntro.jsx";
 import UserDetail from "./pages/admin/UserDetail";
 
 import ChangePassword from "./pages/users/MyProfilePage/ChangePassword";
@@ -84,12 +84,9 @@ const App = () => {
           )}
           {user.role == Role.INSTRUCTOR && (
             <>
-              <Route index element={<CreatedCourses />} />
+              <Route index element={<MyCreatedCourses />} />
               <Route path="/create-course" element={<CreateCourse />}></Route>
-              <Route
-                path="/update-course-intro"
-                element={<UpdateCourseIntro />}
-              ></Route>
+              <Route path="/edit-course" element={<EditCourse />}></Route>
               <Route path="/create-lesson" element={<CreateLesson />}></Route>
               <Route path="/update-lesson" element={<UpdateLesson />}></Route>
               <Route
@@ -110,8 +107,8 @@ const App = () => {
                 element={<PersonalRevenue />}
               ></Route>
               <Route
-                path="/edit-course-intro"
-                element={<EditCourseIntro />}
+                path="/update-course-intro"
+                element={<UpdateCourseIntro />}
               ></Route>
             </>
           )}

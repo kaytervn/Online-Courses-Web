@@ -30,7 +30,7 @@ const CourseDetails = () => {
   });
 
   useEffect(() => {
-    console.log("form data", formData)
+    console.log("form data", formData);
     setTimeout(async () => {
       const { reviews, averageStars } = await getCourse(formData._id);
       const lessons = await getCourseLessons(formData._id);

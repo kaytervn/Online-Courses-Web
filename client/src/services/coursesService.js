@@ -102,7 +102,7 @@ const createCourse = async (formData) => {
   return data;
 };
 
-const editCourseIntro = async ({ _id, formData }) => {
+const updateCourseIntro = async ({ _id, formData }) => {
   const res = await fetch(`/api/courses/update-course-intro/${_id}`, {
     method: "PUT",
     body: formData,
@@ -164,7 +164,7 @@ export {
   getCourse,
   changeCourseStatus,
   getAllCourseAdmin,
-  editCourseIntro,
+  updateCourseIntro,
   deleteCourse,
   getCoursesByInstructorId,
   getCoursesByStudentId,

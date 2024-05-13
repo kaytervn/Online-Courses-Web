@@ -10,7 +10,7 @@ import { UserContext } from "../../contexts/UserContext";
 import "../../styles/cardHover.css";
 import { Link } from "react-router-dom";
 
-const CreatedCourses = () => {
+const MyCreatedCourses = () => {
   const { user, setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState({
@@ -209,7 +209,7 @@ const CreatedCourses = () => {
                             <CourseCard course={course}>
                               <div className="pe-2 flex-grow-1">
                                 <Link
-                                  to="/update-course-intro"
+                                  to="/edit-course"
                                   title="Edit"
                                   state={course}
                                   className="btn btn-outline-dark w-100"
@@ -304,4 +304,4 @@ const CreatedCourses = () => {
   );
 };
 
-export default CreatedCourses;
+export default MyCreatedCourses;
