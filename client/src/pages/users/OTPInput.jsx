@@ -26,7 +26,7 @@ const OTPInput = () => {
         } catch (err) {
             setError(err.message);
         }
-        console.log('OTP is ', otp);
+        // console.log('OTP is ', otp);
     };
 
     const confirm = () => {

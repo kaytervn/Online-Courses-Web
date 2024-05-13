@@ -68,7 +68,7 @@ const getUserCourses = async (req, res) => {
   }
 };
 
-// Instructor's courses
+
 const searchUserCourses = async (req, res) => {
   const user = await User.findById(req.user._id);
   const { keyword, visibility, topic, page, sort } = req.body;
