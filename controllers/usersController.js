@@ -173,7 +173,9 @@ const loginUser = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(400).json({ error: "Incorrect email!" });
+    return res
+      .status(400)
+      .json({ error: "Incorrect email! Please fill in again" });
   } else {
     if (user.status == false) {
       return res.status(400).json({ error: "Account is blocked!" });
@@ -189,7 +191,9 @@ const loginUser = async (req, res) => {
       }
       // const passwordCheck = await User.findOne({compare})
       if (!match) {
-        return res.status(400).json({ error: "Password is incorrect!" });
+        return res
+          .status(400)
+          .json({ error: "Password is incorrect! Please fill in again" });
       }
 
       try {
