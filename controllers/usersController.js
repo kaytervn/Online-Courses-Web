@@ -15,10 +15,15 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
 };
 
+//***********************************************GET USER************************** */
 const getUser = async (req, res) => {
-  const user = await User.findById(req.user._id);
   try {
-    return res.status(200).json({ user });
+    const user = await User.findById(req.user._id);
+    if (user) {
+      return res.status(200).json({ user });
+    } else {
+      return res.status(400).json({ error: "User not found!" });
+    }
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -28,18 +33,14 @@ const getUser = async (req, res) => {
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
-  if (!email || !password || !name) {
-    res.status(400).json({ error: "All fields are required!" });
-  }
-
-  // check email exist
   const user = await User.findOne({ email });
 
   if (user) {
-    res.status(400).json({ error: "Email already existed!" });
+    res
+      .status(400)
+      .json({ error: "Email already exists, please select another email!" });
   } else {
     try {
-      //hash password
       const salt = await bcrypt.genSalt();
       const hashed = await bcrypt.hash(password, salt);
 
@@ -64,12 +65,12 @@ const registerUser = async (req, res) => {
         to: `${email}`,
         subject: "Your OTP to verify your email",
         html: `
-    <h1>Hello ${name}!</h1>
-    <p>Thank you for registering with COOKIEDU! To verify your email address, please use the OTP code below:</p>
-    <h2>OTP: ${otp}</h2>
-    <p>This OTP is valid for 5 minutes. If you did not request this verification, please ignore this email.</p>
-    <p>Best regards,<br>COOKIEDU Team</p>
-  `,
+        <h1>Hello ${name}!</h1>
+        <p>Thank you for registering with COOKIEDU! To verify your email address, please use the OTP code below:</p>
+        <h2>OTP: ${otp}</h2>
+        <p>This OTP is valid for 5 minutes. If you did not request this verification, please ignore this email.</p>
+        <p>Best regards,<br>COOKIEDU Team</p>
+      `,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -79,15 +80,27 @@ const registerUser = async (req, res) => {
           return res.status(200).json({ success: "Email sent!" });
         }
       });
-
-      console.log("OTP:", otp);
       const user = await User.create({ email, password: hashed, name, otp });
       const cart = await createCartForUser(user._id);
-      // const token = createToken(user._id);
-      res.status(200).json({ success: "Register successful!", user });
+      res.status(200).json({ success: "Register successful!" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  }
+};
+
+//***********************************************CHECK EMAIL AND OTP USER************************** */
+
+const checkEmailOTPUser = async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email });
+  console.log("OTP:", otp);
+  console.log("User OTP:", user.otp);
+  if (otp == user.otp) {
+    await user.updateOne({ status: true });
+    return res.status(200).json({ success: "Email verified!" });
+  } else {
+    return res.status(400).json({ error: "OTP is incorrect!" });
   }
 };
 
@@ -125,21 +138,6 @@ const registerInstructor = async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
-};
-
-//***********************************************CHECK EMAIL AND OTP USER************************** */
-
-const checkEmailOTPUser = async (req, res) => {
-  const { email, otp } = req.body;
-  const user = await User.findOne({ email });
-  console.log("OTP:", otp);
-  console.log("User OTP:", user.otp);
-  if (otp == user.otp) {
-    await user.updateOne({ status: true });
-    return res.status(200).json({ success: "Email verified!" });
-  } else {
-    return res.status(400).json({ error: "OTP is incorrect!" });
   }
 };
 

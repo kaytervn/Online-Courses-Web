@@ -102,7 +102,7 @@ const Layout = () => {
                     </Nav.Item>
                     <Nav.Item>
                       <Nav.Link href="/login" className="text-warning">
-                        <i className="bi bi-door-open"></i> Sign in
+                        <i className="bi bi-door-open"></i> Log in
                       </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
