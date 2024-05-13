@@ -1,7 +1,7 @@
 //***********************************************SEND OTP************************** */
 
 const checkOTPUser = async (email, otp) => {
-  console.log(email, otp);
+  // console.log(email, otp);
   const res = await fetch("/api/users/otp-authentication", {
     method: "POST",
     headers: {
@@ -15,7 +15,6 @@ const checkOTPUser = async (email, otp) => {
   if (!res.ok) {
     throw Error(data.error);
   }
-
   return data;
 };
 
@@ -23,11 +22,11 @@ const checkOTPUser = async (email, otp) => {
 
 const registerUser = async (name, email, password, confirmPassword) => {
   if (!name || !email || !password || !confirmPassword) {
-    throw Error("Please fill all the fields");
+    throw Error("Please fill out all fields!");
   }
 
   if (password !== confirmPassword) {
-    throw Error("Passwords do not match!");
+    throw Error("Confirm password does not match, please re-enter!");
   }
 
   const res = await fetch("/api/users/register", {
@@ -43,7 +42,6 @@ const registerUser = async (name, email, password, confirmPassword) => {
   if (!res.ok) {
     throw Error(data.error);
   }
-
   return data;
 };
 

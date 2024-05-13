@@ -15,10 +15,15 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "10d" });
 };
 
+//***********************************************GET USER************************** */
 const getUser = async (req, res) => {
-  const user = await User.findById(req.user._id);
   try {
-    return res.status(200).json({ user });
+    const user = await User.findById(req.user._id);
+    if (user) {
+      return res.status(200).json({ user });
+    } else {
+      return res.status(400).json({ error: "User not found!" });
+    }
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -28,19 +33,19 @@ const getUser = async (req, res) => {
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
-  if (!email || !password || !name) {
-    res.status(400).json({ error: "All fields are required!" });
-  }
-
   const user = await User.findOne({ email });
 
   if (user) {
-    res.status(400).json({ error: "Email already existed!" });
+    res
+      .status(400)
+      .json({ error: "Email already exists, please select another email!" });
   } else {
     try {
+      //hash password
       const salt = await bcrypt.genSalt();
       const hashed = await bcrypt.hash(password, salt);
 
+      //generate otp
       const otp = OTP.generate(6, {
         digit: true,
         lowerCaseAlphabets: false,
@@ -69,22 +74,30 @@ const registerUser = async (req, res) => {
   `,
       };
 
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          return res.status(500).json({ error: error.message });
-        } else {
-          return res.status(200).json({ success: "Email sent!" });
-        }
-      });
+      transporter.sendMail(mailOptions);
 
-      console.log("OTP:", otp);
       const user = await User.create({ email, password: hashed, name, otp });
       const cart = await createCartForUser(user._id);
-      // const token = createToken(user._id);
-      res.status(200).json({ success: "Register successful!", user });
+      res.status(200).json({ success: "Register successful!" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  }
+};
+
+//***********************************************CHECK EMAIL AND OTP USER************************** */
+
+const checkEmailOTPUser = async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email });
+
+  if (otp == user.otp) {
+    await user.updateOne({ status: true });
+    return res.status(200).json({ success: "Email is verified!" });
+  } else {
+    return res
+      .status(400)
+      .json({ error: "OTP is incorrect! Please try again!" });
   }
 };
 
@@ -125,21 +138,6 @@ const registerInstructor = async (req, res) => {
   }
 };
 
-//***********************************************CHECK EMAIL AND OTP USER************************** */
-
-const checkEmailOTPUser = async (req, res) => {
-  const { email, otp } = req.body;
-  const user = await User.findOne({ email });
-  console.log("OTP:", otp);
-  console.log("User OTP:", user.otp);
-  if (otp == user.otp) {
-    await user.updateOne({ status: true });
-    return res.status(200).json({ success: "Email verified!" });
-  } else {
-    return res.status(400).json({ error: "OTP is incorrect!" });
-  }
-};
-
 //***********************************************LOGIN USER SOCIAL************************** */
 
 const loginUserSocial = async (req, res) => {
@@ -152,6 +150,7 @@ const loginUserSocial = async (req, res) => {
       user: user,
       token,
       role: user.role,
+      //   cookies: req.cookies
     });
   }
 };
@@ -160,6 +159,7 @@ const loginUserSocial = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
+  //check email, password fields
   if (!email || !password) {
     return res.status(400).json({ error: "All fields are required!" });
   }
@@ -174,13 +174,12 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ error: "Account is blocked!" });
     } else {
       const token = createToken(user._id);
-
+      //encrypt hash password
+      // check password
       const match = await bcrypt.compare(password, user.password);
       let cart = await Cart.findOne({ userId: user._id });
-      if (!cart) {
-        cart = await Cart.create({ userId: user._id });
-      }
 
+      // const passwordCheck = await User.findOne({compare})
       if (!match) {
         return res.status(400).json({ error: "Password is incorrect!" });
       }
@@ -200,10 +199,12 @@ const loginUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
+  //check email, password fields
   if (!email) {
     return res.status(400).json({ error: "All fields are required!" });
   }
 
+  //check email exist in DB
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -223,7 +224,7 @@ const forgotPassword = async (req, res) => {
       });
 
       var mailOptions = {
-        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`,
+        from: `COOKIEDU 🍪​" <${process.env.EMAIL_USER}>`, // email that send
         to: `${email}`,
         subject: "Reset Your Password",
         html: `
