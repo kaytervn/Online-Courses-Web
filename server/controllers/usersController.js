@@ -41,7 +41,6 @@ const registerUser = async (req, res) => {
       .json({ error: "Email already exists, please select another email!" });
   } else {
     try {
-      //hash password
       const salt = await bcrypt.genSalt();
       const hashed = await bcrypt.hash(password, salt);
 
@@ -66,16 +65,21 @@ const registerUser = async (req, res) => {
         to: `${email}`,
         subject: "Your OTP to verify your email",
         html: `
-    <h1>Hello ${name}!</h1>
-    <p>Thank you for registering with COOKIEDU! To verify your email address, please use the OTP code below:</p>
-    <h2>OTP: ${otp}</h2>
-    <p>This OTP is valid for 5 minutes. If you did not request this verification, please ignore this email.</p>
-    <p>Best regards,<br>COOKIEDU Team</p>
-  `,
+        <h1>Hello ${name}!</h1>
+        <p>Thank you for registering with COOKIEDU! To verify your email address, please use the OTP code below:</p>
+        <h2>OTP: ${otp}</h2>
+        <p>This OTP is valid for 5 minutes. If you did not request this verification, please ignore this email.</p>
+        <p>Best regards,<br>COOKIEDU Team</p>
+      `,
       };
 
-      transporter.sendMail(mailOptions);
-
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return res.status(500).json({ error: error.message });
+        } else {
+          return res.status(200).json({ success: "Email sent!" });
+        }
+      });
       const user = await User.create({ email, password: hashed, name, otp });
       const cart = await createCartForUser(user._id);
       res.status(200).json({ success: "Register successful!" });
