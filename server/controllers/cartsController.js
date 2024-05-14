@@ -15,20 +15,9 @@ const createCartForUser = async (userId) => {
 };
 const addToCart = async (req, res) => {
   const { cartId, courseId } = req.body;
-  const userId = req.user._id; // Lấy từ middleware xác thực
-  console.log(`Cart ID: ${cartId}, Course ID: ${courseId}`);
-
-  if (!cartId || !courseId) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
+  const userId = req.user._id;
 
   try {
-    const cartExists = await Cart.findById(cartId);
-    const courseExists = await Course.findById(courseId);
-
-    if (!cartExists || !courseExists) {
-      return res.status(404).json({ error: "Cart or Course not found" });
-    }
     const cartItemExists = await CartItem.findOne({
       cartId: cartId,
       courseId: courseId,
@@ -68,15 +57,12 @@ const addToCart = async (req, res) => {
       cartItem,
       courseDetails,
     };
-  console.log("them thanh cong");
     res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log("them ko thanh cong");
   }
 };
-
-
 
 // const addToCart = async (req, res) => {
 //   const { cartId, courseId } = req.body;
@@ -134,7 +120,6 @@ const addToCart = async (req, res) => {
 //   }
 // };
 
-
 const removeFromCart = async (req, res) => {
   const { cartId, courseId } = req.params;
 
@@ -159,10 +144,7 @@ const removeFromCart = async (req, res) => {
 const getCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.user._id });
-    if (!cart) {
 
-      return res.status(404).json({ error: "Cart not found" });
-    }
     const cartItems = await CartItem.find({ cartId: cart._id });
     return res.status(200).json({ cartItems });
   } catch (error) {
@@ -185,11 +167,12 @@ const clearCart = async (req, res) => {
       return res.status(404).json({ message: "No items found in cart" });
     }
 
-    res.status(200).json({ message: "All items removed from cart successfully" });
+    res
+      .status(200)
+      .json({ message: "All items removed from cart successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-
-export { createCartForUser, addToCart, removeFromCart, getCart ,clearCart};
+export { createCartForUser, addToCart, removeFromCart, getCart, clearCart };

@@ -2,23 +2,12 @@ import InvoiceItem from "../models/InvoiceItemModel.js";
 import Review from "../models/ReviewModel.js";
 import mongoose from "mongoose";
 
-
 const createReview = async (req, res) => {
-  const { courseId, reviewData } = req.body; 
+  const { courseId, reviewData } = req.body;
   const userId = req.user._id;
   try {
-    const invoiceRecord = await InvoiceItem.findOne({ courseId });
-
-    if (!invoiceRecord || !invoiceRecord.invoiceId) {
-      console.log("Invoice record not found or no invoiceId.");
-      return res
-        .status(403)
-        .json({ message: "You must purchase the course to review it." });
-    }
-
     const alreadyReviewed = await Review.findOne({ userId, courseId });
     if (alreadyReviewed) {
-      console.log("Already reviewed.");
       return res
         .status(400)
         .json({ message: "You have already reviewed this course." });
@@ -28,10 +17,9 @@ const createReview = async (req, res) => {
       userId,
       courseId,
       ratingStar: reviewData.ratingStar,
-      content: reviewData.content, 
+      content: reviewData.content,
     });
     await review.save();
-    console.log("Review data", review);
 
     res.status(201).json({ message: "Review added successfully", review });
   } catch (error) {
@@ -42,14 +30,13 @@ const createReview = async (req, res) => {
   }
 };
 
-
 const getReviewCourse = async (req, res) => {
   const { courseId } = req.params;
 
   try {
     const reviews = await Review.find({ courseId }).populate({
       path: "userId",
-      select: "name", 
+      select: "name",
     });
 
     if (reviews.length === 0) {
@@ -88,6 +75,5 @@ const getMyReviewForCourse = async (req, res) => {
       .json({ message: "Failed to retrieve review", error: error.message });
   }
 };
-
 
 export { createReview, getReviewCourse, getMyReviewForCourse };

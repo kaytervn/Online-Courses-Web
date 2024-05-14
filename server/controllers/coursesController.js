@@ -175,7 +175,15 @@ const searchCourses = async (req, res) => {
 };
 
 const changeCourseVisibility = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
+
   const course = await Course.findById(req.params.id);
+  if (!course) {
+    return res.status(400).json({ error: "Course Not Found" });
+  }
+
   const user = await User.findById(req.user._id);
   if (
     !(
@@ -320,16 +328,10 @@ const findCourse = async (req, res) => {
 
 const getCourse = async (req, res) => {
   const courseId = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(courseId)) {
-    return res.status(400).json({ error: "Invalid course ID" });
-  }
 
   try {
     let course;
     course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ message: "Khóa học không tồn tại." });
-    }
 
     const reviews = await Review.find({ courseId: course._id });
     const newReviews = await Promise.all(
@@ -365,7 +367,14 @@ const getCourse = async (req, res) => {
 };
 
 const changeCourseStatus = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Incorrect ID" });
+  }
+
   const course = await Course.findById(req.params.id);
+  if (!course) {
+    return res.status(400).json({ error: "Course Not Found" });
+  }
 
   const user = await User.findById(req.user._id);
   if (
@@ -420,6 +429,7 @@ const getCoursesByStudentId = async (req, res) => {
   }
 
   const id = req.params.id;
+  console.log(id);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Incorrect Student ID" });
   }
