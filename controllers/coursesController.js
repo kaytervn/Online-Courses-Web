@@ -329,17 +329,11 @@ const findCourse = async (req, res) => {
 
 const getCourse = async (req, res) => {
   const courseId = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(courseId)) {
-    return res.status(400).json({ error: "Invalid course ID" });
-  }
+  
 
   try {
     let course;
     course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ message: "Khóa học không tồn tại." });
-    }
-
     const reviews = await Review.find({ courseId: course._id });
     const newReviews = await Promise.all(
       reviews.map(async (review) => {

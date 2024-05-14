@@ -113,10 +113,7 @@ const getMyCourses = async (req, res) => {
   try {
     // Lấy tất cả hóa đơn của người dùng
     const invoices = await Invoice.find({ userId: userId });
-    if (invoices.length === 0) {
-      return res.status(404).json({ message: "Không có hóa đơn nào" });
-    }
-
+  
     // Duyệt qua từng hóa đơn và thu thập các courseId từ các mục hóa đơn
     let courseIds = new Set();
     for (let invoice of invoices) {
