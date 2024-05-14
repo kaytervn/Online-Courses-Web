@@ -414,9 +414,19 @@ const getCoursesByInstructorId = async (req, res) => {
     return res.status(400).json({ error: "Incorrect Instructor ID" });
   }
 
+ 
+
   try {
     const courses = await Course.find({ userId: id });
-    return res.status(200).json({ courses });
+     var totalRevenuePersonal = 0;
+    await Promise.all(
+      courses.map(async (course) => {
+        totalRevenuePersonal += course.price;
+      }
+    ));
+
+
+    return res.status(200).json({ courses, totalRevenuePersonal });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

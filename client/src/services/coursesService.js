@@ -139,7 +139,7 @@ const getCoursesByInstructorId = async (userId) => {
       Authorization: `Bear ${localStorage.getItem("token")}`,
     },
   });
-  const { courses } = await res.json();
+  const  courses  = await res.json();
   return courses;
 };
 

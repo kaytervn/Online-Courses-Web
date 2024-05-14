@@ -7,6 +7,7 @@ const CoursesByUserProvider = ({ children }) => {
     listCoursesByStudent: [],
     listCoursesByInstructor: [],
     totalPurchased: 0,
+    totalRevenuePersonal: 0,
   });
 
   return (

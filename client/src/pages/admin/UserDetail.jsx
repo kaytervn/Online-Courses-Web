@@ -52,8 +52,10 @@ const UserDetail = () => {
         const listCoursesByInstructor = await getCoursesByInstructorId(
           userId.userId
         );
-        setCourses({ listCoursesByInstructor });
-        console.log(courses.listCoursesByInstructor);
+        setCourses({
+          listCoursesByInstructor: listCoursesByInstructor.courses,
+          totalRevenuePersonal: listCoursesByInstructor.totalRevenuePersonal,
+        });
       } else {
         const listCoursesByStudent = await getCoursesByStudentId(userId.userId);
         setCourses({
@@ -80,16 +82,19 @@ const UserDetail = () => {
       }
 
       if (user.role == Role.INSTRUCTOR) {
+        const listCoursesByInstructor = await getCoursesByInstructorId(
+          userId.userId
+        );
+        setCourses({
+          listCoursesByInstructor: listCoursesByInstructor.courses,
+          totalRevenuePersonal: listCoursesByInstructor.totalRevenuePersonal,
+        });
+      } else {
         const listCoursesByStudent = await getCoursesByStudentId(userId.userId);
         setCourses({
           listCoursesByStudent: listCoursesByStudent.courses,
           totalPurchased: listCoursesByStudent.totalPurchased,
         });
-      } else {
-        const listCoursesByInstructor = await getCoursesByStudentId(
-          userId.userId
-        );
-        setCourses({ listCoursesByInstructor });
       }
       setShowPopup(false);
       setToastMessage(message.success);
@@ -378,6 +383,9 @@ const UserDetail = () => {
                 pagination
                 customStyles={customStyles}
               ></DataTable>
+              <h2 className="text-end mt-3">
+                Total Revenue: {courses.totalRevenuePersonal}💲
+              </h2>
             </div>
           ) : user.role == Role.STUDENT ? (
             <div className="mb-5">
