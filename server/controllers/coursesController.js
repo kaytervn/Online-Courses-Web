@@ -68,7 +68,6 @@ const getUserCourses = async (req, res) => {
   }
 };
 
-
 const searchUserCourses = async (req, res) => {
   const user = await User.findById(req.user._id);
   const { keyword, visibility, topic, page, sort } = req.body;
@@ -176,15 +175,7 @@ const searchCourses = async (req, res) => {
 };
 
 const changeCourseVisibility = async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ error: "Incorrect ID" });
-  }
-
   const course = await Course.findById(req.params.id);
-  if (!course) {
-    return res.status(400).json({ error: "Course Not Found" });
-  }
-
   const user = await User.findById(req.user._id);
   if (
     !(
@@ -374,14 +365,7 @@ const getCourse = async (req, res) => {
 };
 
 const changeCourseStatus = async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ error: "Incorrect ID" });
-  }
-
   const course = await Course.findById(req.params.id);
-  if (!course) {
-    return res.status(400).json({ error: "Course Not Found" });
-  }
 
   const user = await User.findById(req.user._id);
   if (
