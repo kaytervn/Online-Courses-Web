@@ -17,28 +17,19 @@ const checkout = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
     // Tìm giỏ hàng của người dùng
     const userCart = await Cart.findOne({ userId: userId }).session(session);
-    if (!userCart) {
-      return res.status(404).json({ error: "Giỏ hàng không tồn tại." });
-    }
 
     // Tìm tất cả mục trong giỏ hàng
     const cartItems = await CartItem.find({ cartId: userCart._id }).session(
       session
     );
 
-    if (cartItems.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Không có sản phẩm nào trong giỏ hàng để thanh toán." });
-    }
-
     const invoice = new Invoice({
       userId: userId,
-      paymentMethod: req.body.paymentMethod || PaymentMethod.PAYPAL, 
+      paymentMethod: req.body.paymentMethod || PaymentMethod.PAYPAL,
     });
     await invoice.save({ session });
 
@@ -109,20 +100,14 @@ const myInvoice = async (req, res) => {
 const getMyCourses = async (req, res) => {
   const userId = req.user._id;
   try {
-    
     const invoices = await Invoice.find({ userId: userId });
-    if (invoices.length === 0) {
-      return res.status(404).json({ message: "Không có hóa đơn nào" });
-    }
 
-    // Duyệt qua từng hóa đơn và thu thập các courseId từ các mục hóa đơn
     let courseIds = new Set();
     for (let invoice of invoices) {
       const items = await InvoiceItem.find({ invoiceId: invoice._id });
       items.forEach((item) => courseIds.add(item.courseId.toString()));
     }
 
-    // Lấy chi tiết các khóa học dựa trên courseId
     const courses = await Course.find({
       _id: { $in: Array.from(courseIds) },
     });
@@ -137,7 +122,6 @@ const getMyCourses = async (req, res) => {
       })
     );
 
-    // Gửi chi tiết các khóa học về cho client
     res.status(200).json({ courses: newCourses });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -160,7 +144,7 @@ const searchByName = async (req, res) => {
     }
     const courses = await Course.find({
       _id: { $in: Array.from(courseIds) },
-      title: { $regex: new RegExp(name, "i") }, 
+      title: { $regex: new RegExp(name, "i") },
     });
 
     if (courses.length === 0) {

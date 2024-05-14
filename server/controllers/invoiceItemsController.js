@@ -13,7 +13,9 @@ const getAllCourseStasticsAdmin = async (req, res) => {
 
     const courses = await Course.find();
     if (courses.length === 0) {
-      return res.status(404).json({ message: "Don't have any courses" });
+      return res
+        .status(404)
+        .json({ message: "There are no records to display" });
     }
 
     var totalRevenuePage = 0;

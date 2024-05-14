@@ -134,7 +134,7 @@ const registerInstructor = async (req, res) => {
         role: Role.INSTRUCTOR,
       });
       const cart = await createCartForUser(user._id);
-      const token = createToken(user._id);
+      const token = await createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -379,14 +379,20 @@ const changePassword = async (req, res) => {
 
 //***********************************************GET ALL USER BY ROLE************************** */
 const getUserListByRole = async (req, res) => {
-  const role = req.params.role;
-
-  const users = await User.find({ role });
-  const userAuth = await User.findById(req.user._id);
-  if (!(userAuth.role == "ADMIN") || role == "ADMIN") {
-    return res.status(401).json({ error: "Not authorized" });
-  }
   try {
+    const role = req.params.role;
+
+    const users = await User.find({ role });
+
+    if (users.length == 0) {
+      return res.status(400).json({ error: "Don't have any user!" });
+    }
+
+    const userAuth = await User.findById(req.user._id);
+    if (!(userAuth.role == "ADMIN") || role == "ADMIN") {
+      return res.status(401).json({ error: "Not authorized" });
+    }
+
     return res.status(200).json({ users });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -395,26 +401,15 @@ const getUserListByRole = async (req, res) => {
 
 //***********************************************Change status USER************************* */
 const changeUserStatus = async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ error: "Incorrect ID" });
-  }
-
+ 
   const user = await User.findById(req.params.id);
-  if (!user) {
-    return res.status(400).json({ error: "User Not Found" });
-  }
-
   const userAuth = await User.findById(req.user._id);
   if (!(userAuth.role == "ADMIN") || user.role == "ADMIN") {
     return res.status(401).json({ error: "Not authorized" });
   }
 
   try {
-    if (user.status == true) {
-      await user.updateOne({ status: false });
-    } else {
-      await user.updateOne({ status: true });
-    }
+    await user.updateOne({ status: !user.status });
     return res.status(200).json({
       success: "User status Was Updated",
       status: user.status,

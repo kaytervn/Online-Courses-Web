@@ -45,7 +45,6 @@ const UserDetail = () => {
   useEffect(() => {
     setTimeout(async () => {
       const user = await getUserByOther(userId.userId);
-
       setUser(user);
 
       if (user.role == Role.INSTRUCTOR) {
