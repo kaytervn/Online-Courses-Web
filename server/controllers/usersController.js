@@ -134,7 +134,7 @@ const registerInstructor = async (req, res) => {
         role: Role.INSTRUCTOR,
       });
       const cart = await createCartForUser(user._id);
-      const token = createToken(user._id);
+      const token = await createToken(user._id);
       res.status(200).json({ success: "Register successful!", user, token });
     } catch (error) {
       res.status(500).json({ error: error.message });
