@@ -66,11 +66,7 @@ const CartPage = () => {
 
   return (
     <Container>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <Toast
         onClose={() => setShowToast(false)}
         show={showToast}
@@ -87,7 +83,7 @@ const CartPage = () => {
       <Row>
         <Col md={8}>
           {isEmptyCart ? (
-            <p>Không có sản phẩm trong giỏ hàng</p>
+            <p>There are no courses in the cart</p>
           ) : (
             cartItems.map((cartItem) => (
               <Row key={cartItem._id} className="mb-4">
