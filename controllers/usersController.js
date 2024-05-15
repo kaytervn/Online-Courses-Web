@@ -261,9 +261,7 @@ const loginAppUser = async (req, res) => {
       }
 
       try {
-        return res
-          .status(200)
-          .json({ email, token, role: user.role, cartId: cart._id });
+        return res.status(200).json({ user, cartId: cart._id });
       } catch (error) {
         return res.status(500).json({ error: error.message });
       }
