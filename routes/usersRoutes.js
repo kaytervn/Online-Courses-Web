@@ -14,6 +14,7 @@ import {
   registerInstructor,
   checkEmailOTPUser,
   registerAppUser,
+  loginAppUser,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -23,7 +24,7 @@ const upload = multer({ storage: storage });
 
 // register user
 router.post("/register", registerUser);
-router.post("/register", registerAppUser);
+router.post("/register-app-user", registerAppUser);
 
 // register instructor
 router.post("/register/instructor", auth, registerInstructor);
@@ -33,6 +34,7 @@ router.post("/otp-authentication", checkEmailOTPUser);
 
 //login user
 router.post("/login", loginUser);
+router.post("/login-app-user", loginAppUser);
 
 //forgot password
 router.post("/forgot-password", forgotPassword);

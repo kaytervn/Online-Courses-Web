@@ -225,6 +225,52 @@ const loginUser = async (req, res) => {
   }
 };
 
+const loginAppUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  //check email, password fields
+  if (!email || !password) {
+    return res.status(400).json({ error: "All fields are required!" });
+  }
+
+  //check email exist in DB
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res
+      .status(400)
+      .json({ error: "Incorrect email! Please fill in again" });
+  } else {
+    if (user.role != Role.STUDENT) {
+      return res.status(400).json({ error: "This app is for student only!" });
+    } else {
+      const token = createToken(user._id);
+      //encrypt hash password
+      // check password
+      const match = await bcrypt.compare(password, user.password);
+      let cart = await Cart.findOne({ userId: user._id });
+      if (!cart) {
+        // Assuming Cart model exists and you have a logic to create a new cart
+        cart = await Cart.create({ userId: user._id });
+      }
+      // const passwordCheck = await User.findOne({compare})
+      if (!match) {
+        return res
+          .status(400)
+          .json({ error: "Password is incorrect! Please fill in again" });
+      }
+
+      try {
+        return res
+          .status(200)
+          .json({ email, token, role: user.role, cartId: cart._id });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    }
+  }
+};
+
 //***********************************************FORGOT PASSWORD************************** */
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -476,4 +522,5 @@ export {
   changeUserStatus,
   getUserByOther,
   registerAppUser,
+  loginAppUser,
 };
