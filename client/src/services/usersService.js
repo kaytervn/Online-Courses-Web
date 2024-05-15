@@ -113,7 +113,7 @@ const loginUser = async (email, password) => {
 
 const loginUserSocial = async () => {
   const res = await fetch(
-    "https://online-courses-web.onrender.com/auth/login/success",
+    "http://online-courses-web.onrender.com/auth/login/success",
     {
       method: "GET",
       credentials: "include",
