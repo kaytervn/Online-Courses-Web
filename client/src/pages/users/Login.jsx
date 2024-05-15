@@ -61,7 +61,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async (e) => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open("https://online-courses-web.onrender.com/auth/google", "_self");
     e.preventDefault();
     try {
       const data = await loginUserSocial();
