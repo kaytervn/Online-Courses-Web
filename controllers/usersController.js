@@ -89,6 +89,26 @@ const registerUser = async (req, res) => {
   }
 };
 
+const registerAppUser = async (req, res) => {
+  const { name, email, password, confirmPassword } = req.body;
+  if (!name || !email || !password || !confirmPassword) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+  if (password != confirmPassword) {
+    return res.status(400).json({ error: "Confirm password does not match" });
+  }
+  const user = await User.findOne({ email });
+  if (user) {
+    return res.status(400).json({ error: "Email is already taken" });
+  }
+  try {
+    const newUser = await User.create({ name, email, password, status: true });
+    return res.status(200).json({ user: newUser });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 //***********************************************CHECK EMAIL AND OTP USER************************** */
 
 const checkEmailOTPUser = async (req, res) => {
@@ -455,4 +475,5 @@ export {
   getUserListByRole,
   changeUserStatus,
   getUserByOther,
+  registerAppUser,
 };
