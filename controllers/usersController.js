@@ -102,10 +102,17 @@ const registerAppUser = async (req, res) => {
     return res.status(400).json({ error: "Email is already taken" });
   }
   try {
-    const newUser = await User.create({ name, email, password, status: true });
-    const cart = await createCartForUser(newUser._id);
+    const salt = await bcrypt.genSalt();
+    const hashed = await bcrypt.hash(password, salt);
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashed,
+      status: true,
+    });
+    await createCartForUser(newUser._id);
 
-    return res.status(200).json({ user: newUser, cartId: cart });
+    return res.status(200).json({ user: newUser });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
