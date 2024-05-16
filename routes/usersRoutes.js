@@ -15,6 +15,7 @@ import {
   checkEmailOTPUser,
   registerAppUser,
   loginAppUser,
+  updateProfilePicture,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -51,6 +52,13 @@ router.put(
   auth,
   upload.single("picture"),
   updateProfileInformation
+);
+
+router.put(
+  "/update-profile-picture",
+  auth,
+  upload.single("picture"),
+  updateProfilePicture
 );
 
 // change password
