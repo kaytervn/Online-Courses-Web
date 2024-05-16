@@ -112,15 +112,18 @@ const loginUser = async (email, password) => {
 //***********************************************LOGIN USER SOCIAL************************** */
 
 const loginUserSocial = async () => {
-  const res = await fetch("http://localhost:5000/auth/login/success", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": true,
-    },
-  });
+  const res = await fetch(
+    "http://online-courses-web.onrender.com/auth/login/success",
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+      },
+    }
+  );
 
   const data = await res.json();
 

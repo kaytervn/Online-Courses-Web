@@ -16,6 +16,7 @@ import { invoiceItemsRoutes } from "./routes/invoiceItemsRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import job from "./utils/cron.js";
+import dotenv from "dotenv";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -34,7 +35,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
     method: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

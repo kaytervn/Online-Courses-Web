@@ -61,7 +61,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async (e) => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open("http://online-courses-web.onrender.com/auth/google", "_self");
     e.preventDefault();
     try {
       const data = await loginUserSocial();
@@ -88,7 +88,7 @@ const Login = () => {
   };
 
   const handleFacebookLogin = async (e) => {
-    window.open(`http://localhost:5000/auth/facebook`, "_self");
+    window.open(`http://online-courses-web.onrender.com/auth/facebook`, "_self");
 
     e.preventDefault();
     try {
@@ -116,7 +116,7 @@ const Login = () => {
   };
 
   const handleGithubLogin = async (e) => {
-    window.open(`http://localhost:5000/auth/github`, "_self");
+    window.open(`http://online-courses-web.onrender.com/auth/github`, "_self");
     e.preventDefault();
     try {
       const data = await loginUserSocial();
