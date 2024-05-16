@@ -103,7 +103,9 @@ const registerAppUser = async (req, res) => {
   }
   try {
     const newUser = await User.create({ name, email, password, status: true });
-    return res.status(200).json({ user: newUser });
+    const cart = await createCartForUser(newUser._id);
+
+    return res.status(200).json({ user: newUser, cartId: cart });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
