@@ -249,31 +249,31 @@ const loginAppUser = async (req, res) => {
     return res
       .status(400)
       .json({ error: "Incorrect email! Please fill in again" });
+  } else if (!user.status) {
+    return res.status(400).json({ error: "Account is blocked!" });
+  } else if (user.role != Role.STUDENT) {
+    return res.status(400).json({ error: "This app is for student only!" });
   } else {
-    if (user.role != Role.STUDENT) {
-      return res.status(400).json({ error: "This app is for student only!" });
-    } else {
-      const token = createToken(user._id);
-      //encrypt hash password
-      // check password
-      const match = await bcrypt.compare(password, user.password);
-      let cart = await Cart.findOne({ userId: user._id });
-      if (!cart) {
-        // Assuming Cart model exists and you have a logic to create a new cart
-        cart = await Cart.create({ userId: user._id });
-      }
-      // const passwordCheck = await User.findOne({compare})
-      if (!match) {
-        return res
-          .status(400)
-          .json({ error: "Password is incorrect! Please fill in again" });
-      }
+    const token = createToken(user._id);
+    //encrypt hash password
+    // check password
+    const match = await bcrypt.compare(password, user.password);
+    let cart = await Cart.findOne({ userId: user._id });
+    if (!cart) {
+      // Assuming Cart model exists and you have a logic to create a new cart
+      cart = await Cart.create({ userId: user._id });
+    }
+    // const passwordCheck = await User.findOne({compare})
+    if (!match) {
+      return res
+        .status(400)
+        .json({ error: "Password is incorrect! Please fill in again" });
+    }
 
-      try {
-        return res.status(200).json({ user, token, cartId: cart._id });
-      } catch (error) {
-        return res.status(500).json({ error: error.message });
-      }
+    try {
+      return res.status(200).json({ user, token, cartId: cart._id });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
     }
   }
 };
