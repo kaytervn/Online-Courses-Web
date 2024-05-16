@@ -95,7 +95,7 @@ const registerAppUser = async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
   if (password != confirmPassword) {
-    return res.status(400).json({ error: "Confirm password does not match" });
+    return res.status(400).json({ error: "Confirm password is not match" });
   }
   const user = await User.findOne({ email });
   if (user) {
