@@ -110,9 +110,10 @@ const registerAppUser = async (req, res) => {
       password: hashed,
       status: true,
     });
-    await createCartForUser(newUser._id);
+    const cart = await createCartForUser(newUser._id);
+    const token = createToken(newUser._id);
 
-    return res.status(200).json({ user: newUser });
+    return res.status(200).json({ user: newUser, token, cartId: cart._id });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
