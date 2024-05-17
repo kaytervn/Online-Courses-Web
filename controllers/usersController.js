@@ -442,6 +442,33 @@ const changePassword = async (req, res) => {
   }
 };
 
+const changePasswordAppUser = async (req, res) => {
+  const { password, newPassword, confirmPassword } = req.body;
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  try {
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(400).json({ error: "Current password is incorrect!" });
+    } else if (newPassword != confirmPassword) {
+      return res.status(400).json({ error: "Confirm password is not match" });
+    } else {
+      try {
+        const salt = await bcrypt.genSalt();
+        const hashed = await bcrypt.hash(newPassword, salt);
+        await user.updateOne({ password: hashed });
+        return res
+          .status(200)
+          .json({ success: "Password updated successfully" });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 // //***********************************************UPLOAD PROFILE IMAGE************************** */
 
 // const upLoadProfileImage = async (req, res) => {
@@ -565,4 +592,5 @@ export {
   registerAppUser,
   loginAppUser,
   updateProfilePicture,
+  changePasswordAppUser,
 };
