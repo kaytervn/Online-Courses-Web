@@ -519,20 +519,10 @@ const updateProfilePicture = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No image uploaded" });
   }
-
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ error: "Incorrect ID" });
-  }
-
-  const user = await User.findById(req.params.id);
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
-  }
-
+  const user = await User.findById(req.user._id);
   if (user.cloudinary) {
     await cloudinary.uploader.destroy(user.cloudinary);
   }
-
   try {
     const uploadResponse = await new Promise((resolve, reject) => {
       const bufferData = req.file.buffer;
@@ -552,7 +542,7 @@ const updateProfilePicture = async (req, res) => {
       cloudinary: uploadResponse.public_id,
     });
 
-    return res.status(200).json({ success: "User updated" });
+    return res.status(200).json({ success: "User profile picture updated" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
