@@ -538,7 +538,7 @@ const updateProfilePicture = async (req, res) => {
     });
 
     await user.updateOne({
-      image: uploadResponse.secure_url,
+      picture: uploadResponse.secure_url,
       cloudinary: uploadResponse.public_id,
     });
 
