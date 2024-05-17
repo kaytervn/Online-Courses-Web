@@ -2,7 +2,6 @@ import InvoiceItem from "../models/InvoiceItemModel.js";
 import Review from "../models/ReviewModel.js";
 import mongoose from "mongoose";
 
-
 const createReview = async (req, res) => {
   const { courseId, reviewData } = req.body; // Trích xuất reviewData từ req.body
   const userId = req.user._id;
@@ -42,14 +41,13 @@ const createReview = async (req, res) => {
   }
 };
 
-
 const getReviewCourse = async (req, res) => {
   const { courseId } = req.params;
 
   try {
     const reviews = await Review.find({ courseId }).populate({
       path: "userId",
-      select: "name", 
+      select: "name",
     });
 
     if (reviews.length === 0) {
@@ -88,6 +86,5 @@ const getMyReviewForCourse = async (req, res) => {
       .json({ message: "Failed to retrieve review", error: error.message });
   }
 };
-
 
 export { createReview, getReviewCourse, getMyReviewForCourse };

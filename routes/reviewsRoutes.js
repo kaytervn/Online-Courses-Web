@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.post("/create_review/:courseId", auth, createReview)
+router.post("/create_review/:courseId", auth, createReview);
 
 router.get("/get-review-course/:courseId", getReviewCourse);
 

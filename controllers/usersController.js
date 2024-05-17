@@ -469,6 +469,18 @@ const changePasswordAppUser = async (req, res) => {
   }
 };
 
+const changeAppUserName = async (req, res) => {
+  const { name } = req.body;
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  try {
+    await user.updateOne({ name });
+    return res.status(200).json({ success: "User name updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 // //***********************************************UPLOAD PROFILE IMAGE************************** */
 
 // const upLoadProfileImage = async (req, res) => {
@@ -593,4 +605,5 @@ export {
   loginAppUser,
   updateProfilePicture,
   changePasswordAppUser,
+  changeAppUserName,
 };

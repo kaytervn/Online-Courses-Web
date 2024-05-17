@@ -17,6 +17,7 @@ import {
   loginAppUser,
   updateProfilePicture,
   changePasswordAppUser,
+  changeAppUserName,
 } from "../controllers/usersController.js";
 import auth from "../middlewares/auth.js";
 
@@ -66,6 +67,8 @@ router.put(
 router.put("/change-password", auth, changePassword);
 
 router.put("/change-password-app-user", auth, changePasswordAppUser);
+
+router.put("/change-app-user-name", auth, changeAppUserName);
 
 //get all users by role
 router.get("/get-list-users/:role", auth, getUserListByRole);
