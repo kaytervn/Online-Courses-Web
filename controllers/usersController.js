@@ -444,7 +444,7 @@ const changePassword = async (req, res) => {
 
 const changePasswordAppUser = async (req, res) => {
   const { password, newPassword, confirmPassword } = req.body;
-  if (!password || !newPassword || confirmPassword) {
+  if (!password || !newPassword || !confirmPassword) {
     return res.status(400).json({ error: "All fields are required!" });
   }
   const userId = req.user._id;
