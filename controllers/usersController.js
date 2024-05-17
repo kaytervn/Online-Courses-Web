@@ -444,6 +444,9 @@ const changePassword = async (req, res) => {
 
 const changePasswordAppUser = async (req, res) => {
   const { password, newPassword, confirmPassword } = req.body;
+  if (!password || !newPassword || confirmPassword) {
+    return res.status(400).json({ error: "All fields are required!" });
+  }
   const userId = req.user._id;
   const user = await User.findById(userId);
   try {
@@ -471,6 +474,9 @@ const changePasswordAppUser = async (req, res) => {
 
 const changeAppUserName = async (req, res) => {
   const { name } = req.body;
+  if (name == "") {
+    return res.status(400).json({ error: "Name cannot be empty!" });
+  }
   const userId = req.user._id;
   const user = await User.findById(userId);
   try {
