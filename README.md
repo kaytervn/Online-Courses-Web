@@ -13,7 +13,7 @@
 
 ||Languages and Tools|
 | :---------------- | :--------|
-|**UX/UI**|ReactJS, Bootstrap|
+|**UX/UI**|NodeJS, Vite, ReactJS, Bootstrap|
 |**API**|NodeJS, ExpressJS
 |**Database**|MongoDB
 |**Cloud Storage**|Cloudinary
