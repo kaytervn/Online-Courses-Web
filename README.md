@@ -7,7 +7,7 @@
 | **Documentation**||
 | **Live Website**|[LINK](https://online-courses-web.onrender.com/)|
 |**Development Process**|Iterative, Incremental Frameworks|
-|**Unified Modeling Language**|Use Case, Class Diagram, Sequence Diagram, Collaboration Diagram|
+|**Unified Modeling Language**|Use Case Diagram, Class Diagram, Sequence Diagram, Collaboration Diagram|
 
 ---
 
