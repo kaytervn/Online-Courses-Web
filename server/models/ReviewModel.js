@@ -13,7 +13,7 @@ const ReviewSchema = new mongoose.Schema(
       ref: "Course",
     },
     ratingStar: {
-      type: Number,
+      type: Number, 
       required: true,
     },
     content: {

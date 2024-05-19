@@ -4,20 +4,20 @@ import Lesson from "../models/LessonModel.js";
 import Role from "../models/RoleEnum.js";
 import User from "../models/UserModel.js";
 
-const getCourseLessons = async (req, res) => {
-  const { courseId } = req.body;
-  try {
-    const lessons = await Lesson.find({
-      courseId: courseId,
-      status: true,
-    }).sort({
-      title: 1,
-    });
-    res.status(200).json({ lessons, courseId });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+  const getCourseLessons = async (req, res) => {
+    const { courseId } = req.body;
+    try {
+      const lessons = await Lesson.find({
+        courseId: courseId,
+        status: true,
+      }).sort({
+        title: 1,
+      });
+      res.status(200).json({ lessons, courseId });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
 
 const deleteLesson = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
