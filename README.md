@@ -38,6 +38,8 @@ This MERN Stack project involves the development of a website that offers online
 - [INVOICE ENDPOINTS](#invoice-endpoints)
 - [INVOICE ITEM ENDPOINTS](#invoice-item-endpoints)
 
+---
+
 <h3 align="center">USER ENDPOINTS</h3>
 
 | Endpoint                               | Method | Description                                                            |
@@ -60,6 +62,8 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/users/:id`                       | GET    | Get user information by ID                                             |
 | `/api/users/change-user-status/:id`    | PUT    | Change user status by ID (requires authentication)                     |
 
+---
+
 <h3 align="center">COURSE ENDPOINTS</h3>
 
 | Endpoint                                     | Method | Description                                                               |
@@ -80,6 +84,8 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/courses/get-courses-by-instructor/:id` | GET    | Get a list of courses by instructor ID (requires authentication)          |
 | `/api/courses/get-courses-by-student/:id`    | GET    | Get a list of courses by student ID (requires authentication)             |
 
+---
+
 <h3 align="center">REVIEW ENDPOINTS</h3>
 
 | Endpoint                                          | Method | Description                                                                |
@@ -87,6 +93,8 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/reviews/create_review/:courseId`            | POST   | Create a review for a course (requires authentication)                     |
 | `/api/reviews/get-review-course/:courseId`        | GET    | Get reviews for a course                                                   |
 | `/api/reviews/get-my-review-for-course/:courseId` | GET    | Get the authenticated user's review for a course (requires authentication) |
+
+---
 
 <h3 align="center">LESSON ENDPOINTS</h3>
 
@@ -98,6 +106,8 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/lessons/create-lesson`      | POST   | Create a new lesson (requires authentication) |
 | `/api/lessons/get-lesson/:id`     | GET    | Get a specific lesson                         |
 
+---
+
 <h3 align="center">DOCUMENT ENDPOINTS</h3>
 
 | Endpoint                              | Method | Description                                                  |
@@ -106,12 +116,16 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/documents/create-document`      | POST   | Create a new document (requires authentication, file upload) |
 | `/api/documents/delete-document/:id`  | DELETE | Delete a document (requires authentication)                  |
 
+---
+
 <h3 align="center">COMMENT ENDPOINTS</h3>
 
 | Endpoint                            | Method | Description                                    |
 | ----------------------------------- | ------ | ---------------------------------------------- |
 | `/api/comments/get-lesson-comments` | POST   | Get comments for a lesson                      |
 | `/api/comments/create-comment`      | POST   | Create a new comment (requires authentication) |
+
+---
 
 <h3 align="center">CART ENDPOINTS</h3>
 
@@ -121,6 +135,8 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/carts/removeFromCart/:cartId/:courseId` | DELETE | Remove a course from the cart                      |
 | `/api/carts/clearCart`                        | DELETE | Clear the cart (requires authentication)           |
 | `/api/carts/getCart`                          | GET    | Get the cart (requires authentication)             |
+
+---
 
 <h3 align="center">INVOICE ENDPOINTS</h3>
 
@@ -132,6 +148,8 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/invoices/my_course/searchByName/:str`  | GET    | Search the authenticated user's courses by name (requires authentication)        |
 | `/api/invoices/my_course/searchByTopic/:str` | GET    | Search the authenticated user's courses by topic (requires authentication)       |
 | `/api/invoices/my_course/searchByTimeUpdate` | GET    | Search the authenticated user's courses by update time (requires authentication) |
+
+---
 
 <h3 align="center">INVOICE ITEM ENDPOINTS</h3>
 
