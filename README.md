@@ -28,6 +28,16 @@ This MERN Stack project involves the development of a website that offers online
 
 <h2>API Endpoints</h2>
 
+- [USER ENDPOINTS](#user-endpoints)
+- [COURSE ENDPOINTS](#course-endpoints)
+- [REVIEW ENDPOINTS](#review-endpoints)
+- [LESSON ENDPOINTS](#lesson-endpoints)
+- [DOCUMENT ENDPOINTS](#document-endpoints)
+- [COMMENT ENDPOINTS](#comment-endpoints)
+- [CART ENDPOINTS](#cart-endpoints)
+- [INVOICE ENDPOINTS](#invoice-endpoints)
+- [INVOICE ITEM ENDPOINTS](#invoice-item-endpoints)
+
 <h3 align="center">USER ENDPOINTS</h3>
 
 | Endpoint                               | Method | Description                                                            |
