@@ -2,7 +2,7 @@
 
 This MERN Stack project involves the development of a website that offers online courses, incorporating knowledge of object-oriented system design through UML specification, project management, and iterative development. Additionally, the product implements a security method using token encryption and password hashing.
 
-|                               |                                                                          |
+| Project Name                  | Online Courses Website                                                   |
 | :---------------------------- | :----------------------------------------------------------------------- |
 | **Subject**                   |                                                                          |
 | **Start Date**                | 03/2024                                                                  |
@@ -15,7 +15,7 @@ This MERN Stack project involves the development of a website that offers online
 
 <h2>Technologies Applied</h2>
 
-|                                 |                                   |
+|                                 | Technology                        |
 | :------------------------------ | :-------------------------------- |
 | **UX/UI - Client Side**         | NodeJS, Vite & ReactJS, Bootstrap |
 | **API Endpoints - Server Side** | NodeJS, ExpressJS                 |
@@ -40,7 +40,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">USER ENDPOINTS</h3>
+<h3>USER ENDPOINTS</h3>
 
 | Endpoint                               | Method | Description                                                            |
 | -------------------------------------- | ------ | ---------------------------------------------------------------------- |
@@ -64,7 +64,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">COURSE ENDPOINTS</h3>
+<h3>COURSE ENDPOINTS</h3>
 
 | Endpoint                                     | Method | Description                                                               |
 | -------------------------------------------- | ------ | ------------------------------------------------------------------------- |
@@ -86,7 +86,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">REVIEW ENDPOINTS</h3>
+<h3>REVIEW ENDPOINTS</h3>
 
 | Endpoint                                          | Method | Description                                                                |
 | ------------------------------------------------- | ------ | -------------------------------------------------------------------------- |
@@ -96,7 +96,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">LESSON ENDPOINTS</h3>
+<h3>LESSON ENDPOINTS</h3>
 
 | Endpoint                          | Method | Description                                   |
 | --------------------------------- | ------ | --------------------------------------------- |
@@ -108,7 +108,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">DOCUMENT ENDPOINTS</h3>
+<h3>DOCUMENT ENDPOINTS</h3>
 
 | Endpoint                              | Method | Description                                                  |
 | ------------------------------------- | ------ | ------------------------------------------------------------ |
@@ -118,7 +118,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">COMMENT ENDPOINTS</h3>
+<h3>COMMENT ENDPOINTS</h3>
 
 | Endpoint                            | Method | Description                                    |
 | ----------------------------------- | ------ | ---------------------------------------------- |
@@ -127,7 +127,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">CART ENDPOINTS</h3>
+<h3>CART ENDPOINTS</h3>
 
 | Endpoint                                      | Method | Description                                        |
 | --------------------------------------------- | ------ | -------------------------------------------------- |
@@ -138,7 +138,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">INVOICE ENDPOINTS</h3>
+<h3>INVOICE ENDPOINTS</h3>
 
 | Endpoint                                     | Method | Description                                                                      |
 | -------------------------------------------- | ------ | -------------------------------------------------------------------------------- |
@@ -151,7 +151,7 @@ This MERN Stack project involves the development of a website that offers online
 
 ---
 
-<h3 align="center">INVOICE ITEM ENDPOINTS</h3>
+<h3>INVOICE ITEM ENDPOINTS</h3>
 
 | Endpoint                                   | Method | Description                                                                                      |
 | ------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------ |
