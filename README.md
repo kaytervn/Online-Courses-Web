@@ -28,19 +28,8 @@ This MERN Stack project involves the development of a website that offers online
 
 <h2>API Endpoints</h2>
 
-- [USER ENDPOINTS](#user-endpoints)
-- [COURSE ENDPOINTS](#course-endpoints)
-- [REVIEW ENDPOINTS](#review-endpoints)
-- [LESSON ENDPOINTS](#lesson-endpoints)
-- [DOCUMENT ENDPOINTS](#document-endpoints)
-- [COMMENT ENDPOINTS](#comment-endpoints)
-- [CART ENDPOINTS](#cart-endpoints)
-- [INVOICE ENDPOINTS](#invoice-endpoints)
-- [INVOICE ITEM ENDPOINTS](#invoice-item-endpoints)
-
----
-
-<h3>USER ENDPOINTS</h3>
+<details>
+<summary>USER ENDPOINTS</summary>
 
 | Endpoint                               | Method | Description                                                            |
 | -------------------------------------- | ------ | ---------------------------------------------------------------------- |
@@ -62,9 +51,10 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/users/:id`                       | GET    | Get user information by ID                                             |
 | `/api/users/change-user-status/:id`    | PUT    | Change user status by ID (requires authentication)                     |
 
----
+</details>
 
-<h3>COURSE ENDPOINTS</h3>
+<details>
+<summary>COURSE ENDPOINTS</summary>
 
 | Endpoint                                     | Method | Description                                                               |
 | -------------------------------------------- | ------ | ------------------------------------------------------------------------- |
@@ -84,9 +74,10 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/courses/get-courses-by-instructor/:id` | GET    | Get a list of courses by instructor ID (requires authentication)          |
 | `/api/courses/get-courses-by-student/:id`    | GET    | Get a list of courses by student ID (requires authentication)             |
 
----
+</details>
 
-<h3>REVIEW ENDPOINTS</h3>
+<details>
+<summary>REVIEW ENDPOINTS</summary>
 
 | Endpoint                                          | Method | Description                                                                |
 | ------------------------------------------------- | ------ | -------------------------------------------------------------------------- |
@@ -94,9 +85,10 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/reviews/get-review-course/:courseId`        | GET    | Get reviews for a course                                                   |
 | `/api/reviews/get-my-review-for-course/:courseId` | GET    | Get the authenticated user's review for a course (requires authentication) |
 
----
+</details>
 
-<h3>LESSON ENDPOINTS</h3>
+<details>
+<summary>LESSON ENDPOINTS</summary>
 
 | Endpoint                          | Method | Description                                   |
 | --------------------------------- | ------ | --------------------------------------------- |
@@ -106,9 +98,10 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/lessons/create-lesson`      | POST   | Create a new lesson (requires authentication) |
 | `/api/lessons/get-lesson/:id`     | GET    | Get a specific lesson                         |
 
----
+</details>
 
-<h3>DOCUMENT ENDPOINTS</h3>
+<details>
+<summary>DOCUMENT ENDPOINTS</summary>
 
 | Endpoint                              | Method | Description                                                  |
 | ------------------------------------- | ------ | ------------------------------------------------------------ |
@@ -116,18 +109,20 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/documents/create-document`      | POST   | Create a new document (requires authentication, file upload) |
 | `/api/documents/delete-document/:id`  | DELETE | Delete a document (requires authentication)                  |
 
----
+</details>
 
-<h3>COMMENT ENDPOINTS</h3>
+<details>
+<summary>COMMENT ENDPOINTS</summary>
 
 | Endpoint                            | Method | Description                                    |
 | ----------------------------------- | ------ | ---------------------------------------------- |
 | `/api/comments/get-lesson-comments` | POST   | Get comments for a lesson                      |
 | `/api/comments/create-comment`      | POST   | Create a new comment (requires authentication) |
 
----
+</details>
 
-<h3>CART ENDPOINTS</h3>
+<details>
+<summary>CART ENDPOINTS</summary>
 
 | Endpoint                                      | Method | Description                                        |
 | --------------------------------------------- | ------ | -------------------------------------------------- |
@@ -136,9 +131,10 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/carts/clearCart`                        | DELETE | Clear the cart (requires authentication)           |
 | `/api/carts/getCart`                          | GET    | Get the cart (requires authentication)             |
 
----
+</details>
 
-<h3>INVOICE ENDPOINTS</h3>
+<details>
+<summary>INVOICE ENDPOINTS</summary>
 
 | Endpoint                                     | Method | Description                                                                      |
 | -------------------------------------------- | ------ | -------------------------------------------------------------------------------- |
@@ -149,11 +145,14 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/invoices/my_course/searchByTopic/:str` | GET    | Search the authenticated user's courses by topic (requires authentication)       |
 | `/api/invoices/my_course/searchByTimeUpdate` | GET    | Search the authenticated user's courses by update time (requires authentication) |
 
----
+</details>
 
-<h3>INVOICE ITEM ENDPOINTS</h3>
+<details>
+<summary>INVOICE ITEM ENDPOINTS</summary>
 
 | Endpoint                                   | Method | Description                                                                                      |
 | ------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------ |
 | `/api/invoiceItems/all-courses`            | GET    | Get statistics for all courses (requires authentication for admin)                               |
 | `/api/invoiceItems/all-courses/instructor` | GET    | Get statistics for all courses created by the authenticated instructor (requires authentication) |
+
+</details>
