@@ -4,16 +4,16 @@
 
 This MERN Stack project involves the development of a website that offers online courses, incorporating knowledge of object-oriented system design through UML specification, project management, and iterative development. Additionally, the product implements a security method using token encryption and password hashing.
 
-| Project Name                  | Online Courses Website                                                   |
-| :---------------------------- | :----------------------------------------------------------------------- |
-| **Subject**                   |                                                                          |
-| **Start Date**                | 03/2024                                                                  |
-| **End Date**                  | 05/2024                                                                  |
-| **Team Size**                 | 4                                                                        |
-| **Documentation**             |                                                                          |
-| **Live Website**              | [LINK](https://online-courses-web.onrender.com/)                         |
-| **Development Process**       | Iterative, Incremental Frameworks                                        |
-| **Unified Modeling Language** | Use Case Diagram, Class Diagram, Sequence Diagram, Collaboration Diagram |
+| Project Name                  | Online Courses Website                                                                    |
+| :---------------------------- | :---------------------------------------------------------------------------------------- |
+| **Subject**                   | Object Oriented Software Engineering                                                      |
+| **Start Date**                | 03/2024                                                                                   |
+| **End Date**                  | 05/2024                                                                                   |
+| **Team Size**                 | 4                                                                                         |
+| **Documentation**             | [PDF](https://drive.google.com/file/d/1w_m2uK-vjerwkcEc-ViiEUOURG5R3gJ3/view?usp=sharing) |
+| **Live Website**              | [LINK](https://online-courses-web.onrender.com/)                                          |
+| **Development Process**       | Iterative, Incremental Frameworks                                                         |
+| **Unified Modeling Language** | Use Case Diagram, Class Diagram, Sequence Diagram, Collaboration Diagram                  |
 
 <h2>Technologies Applied</h2>
 
