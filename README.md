@@ -1,7 +1,5 @@
 <h1 align="center"> Online Courses Website </h1>
 
-![GIF](https://github.com/kaytervn/Online-Courses-Web/blob/trong-deploy/preview.gif)
-
 This MERN Stack project involves the development of a website that offers online courses, incorporating knowledge of object-oriented system design through UML specification, project management, and iterative development. Additionally, the product implements a security method using token encryption and password hashing.
 
 | Project Name                  | Online Courses Website                                                                    |
@@ -159,3 +157,8 @@ This MERN Stack project involves the development of a website that offers online
 | `/api/invoiceItems/all-courses/instructor` | GET    | Get statistics for all courses created by the authenticated instructor (requires authentication) |
 
 </details>
+
+## Preview
+
+![GIF](https://github.com/kaytervn/Online-Courses-Web/blob/trong-deploy/preview.gif)
+
