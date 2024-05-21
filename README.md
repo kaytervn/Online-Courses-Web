@@ -3,9 +3,8 @@
 This MERN Stack project involves the development of a website that offers online courses, incorporating knowledge of object-oriented system design through UML specification, project management, and iterative development. Additionally, the product implements a security method using token encryption and password hashing.
 
 <iframe
-  src="https://online-courses-web.onrender.com/"
-  style="width:100%; height:300px;"
-></iframe>
+src="https://online-courses-web.onrender.com/"
+style="width:100%; height:300px;"> </iframe>
 
 | Project Name                  | Online Courses Website                                                   |
 | :---------------------------- | :----------------------------------------------------------------------- |
