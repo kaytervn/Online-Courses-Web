@@ -315,7 +315,7 @@ const forgotPassword = async (req, res) => {
           <p>Hello,</p>
           <p>You have requested to reset your password. Please click on the button below to reset your password:</p>
           <button style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;">
-            <a href="http://localhost:3000/reset-password/${user._id}/${token}" style="color: white; text-decoration: none;">Reset Password</a>
+            <a href="https://online-courses-web-v2.onrender.com/reset-password/${user._id}/${token}" style="color: white; text-decoration: none;">Reset Password</a>
           </button>
           <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
           <p>Best regards,<br>COOKIEDU Team</p>
