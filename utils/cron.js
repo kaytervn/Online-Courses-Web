@@ -1,7 +1,7 @@
 import cron from "cron";
 import https from "https";
 
-const URL = "https://online-courses-web.onrender-v2.com";
+const URL = "https://online-courses-web-v2.onrender.com";
 
 const job = new cron.CronJob("*/14 * * * *", function () {
   https
