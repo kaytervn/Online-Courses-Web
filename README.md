@@ -4,7 +4,7 @@ This MERN Stack project involves the development of a website that offers online
 
 | Project Name                  | Online Courses Website                                                                    |
 | :---------------------------- | :---------------------------------------------------------------------------------------- |
-| **Subject**                   | Object Oriented Software Engineering                                                      |
+| **Subject**                   | Object-Oriented Software Engineering                                                      |
 | **Start Date**                | 03/2024                                                                                   |
 | **End Date**                  | 05/2024                                                                                   |
 | **Team Size**                 | 4                                                                                         |
